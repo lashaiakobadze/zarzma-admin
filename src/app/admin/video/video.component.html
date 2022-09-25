@@ -1,0 +1,52 @@
+<form
+  class="form"
+  [formGroup]="videoForm"
+  *ngIf="formMode"
+  (ngSubmit)="onAddVideo()"
+>
+
+  <div class="form-control">
+    <label for="name" class="form-label">Name</label>
+    <input
+      type="text"
+      name="name"
+      class="input"
+      placeholder="name"
+      formControlName="name"
+    >
+  </div>
+
+  <div class="form-control">
+    <label for="videoURL" class="form-label">videoURL</label>
+    <input
+      type="text"
+      name="videoURL"
+      class="input"
+      placeholder="videoURL"
+      formControlName="videoURL"
+    >
+  </div>
+
+  <button type="submit" class="button update">Add Chant</button>
+</form>
+
+<div *ngIf="formMode; else plus">
+  <div class="form">
+    <button
+      (click)="formMode = false"
+      class="button delete"
+    >Work end</button>
+  </div>
+</div>
+
+<ng-template #plus>
+  <app-plus
+    *ngIf="isAdminMode"
+    class="plus-btn"
+    (click)="onGetVideoForm()"
+  ></app-plus>
+</ng-template>
+
+<ng-container *ngFor="let video of videoItems">
+  <app-video-item [video]="video"></app-video-item>
+</ng-container>

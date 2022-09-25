@@ -1,0 +1,17 @@
+@import '../../../../scss/styles.scss';
+
+:host {
+  width: 100%;
+}
+
+.video {
+  width: 100%;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: black;
+  }
+}

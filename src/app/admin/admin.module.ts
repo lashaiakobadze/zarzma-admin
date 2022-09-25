@@ -10,8 +10,8 @@ import { IconsPanelComponent } from './article-panel/icons-panel/icons-panel.com
 import { PublicationsPanelComponent } from './article-panel/publications-panel/publications-panel.component';
 import { ChantsPanelComponent } from './chants-panel/chants-panel.component';
 import { ChantPanelComponent } from './chants-panel/chant-panel/chant-panel.component';
-
-
+import { VideoComponent } from './video/video.component';
+import { VideoItemComponent } from './video/video-item/video-item.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,9 @@ import { ChantPanelComponent } from './chants-panel/chant-panel/chant-panel.comp
     IconsPanelComponent,
     PublicationsPanelComponent,
     ChantsPanelComponent,
-    ChantPanelComponent
+    ChantPanelComponent,
+    VideoComponent,
+    VideoItemComponent
   ],
   imports: [
     SharedModule,
@@ -32,7 +34,8 @@ import { ChantPanelComponent } from './chants-panel/chant-panel/chant-panel.comp
         children: [
           { path: '', redirectTo: 'articlePanel', pathMatch: 'full' },
           { path: 'articlePanel', component: ArticlePanelComponent },
-          { path: 'chantsPanel', component: ChantsPanelComponent }
+          { path: 'chantsPanel', component: ChantsPanelComponent },
+          { path: 'videoPanel', component: VideoComponent }
         ]
       }
     ])

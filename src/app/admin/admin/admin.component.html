@@ -21,6 +21,13 @@
     routerLinkActive="active"
     [routerLinkActiveOptions]="{exact: true}"
   >ChantsPanel</div>
+
+  <div
+    class="panel__item"
+    routerLink="videoPanel"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{exact: true}"
+  >VideoPanel</div>
 </div>
 
 <router-outlet *ngIf="isAdminMode"></router-outlet>
