@@ -3,11 +3,6 @@
 .panel {
   @include flexPosition(space-around, flex-start);
   margin: 20px;
-
-  // &__item {
-  //   @include flexPosition(space-around);
-  //   width: 30%;
-  // }
 }
 
 .panel_item {

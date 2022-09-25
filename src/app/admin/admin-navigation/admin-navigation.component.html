@@ -13,21 +13,21 @@
     routerLink="articlePanel"
     routerLinkActive="active"
     [routerLinkActiveOptions]="{exact: true}"
-  >articlePanel</div>
+  >Articles</div>
 
   <div
     class="panel__item"
     routerLink="chantsPanel"
     routerLinkActive="active"
     [routerLinkActiveOptions]="{exact: true}"
-  >ChantsPanel</div>
+  >Chants</div>
 
   <div
     class="panel__item"
     routerLink="videoPanel"
     routerLinkActive="active"
     [routerLinkActiveOptions]="{exact: true}"
-  >VideoPanel</div>
+  >Videos</div>
 </div>
 
 <router-outlet *ngIf="isAdminMode"></router-outlet>

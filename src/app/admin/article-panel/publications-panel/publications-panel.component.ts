@@ -11,7 +11,7 @@ import { ArticleService } from '../article.service';
   styleUrls: ['./publications-panel.component.scss']
 })
 export class PublicationsPanelComponent implements OnInit {
-  BASE_URL = environment.dataUrl;
+  // BASE_URL = environment.dataUrl;
 
   @Input() publicationItem;
   publicationForm: FormGroup;

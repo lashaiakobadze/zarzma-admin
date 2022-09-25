@@ -32,13 +32,14 @@ export class ChantService {
     return this.chantsItemsUpdated.asObservable();
   }
 
+  // ToDo:
   storeChant(chant: Chant): Observable<Chant> {
-    return this.http.post<Chant>('chants/AddChant', chant)
+    return this.http.post<Chant>('Chants/AddChant', chant)
       .pipe(this.loaderService.useLoader);
   }
 
   deleteChant(id: number) {
-    this.http.get(`chants/DeleteChant?ID=${id}`)
+    this.http.get(`Chants/DeleteChant?ID=${id}`)
       .pipe(this.loaderService.useLoader).subscribe(() => {
         const chantsItems = this.chantsItems.filter(item => item.id !== id);
         this.chantsItems = chantsItems;

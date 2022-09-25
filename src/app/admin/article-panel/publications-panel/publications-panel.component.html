@@ -75,7 +75,8 @@
 
   <div class="form-control">
     <label for="image" class="form-label">image</label>
-    <img class="panel-img" [src]="selectedFile?.src || BASE_URL+publicationItem?.photoUrl" [alt]="publicationItem?.photoUrl" [alt]="publicationItem?.photoUrl">
+    <!-- ToDo: fix url -->
+    <img class="panel-img" [src]="selectedFile?.src || 'https://zarzmaapi.azurewebsites.net/api' + publicationItem?.photoUrl" [alt]="publicationItem?.photoUrl" [alt]="publicationItem?.photoUrl">
     <input
       #imageInput
       type="file"

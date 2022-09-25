@@ -112,6 +112,7 @@ export class ArticleService {
       );
   }
 
+  // ToDo: არ იშელბა icone-ბი
   deleteArticle(articleID: number) {
     this.http.get(`Articls/DeleteArticle?ID=${articleID}`)
       .pipe(this.loaderService.useLoader).subscribe(() => {
