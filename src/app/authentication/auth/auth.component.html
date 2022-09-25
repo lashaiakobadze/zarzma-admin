@@ -1,0 +1,35 @@
+<form [formGroup]="adminForm" (ngSubmit)="onLogin()" class="form" *ngIf="!isAdminMode">
+  <input
+    formControlName="username"
+    type="text"
+    name="username"
+    placeholder="username"
+    class="input"
+  >
+  <p class="required" *ngIf="get('username').invalid && get('username').touched">
+    <ng-container *ngFor="let errorMessage of errors('username')">
+      <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
+    </ng-container>
+  </p>
+
+  <input
+    formControlName="password"
+    type="password"
+    name="password"
+    placeholder="password"
+    class="input"
+  >
+  <p class="required" *ngIf="get('password').invalid && get('password').touched">
+    <ng-container *ngFor="let errorMessage of errors('password')">
+      <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
+    </ng-container>
+  </p>
+
+
+  <button
+    type="submit"
+    class="button"
+    routerLink="/admin"
+  >Log In</button>
+</form>
+

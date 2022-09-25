@@ -1,0 +1,139 @@
+<form
+  class="form"
+  [formGroup]="articleForm"
+  *ngIf="formMode"
+  (ngSubmit)="onAddArticle()"
+>
+  <div class="form-control">
+    <label for="DocType" class="form-label">Choose DocType</label>
+    <select type="text" name="DocType" class="input" formControlName="DocType">
+      <ng-container *ngFor="let DocType of DocTypes">
+        <option [value]="DocType">{{ DocType }}</option>
+      </ng-container>
+    </select>
+  </div>
+
+  <div class="form-control">
+    <label for="TitleGeo" class="form-label">TitleGeo</label>
+    <input
+      type="text"
+      name="TitleGeo"
+      class="input"
+      placeholder="Article TitleGeo"
+      formControlName="TitleGeo"
+    >
+  </div>
+
+  <div class="form-control">
+    <label for="TextGeo" class="form-label">TextGeo content</label>
+    <textarea
+      type="text"
+      name="TextGeo"
+      class="input"
+      placeholder="TextGeo content"
+      formControlName="TextGeo"
+    ></textarea>
+  </div>
+
+
+  <div class="form-control">
+    <label for="TitleEng" class="form-label">TitleEng</label>
+    <input
+      type="text"
+      class="input"
+      name="TitleEng"
+      placeholder="Publication TitleEng"
+      formControlName="TitleEng"
+    >
+  </div>
+
+  <div class="form-control">
+    <label for="TextEng" class="form-label">TextEng content</label>
+    <textarea
+      type="text"
+      class="input"
+      name="TextEng"
+      placeholder="TextEng content"
+      formControlName="TextEng"
+    ></textarea>
+  </div>
+
+  <div class="form-control">
+    <label for="TitleRus" class="form-label">TitleRus</label>
+    <input
+      type="text"
+      class="input"
+      name="TitleRus"
+      placeholder="Publication TitleRus"
+      formControlName="TitleRus"
+    >
+  </div>
+
+  <div class="form-control">
+    <label for="TextRus" class="form-label">TextRus content</label>
+    <textarea
+      type="text"
+      class="input"
+      name="TextRus"
+      placeholder="TextRus content"
+      formControlName="TextRus"
+    ></textarea>
+  </div>
+
+  <div class="form-control">
+    <label for="image" class="form-label">image</label>
+    <img class="panel-img" [src]="selectedFile?.src" *ngIf="selectedFile?.src !== null && selectedFile?.src">
+    <input
+      #imageInput
+      type="file"
+      class="input"
+      name="files"
+      placeholder="Publication image"
+      (change)="processFile(imageInput)">
+  </div>
+
+  <button type="submit" class="button update">Add Article</button>
+</form>
+
+<div *ngIf="formMode; else plus">
+  <div class="form">
+    <button
+      (click)="formMode = false"
+      class="button delete"
+    >Work end</button>
+  </div>
+</div>
+
+<ng-template #plus>
+  <app-plus
+    *ngIf="adminService.isAdminMode"
+    class="plus-btn"
+    (click)="onGetArticleForm()"
+  ></app-plus>
+</ng-template>
+
+<div class="panel">
+  <div class="panel_item">
+    <h2>Eparchy Items</h2>
+    <app-eparchy-panel
+      *ngFor="let eparchyItem of eparchyItems"
+      [eparchyItem]="eparchyItem"
+    ></app-eparchy-panel>
+  </div>
+  <div class="panel_item">
+    <h2>Publications Items</h2>
+      <app-publications-panel
+      *ngFor="let publicationsItem of publicationsItems"
+      [publicationItem]="publicationsItem"
+    ></app-publications-panel>
+  </div>
+  <div class="panel_item">
+    <h2>Icons Items</h2>
+    <app-icons-panel
+      *ngFor="let iconsItem of iconsItems"
+      [iconsItem]="iconsItem"
+    ></app-icons-panel>
+  </div>
+</div>
+
+

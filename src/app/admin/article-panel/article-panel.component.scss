@@ -1,0 +1,15 @@
+@import '../../../scss/styles.scss';
+
+.panel {
+  @include flexPosition(space-around, flex-start);
+  margin: 20px;
+
+  &__item {
+    @include flexPosition(space-around);
+    width: 30%;
+  }
+}
+
+.form .button {
+  margin: 10px;
+}

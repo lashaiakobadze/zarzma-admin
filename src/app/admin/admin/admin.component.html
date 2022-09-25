@@ -1,0 +1,27 @@
+<div class="form">
+  <button
+    *ngIf="isAdminMode"
+    (click)="onLogout()"
+    type="button"
+    class="button"
+  >Log Out</button>
+</div>
+
+<div class="panel" *ngIf="isAdminMode">
+  <div
+    class="panel__item"
+    routerLink="articlePanel"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{exact: true}"
+  >articlePanel</div>
+
+  <div
+    class="panel__item"
+    routerLink="chantsPanel"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{exact: true}"
+  >ChantsPanel</div>
+</div>
+
+<router-outlet *ngIf="isAdminMode"></router-outlet>
+

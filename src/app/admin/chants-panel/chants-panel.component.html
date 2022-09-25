@@ -1,0 +1,52 @@
+<form
+  class="form"
+  [formGroup]="chantForm"
+  *ngIf="formMode"
+  (ngSubmit)="onAddChant()"
+>
+
+  <div class="form-control">
+    <label for="ChantName" class="form-label">ChantName</label>
+    <input
+      type="text"
+      name="ChantName"
+      class="input"
+      placeholder="ChantName"
+      formControlName="ChantName"
+    >
+  </div>
+
+  <div class="form-control">
+    <label for="audio" class="form-label">AudioUrl</label>
+    <input
+      #audioInput
+      type="file"
+      class="input"
+      name="files"
+      formControlName="AudioUrl"
+      (change)="processFile(audioInput)">
+  </div>
+
+  <button type="submit" class="button update">Add Chant</button>
+</form>
+
+<div *ngIf="formMode; else plus">
+  <div class="form">
+    <button
+      (click)="formMode = false"
+      class="button delete"
+    >Work end</button>
+  </div>
+</div>
+
+<ng-template #plus>
+  <app-plus
+    *ngIf="adminService.isAdminMode"
+    class="plus-btn"
+    (click)="onGetArticleForm()"
+  ></app-plus>
+</ng-template>
+
+<ng-container *ngFor="let chant of chantsItems">
+  <app-chant-panel [chant]="chant"></app-chant-panel>
+</ng-container>
