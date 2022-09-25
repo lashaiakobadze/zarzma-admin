@@ -29,8 +29,6 @@ export class ArticleService {
     public route: Router
   ) { }
 
-
-  ///// Refactor services
   getEparchyItems(): void {
     this.http
       .get<ArticleInterface[]>(`articls/ArticleData?docType=${this.query.docType.eparchy}`)

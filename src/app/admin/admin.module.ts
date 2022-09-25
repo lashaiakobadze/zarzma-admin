@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 
 import { SharedModule } from 'src/app/shared/shared.module';
-import { AdminComponent } from './admin/admin.component';
+import { AdminNavigationComponent } from './admin-navigation/admin-navigation.component';
 import { ArticlePanelComponent } from './article-panel/article-panel.component';
 import { EparchyPanelComponent } from './article-panel/eparchy-panel/eparchy-panel.component';
 import { IconsPanelComponent } from './article-panel/icons-panel/icons-panel.component';
@@ -15,7 +15,7 @@ import { VideoItemComponent } from './video/video-item/video-item.component';
 
 @NgModule({
   declarations: [
-    AdminComponent,
+    AdminNavigationComponent,
     ArticlePanelComponent,
     EparchyPanelComponent,
     IconsPanelComponent,
@@ -30,7 +30,7 @@ import { VideoItemComponent } from './video/video-item/video-item.component';
     RouterModule.forChild([
       {
         path: '',
-        component: AdminComponent,
+        component: AdminNavigationComponent,
         children: [
           { path: '', redirectTo: 'articlePanel', pathMatch: 'full' },
           { path: 'articlePanel', component: ArticlePanelComponent },

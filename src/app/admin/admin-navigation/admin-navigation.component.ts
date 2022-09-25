@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/authentication/auth.service';
 import { AdminService } from '../admin.service';
 
-import { AuthService } from '../../authentication/auth.service';
-
-
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss']
+  selector: 'app-admin-navigation',
+  templateUrl: './admin-navigation.component.html',
+  styleUrls: ['./admin-navigation.component.scss']
 })
-export class AdminComponent implements OnInit {
+export class AdminNavigationComponent implements OnInit {
   isAdminMode: boolean;
 
   constructor(
