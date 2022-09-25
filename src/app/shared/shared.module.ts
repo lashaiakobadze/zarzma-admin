@@ -6,9 +6,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownDirective } from './directives/dropdown.directive';
 import { PlusComponent } from './components/plus/plus.component';
 import { ImageUploadComponent } from './components/image-upload/image-upload.component';
-import { ShortenPipe } from './pipes/shorten.pipe';
-import { LoaderComponent } from './components/loader/loader.component';
-
 
 
 @NgModule({
@@ -16,14 +13,12 @@ import { LoaderComponent } from './components/loader/loader.component';
     DropdownDirective,
     PlusComponent,
     ImageUploadComponent,
-    // LoaderComponent,
   ],
   exports: [
     CommonModule,
     ReactiveFormsModule,
     PlusComponent,
     ImageUploadComponent,
-    // LoaderComponent,
     DropdownDirective
   ]
 })
