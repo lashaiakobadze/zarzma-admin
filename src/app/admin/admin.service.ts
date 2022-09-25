@@ -22,7 +22,7 @@ import { Router } from '@angular/router';
 })
 export class AdminService {
   adminPassword = 'zarzma';
-  isAdminMode = false;
+  isAdminMode = true;
 
   eparchyItems: ArticleInterface[] = [];
   private eparchyItemsUpdated = new Subject<ArticleInterface[]>();

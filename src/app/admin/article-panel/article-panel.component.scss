@@ -10,6 +10,14 @@
   }
 }
 
+.panel_item {
+  h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 .form .button {
   margin: 10px;
 }
