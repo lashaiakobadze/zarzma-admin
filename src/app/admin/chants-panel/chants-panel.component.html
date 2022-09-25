@@ -41,12 +41,12 @@
 
 <ng-template #plus>
   <app-plus
-    *ngIf="adminService.isAdminMode"
+    *ngIf="isAdminMode"
     class="plus-btn"
     (click)="onGetArticleForm()"
   ></app-plus>
 </ng-template>
 
 <ng-container *ngFor="let chant of chantsItems">
-  <app-chant-panel [chant]="chant"></app-chant-panel>
+  <app-chant-panel [chant]="chant" (deleteChantClicked)="deleteChant($event)"></app-chant-panel>
 </ng-container>

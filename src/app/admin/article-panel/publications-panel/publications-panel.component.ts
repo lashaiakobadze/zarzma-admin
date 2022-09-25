@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ImageSnippet } from 'src/app/shared/models/image-snippet.model';
 import { environment } from 'src/environments/environment';
-import { AdminService } from '../../admin.service';
 import { ArticleInterface } from '../../interfaces/article.interface';
+import { ArticleService } from '../article.service';
 
 @Component({
   selector: 'app-publications-panel',
@@ -18,7 +18,7 @@ export class PublicationsPanelComponent implements OnInit {
   selectedFile: ImageSnippet;
 
   constructor(
-    private adminService: AdminService
+    public articleService: ArticleService
   ) { }
 
   ngOnInit(): void {
@@ -26,12 +26,12 @@ export class PublicationsPanelComponent implements OnInit {
   }
 
   onUpdatePublication(): void {
-    const formData: FormData = this.adminService.getFormData(this.publicationForm);
-    this.adminService.updateArticle(formData as unknown as ArticleInterface);
+    const formData: FormData = this.articleService.getFormData(this.publicationForm);
+    this.articleService.updateArticle(formData as unknown as ArticleInterface);
   }
 
   onDeletePublication(id: number): void {
-    this.adminService.deleteArticle(id);
+    this.articleService.deleteArticle(id);
   }
 
   processFile(imageInput: any): void {

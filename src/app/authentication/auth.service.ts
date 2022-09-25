@@ -35,7 +35,7 @@ export class AuthService {
       username: username,
       password: password
     };
-    this.http.post('http://localhost:3000/api/user/signup', authData)
+    this.http.post('http://localhost:3000/user/signup', authData)
       .subscribe(response => {
         console.log(response);
       })
@@ -46,8 +46,9 @@ export class AuthService {
       username: username,
       password: password
     };
-    this.http.post<{token: string, expiresIn: number}>('/api/Login', authData)
+    this.http.post<{token: string, expiresIn: number}>('Login', authData)
       .subscribe(response => {
+        console.log(response);
         const token = response.token;
         this.token = token;
 
@@ -61,7 +62,7 @@ export class AuthService {
           const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
           console.log(expirationDate);
           this.saveAuthData(token, expirationDate);
-          this.router.navigate(['/admin/chantsPanel']);
+          this.router.navigate(['/admin']);
         }
       });
   }

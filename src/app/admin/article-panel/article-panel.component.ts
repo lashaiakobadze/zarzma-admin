@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { ImageSnippet } from 'src/app/shared/models/image-snippet.model';
 import { Article } from '../models/article';
 import { ArticleInterface } from '../interfaces/article.interface';
-import { AdminService } from '../admin.service';
+import { ArticleService } from './article.service';
 
 @Component({
   selector: 'app-article-panel',
@@ -18,6 +18,7 @@ export class ArticlePanelComponent implements OnInit, OnDestroy {
   articleForm: FormGroup;
   formMode = false;
   selectedFile: ImageSnippet;
+  isAdminMode = true;
 
   eparchyItems: ArticleInterface[] = [];
   publicationsItems: ArticleInterface[] = [];
@@ -28,26 +29,26 @@ export class ArticlePanelComponent implements OnInit, OnDestroy {
   iconsSub: Subscription;
 
   constructor(
-    public adminService: AdminService,
+    public articleService: ArticleService
   ) { }
 
   ngOnInit(): void {
     this.initForm();
 
-    this.adminService.getEparchyItems();
-    this.eparchySub = this.adminService.getEparchyItemsListener()
+    this.articleService.getEparchyItems();
+    this.eparchySub = this.articleService.getEparchyItemsListener()
       .subscribe(eparchyItems => {
         this.eparchyItems = eparchyItems;
       })
 
-    this.adminService.getIconsItems();
-    this.iconsSub = this.adminService.getIconsItemsListener()
+    this.articleService.getIconsItems();
+    this.iconsSub = this.articleService.getIconsItemsListener()
       .subscribe(iconsItems => {
         this.iconsItems = iconsItems;
       })
 
-    this.adminService.getPublicationsItems();
-    this.publicationsSub = this.adminService.getPublicationsItemsListener()
+    this.articleService.getPublicationsItems();
+    this.publicationsSub = this.articleService.getPublicationsItemsListener()
       .subscribe(publicationsItems => {
         this.publicationsItems = publicationsItems;
       })
@@ -75,7 +76,7 @@ export class ArticlePanelComponent implements OnInit, OnDestroy {
     const myForm = document.forms[0];
     const formData = new FormData(myForm);
 
-    this.adminService.storeArticle(formData as unknown as Article)
+    this.articleService.storeArticle(formData as unknown as Article)
       .subscribe(() => {
           console.log('Article add successful!');
           this.articleForm.reset();

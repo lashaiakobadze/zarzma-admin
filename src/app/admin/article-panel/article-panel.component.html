@@ -106,7 +106,7 @@
 
 <ng-template #plus>
   <app-plus
-    *ngIf="adminService.isAdminMode"
+    *ngIf="isAdminMode"
     class="plus-btn"
     (click)="onGetArticleForm()"
   ></app-plus>

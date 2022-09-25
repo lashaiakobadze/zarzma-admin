@@ -32,6 +32,8 @@ export class AuthComponent implements OnInit {
       return;
     }
 
+    console.log(auth);
+
     this.authService.login(auth.username, auth.password);
     this.isAdminMode = true;
   }

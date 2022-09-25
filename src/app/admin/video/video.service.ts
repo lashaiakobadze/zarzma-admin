@@ -1,14 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { LoaderService } from 'src/app/shared/components/loader/loader.service';
+import { VideoData } from './models/video.interface';
+import { Video } from './models/video.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VideoService {
-  videoItems: any = [];
-  private videoItemsUpdated = new Subject();
+  videoItems: VideoData[] = [];
+  private videoItemsUpdated = new Subject<VideoData[]>();
 
   constructor(
     private http: HttpClient,
@@ -17,7 +19,7 @@ export class VideoService {
 
   getVideosItems(): void {
     this.http
-      .get(`/api/Videos/VideoData`)
+      .get<VideoData[]>(`Videos/VideoData`)
         .pipe(this.loaderService.useLoader)
         .subscribe(videoData => {
           this.videoItems = videoData;
@@ -27,5 +29,20 @@ export class VideoService {
 
   getVideoItemsListener() {
     return this.videoItemsUpdated.asObservable();
+  }
+
+  addVideo(video: Video): Observable<Video> {
+    console.log(video);
+    return this.http.post<Video>('Videos/AddVideo', video)
+      .pipe(this.loaderService.useLoader);
+  }
+
+  deleteVideo(id: number) {
+    this.http.get(`Videos/DeleteVideo?ID=${id}`)
+      .pipe(this.loaderService.useLoader).subscribe(() => {
+        const videoItems = this.videoItems.filter(item => item.id !== id);
+        this.videoItems = videoItems;
+        this.videoItemsUpdated.next([...this.videoItems]);
+      })
   }
 }

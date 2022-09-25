@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { AdminService } from '../admin.service';
 import { ChantInterface } from '../interfaces/chant.interface';
 import { Chant } from '../models/chant.model';
+import { ChantService } from './chants.service';
 
 @Component({
   selector: 'app-chants-panel',
@@ -12,18 +12,19 @@ import { Chant } from '../models/chant.model';
 })
 export class ChantsPanelComponent implements OnInit, OnDestroy {
   formMode = false;
+  isAdminMode = true;
   chantsItems: ChantInterface[] = [];
   chantsSub: Subscription;
   chantForm: FormGroup;
 
   constructor(
-    public adminService: AdminService,
+    public chantService: ChantService,
   ) { }
 
   ngOnInit(): void {
     this.initForm();
-    this.adminService.getChants();
-    this.chantsSub = this.adminService.getChantsItemsListener()
+    this.chantService.getChants();
+    this.chantsSub = this.chantService.getChantsItemsListener()
       .subscribe(chantsData => {
         this.chantsItems = chantsData;
         console.log(chantsData);
@@ -45,7 +46,7 @@ export class ChantsPanelComponent implements OnInit, OnDestroy {
     formData.append("ChantName", this.chantForm.get('ChantName').value);
     formData.append("AudioUrl", this.chantForm.get('AudioUrl').value);
 
-    this.adminService.storeChant(formData as unknown as Chant)
+    this.chantService.storeChant(formData as unknown as Chant)
     .subscribe(
       () => {
         console.log('Article add successful!');
@@ -53,6 +54,10 @@ export class ChantsPanelComponent implements OnInit, OnDestroy {
       },
       err => console.log('HTTP Error', err.error),
     );
+  }
+
+  deleteChant(id: number) {
+    this.chantService.deleteChant(id);
   }
 
   initForm(): void {

@@ -2,9 +2,7 @@
   class="form"
   [formGroup]="videoForm"
   *ngIf="formMode"
-  (ngSubmit)="onAddVideo()"
 >
-
   <div class="form-control">
     <label for="name" class="form-label">Name</label>
     <input
@@ -17,7 +15,7 @@
   </div>
 
   <div class="form-control">
-    <label for="videoURL" class="form-label">videoURL</label>
+    <label for="videoURL" class="form-label">Video URL</label>
     <input
       type="text"
       name="videoURL"
@@ -27,7 +25,11 @@
     >
   </div>
 
-  <button type="submit" class="button update">Add Chant</button>
+  <button
+    type="button"
+    class="button update"
+    (click)="onAddVideo()"
+  >Add Video</button>
 </form>
 
 <div *ngIf="formMode; else plus">
@@ -48,5 +50,5 @@
 </ng-template>
 
 <ng-container *ngFor="let video of videoItems">
-  <app-video-item [video]="video"></app-video-item>
+  <app-video-item [video]="video" (deleteVideoClicked)="onDeleteVideo($event)"></app-video-item>
 </ng-container>

@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ImageSnippet } from 'src/app/shared/models/image-snippet.model';
 import { environment } from 'src/environments/environment';
-import { AdminService } from '../../admin.service';
 import { ArticleInterface } from '../../interfaces/article.interface';
+import { ArticleService } from '../article.service';
 
 
 @Component({
@@ -18,19 +18,21 @@ export class EparchyPanelComponent implements OnInit {
   eparchyForm: FormGroup;
   selectedFile: ImageSnippet;
 
-  constructor(public adminService: AdminService) { }
+  constructor(
+    public articleService: ArticleService
+  ) { }
 
   ngOnInit(): void {
     this.initForm(this.eparchyItem);
   }
 
   onUpdateEparchy(): void {
-    const formData: FormData = this.adminService.getFormData(this.eparchyForm);
-    this.adminService.updateArticle(formData as unknown as ArticleInterface);
+    const formData: FormData = this.articleService.getFormData(this.eparchyForm);
+    this.articleService.updateArticle(formData as unknown as ArticleInterface);
   }
 
   onDeleteEparchy(id: number): void {
-    this.adminService.deleteArticle(id);
+    this.articleService.deleteArticle(id);
   }
 
   processFile(imageInput: any): void {

@@ -1,4 +1,9 @@
 <div class="video">
   <div class="center">{{ video.name }}</div>
-  <button class="delete button">delete video</button>
+  <div class="center">{{ video.videoURL }}</div>
+
+  <button
+    (click)="deleteVideo(video.id)"
+    class="delete button"
+  >delete video</button>
 </div>

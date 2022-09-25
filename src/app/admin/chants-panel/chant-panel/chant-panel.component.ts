@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AdminService } from '../../admin.service';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ChantInterface } from '../../interfaces/chant.interface';
 
 @Component({
@@ -9,14 +8,13 @@ import { ChantInterface } from '../../interfaces/chant.interface';
 })
 export class ChantPanelComponent implements OnInit {
   @Input() chant: ChantInterface;
-
-  constructor(private adminService: AdminService) { }
+  @Output() deleteChantClicked = new EventEmitter<number>();
 
   ngOnInit(): void {
   }
 
   onDeleteChant(id: number) {
-    this.adminService.deleteChant(id);
+    this.deleteChantClicked.emit(id);
   }
 
 }
