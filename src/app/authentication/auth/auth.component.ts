@@ -44,8 +44,8 @@ export class AuthComponent implements OnInit {
 
   initForm(): void {
     this.adminForm = new FormGroup({
-      "username": new FormControl(null, [Validators.required]),
-      "password": new FormControl(null, [Validators.required])
+      username: new FormControl(null, [Validators.required]),
+      password: new FormControl(null, [Validators.required])
     });
   }
 
