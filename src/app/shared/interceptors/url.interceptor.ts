@@ -12,21 +12,13 @@ export class UrlInterceptor implements HttpInterceptor {
   constructor() {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    // return next.handle(request.clone({
-    //   url: BASE_URL + request.url
-    // }));
-
     if (!request.url.includes('assets/i18n')) {
       request = request.clone({ url: BASE_URL + request.url });
-      console.log('UrlInterceptor--->>>');
     }
 
     return next.handle(request).pipe(
-        map((event: HttpEvent<any>) => {
-            // if (event instanceof HttpResponse) {
-            //     console.log('UrlInterceptor--->>>', event);
-            // }
-            return event;
-        }));
+      map((event: HttpEvent<any>) => {
+        return event;
+      }));
   }
 }

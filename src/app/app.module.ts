@@ -9,7 +9,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
 import { LoaderComponent } from './shared/components/loader/loader.component';
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
-import { LanguageInterceptor } from './shared/interceptors/language.interceptor';
 import { UrlInterceptor } from './shared/interceptors/url.interceptor';
 import { SharedModule } from './shared/shared.module';
 
@@ -37,12 +36,7 @@ import { SharedModule } from './shared/shared.module';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: LanguageInterceptor,
-      multi: true
-    },
+    }
   ],
   bootstrap: [AppComponent]
 })
