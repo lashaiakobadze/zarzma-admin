@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { LoaderService } from 'src/app/shared/components/loader/loader.service';
 import { VideoData } from './models/video.interface';
 import { Video } from './models/video.model';
@@ -17,33 +17,46 @@ export class VideoService {
     private loaderService: LoaderService,
   ) { }
 
-  getVideosItems(): void {
-    this.http
+  getVideosItems(): Observable<VideoData[]> {
+    return this.http
       .get<VideoData[]>(`Videos/VideoData`)
-        .pipe(this.loaderService.useLoader)
-        .subscribe(videoData => {
-          this.videoItems = videoData;
-          this.videoItemsUpdated.next([...this.videoItems]);
-        })
+        .pipe(
+          tap((videoData: VideoData[]) => {
+            this.loaderService.useLoader;
+            this.videoItems = videoData;
+            this.videoItemsUpdated.next([...this.videoItems]);
+          })
+        );
   }
 
-  getVideoItemsListener() {
+  getVideoItemsListener(): Observable<VideoData[]> {
     return this.videoItemsUpdated.asObservable();
   }
 
-  // ToDo:
+  // ToDo: აქაც მინდა რესფონსში ობიექტის გამოგზავნა;
   addVideo(video: Video): Observable<Video> {
-    console.log(video);
     return this.http.post<Video>('Videos/AddVideo', video)
-      .pipe(this.loaderService.useLoader);
+      .pipe(
+        tap(() => {
+          this.loaderService.useLoader;
+          const videoData: Video = video as unknown as Video;
+
+          this.videoItems = [...this.videoItems, videoData];
+          this.videoItemsUpdated.next([...this.videoItems]);
+        })
+      );
   }
 
-  deleteVideo(id: number) {
-    this.http.get(`Videos/DeleteVideo?ID=${id}`)
-      .pipe(this.loaderService.useLoader).subscribe(() => {
-        const videoItems = this.videoItems.filter(item => item.id !== id);
-        this.videoItems = videoItems;
-        this.videoItemsUpdated.next([...this.videoItems]);
-      })
+  deleteVideo(id: number): Observable<any> {
+    return this.http.get(`Videos/DeleteVideo?ID=${id}`)
+      .pipe(
+        tap(() => {
+          this.loaderService.useLoader;
+
+          const videoItems = this.videoItems.filter(item => item.id !== id);
+          this.videoItems = videoItems;
+          this.videoItemsUpdated.next([...this.videoItems]);
+        })
+      );
   }
 }

@@ -20,7 +20,7 @@ export class VideoComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.videoService.getVideosItems();
+    this.videoService.getVideosItems().subscribe();
 
     this.videoService.getVideoItemsListener()
       .subscribe(videoItems => {
@@ -40,13 +40,12 @@ export class VideoComponent implements OnInit {
       () => {
         console.log('Article add successful!');
         this.videoForm.reset();
-      },
-      err => console.log('HTTP Error', err.error),
+      }
     );
   }
 
-  onDeleteVideo(id: number) {
-    this.videoService.deleteVideo(id);
+  onDeleteVideo(id: number): void {
+    this.videoService.deleteVideo(id).subscribe();
   }
 
   initForm(): void {
