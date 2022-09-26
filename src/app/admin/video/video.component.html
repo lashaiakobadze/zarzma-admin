@@ -12,6 +12,11 @@
       placeholder="name"
       formControlName="name"
     >
+    <p class="required" *ngIf="get('name').invalid && get('name').touched">
+      <ng-container *ngFor="let errorMessage of errors('name')">
+        <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
+      </ng-container>
+    </p>
   </div>
 
   <div class="form-control">
@@ -23,6 +28,11 @@
       placeholder="videoURL"
       formControlName="videoURL"
     >
+    <p class="required" *ngIf="get('videoURL').invalid && get('videoURL').touched">
+      <ng-container *ngFor="let errorMessage of errors('videoURL')">
+        <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
+      </ng-container>
+    </p>
   </div>
 
   <button

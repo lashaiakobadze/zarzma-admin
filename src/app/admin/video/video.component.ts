@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { VideoData } from '../interfaces/video.interface';
 import { Video } from '../models/video.model';
 import { VideoForm } from '../interfaces/form-Interfaces/videoForm.interface';
 import { VideoService } from './video.service';
+import { AppValidators } from 'src/app/shared/validators/app-validators';
 
 @UntilDestroy()
 @Component({
@@ -36,6 +37,10 @@ export class VideoComponent implements OnInit {
   }
 
   onAddVideo(): void {
+    if (!this.videoForm.valid) {
+      return;
+    }
+
     const video = new Video(this.videoForm.value.name, this.videoForm.value.videoURL);
     this.videoService.addVideo(video)
     .pipe(untilDestroyed(this))
@@ -51,10 +56,18 @@ export class VideoComponent implements OnInit {
     this.videoService.deleteVideo(id).pipe(untilDestroyed(this)).subscribe();
   }
 
+  errors(controlName: string | (string | number)[]): any {
+    return Object.values(this.get(controlName).errors);
+  }
+
+  get(controlName: string | (string | number)[]): AbstractControl {
+    return this.videoForm.get(controlName);
+  }
+
   initForm(): void {
     this.videoForm = new FormGroup<VideoForm>({
-      name: new FormControl(''),
-      videoURL: new FormControl(''),
+      name: new FormControl(null, AppValidators.required),
+      videoURL: new FormControl(null, AppValidators.required),
     });
   }
 

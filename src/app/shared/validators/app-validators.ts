@@ -1,21 +1,21 @@
 import { Validators as NGValidators, AbstractControl } from '@angular/forms';
 
-export class Validators extends NGValidators {
-  static override minLength(length): any {
-    return (control: any) =>
+export class AppValidators extends NGValidators {
+  static override minLength(length: number): any {
+    return (control: AbstractControl) =>
       super.minLength(length)(control)
         ? { minLength: 'ველის სიგრძე არ შეიძლება იყოს ' + length + '-ზე ნაკლები' }
         : undefined;
   }
 
-  static override maxLength(length): any {
-    return (control) =>
+  static override maxLength(length: number): any {
+    return (control: AbstractControl) =>
       super.maxLength(length)(control)
         ? { maxLength: 'ველის სიგრძე არ შეიძლება იყოს ' + length + '-ზე მეტი' }
         : undefined;
   }
 
-  static override required(control): any {
+  static override required(control: AbstractControl<any, any>): any {
     return super.required(control)
       ? { required: 'ველი აუცილებელია' }
       : undefined;

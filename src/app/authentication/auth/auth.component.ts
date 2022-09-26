@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/authentication/auth.service';
+import { AppValidators } from 'src/app/shared/validators/app-validators';
+import { AuthForm } from '../auth-form.interface';
 import { AuthData } from '../auth.model';
 
 @Component({
@@ -10,7 +12,7 @@ import { AuthData } from '../auth.model';
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit {
-  adminForm: FormGroup;
+  adminForm: FormGroup<AuthForm>;
   isLoading: boolean;
 
   constructor(
@@ -29,8 +31,6 @@ export class AuthComponent implements OnInit {
       return;
     }
 
-    console.log(auth);
-
     this.authService.login(auth.username, auth.password);
   }
 
@@ -43,9 +43,9 @@ export class AuthComponent implements OnInit {
   }
 
   initForm(): void {
-    this.adminForm = new FormGroup({
-      username: new FormControl(null, [Validators.required]),
-      password: new FormControl(null, [Validators.required])
+    this.adminForm = new FormGroup<AuthForm>({
+      username: new FormControl(null, [AppValidators.required, AppValidators.minLength(5)]),
+      password: new FormControl(null, [AppValidators.required, AppValidators.minLength(5)])
     });
   }
 

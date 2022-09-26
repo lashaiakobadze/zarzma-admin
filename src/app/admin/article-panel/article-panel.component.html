@@ -11,6 +11,11 @@
         <option [value]="DocType">{{ DocType }}</option>
       </ng-container>
     </select>
+    <p class="required" *ngIf="get('DocType').invalid && get('DocType').touched">
+      <ng-container *ngFor="let errorMessage of errors('DocType')">
+        <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
+      </ng-container>
+    </p>
   </div>
 
   <div class="form-control">
@@ -22,6 +27,11 @@
       placeholder="Article TitleGeo"
       formControlName="TitleGeo"
     >
+    <p class="required" *ngIf="get('TitleGeo').invalid && get('TitleGeo').touched">
+      <ng-container *ngFor="let errorMessage of errors('TitleGeo')">
+        <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
+      </ng-container>
+    </p>
   </div>
 
   <div class="form-control">
@@ -33,6 +43,11 @@
       placeholder="TextGeo content"
       formControlName="TextGeo"
     ></textarea>
+    <p class="required" *ngIf="get('TextGeo').invalid && get('TextGeo').touched">
+      <ng-container *ngFor="let errorMessage of errors('TextGeo')">
+        <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
+      </ng-container>
+    </p>
   </div>
 
 
@@ -87,12 +102,22 @@
       #imageInput
       type="file"
       class="input"
+      formControlName="files"
       name="files"
       placeholder="Publication image"
-      (change)="processFile(imageInput)">
+      (change)="processFile(imageInput)"
+    >
+    <p class="required" *ngIf="get('files').invalid && get('files').touched">
+      <ng-container *ngFor="let errorMessage of errors('files')">
+        <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
+      </ng-container>
+    </p>
   </div>
 
-  <button type="submit" class="button update">Add Article</button>
+  <button
+    type="submit"
+    class="button update"
+  >Add Article</button>
 </form>
 
 <div *ngIf="formMode; else plus">

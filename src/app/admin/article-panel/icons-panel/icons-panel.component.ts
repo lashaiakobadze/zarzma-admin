@@ -1,10 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ImageSnippet } from 'src/app/shared/models/image-snippet.model';
+import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { environment } from 'src/environments/environment';
 import { DocType } from '../../enums/docType';
 import { ArticleInterface } from '../../interfaces/article.interface';
+import { ArticleForm } from '../../interfaces/form-Interfaces/articleForm.interface';
 import { ArticleService } from '../article.service';
 
 @UntilDestroy()
@@ -17,7 +19,7 @@ export class IconsPanelComponent implements OnInit {
   BASE_URL = environment.dataUrl;
 
   @Input() iconsItem: ArticleInterface;
-  iconsForm: FormGroup;
+  iconsForm: FormGroup<ArticleForm>;
   selectedFile: ImageSnippet;
 
   constructor(
@@ -29,6 +31,10 @@ export class IconsPanelComponent implements OnInit {
   }
 
   onUpdateIcons(): void {
+    if (!this.iconsForm.valid) {
+      return;
+    }
+
     const formData: FormData = this.articleService.getFormData(this.iconsForm);
     this.articleService.updateArticle(formData as unknown as ArticleInterface).pipe(untilDestroyed(this)).subscribe();
   }
@@ -49,17 +55,25 @@ export class IconsPanelComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
+  errors(controlName: string | (string | number)[]): any {
+    return Object.values(this.get(controlName).errors);
+  }
+
+  get(controlName: string | (string | number)[]): AbstractControl {
+    return this.iconsForm.get(controlName);
+  }
+
   initForm(iconsItem: ArticleInterface): void {
-    this.iconsForm = new FormGroup({
-      id: new FormControl(iconsItem?.id),
-      docType: new FormControl(iconsItem?.docType),
-      TitleGeo: new FormControl(iconsItem?.title),
-      TextGeo: new FormControl(iconsItem?.text),
+    this.iconsForm = new FormGroup<ArticleForm>({
+      id: new FormControl(iconsItem?.id, AppValidators.required),
+      docType: new FormControl(+iconsItem?.docType, AppValidators.required),
+      TitleGeo: new FormControl(iconsItem?.title, AppValidators.required),
+      TextGeo: new FormControl(iconsItem?.text, AppValidators.required),
       TitleEng: new FormControl(iconsItem?.titleEng),
       TextEng: new FormControl(iconsItem?.textEng),
       TitleRus: new FormControl(iconsItem?.titleRus),
       TextRus: new FormControl(iconsItem?.textRus),
-      files: new FormControl(iconsItem?.photoUrl),
+      files: new FormControl(iconsItem?.photoUrl, AppValidators.required),
     });
   }
 

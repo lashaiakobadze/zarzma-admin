@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { ChantInterface } from '../interfaces/chant.interface';
+import { ChantForm } from '../interfaces/form-Interfaces/chantForm.interface';
 import { Chant } from '../models/chant.model';
 import { ChantService } from './chants.service';
 
@@ -14,7 +16,7 @@ import { ChantService } from './chants.service';
 export class ChantsPanelComponent implements OnInit {
   formMode = false;
   chantsItems: ChantInterface[] = [];
-  chantForm: FormGroup;
+  chantForm: FormGroup<ChantForm>;
 
   constructor(
     public chantService: ChantService,
@@ -43,6 +45,10 @@ export class ChantsPanelComponent implements OnInit {
   }
 
   onAddChant(): void {
+    if (!this.chantForm.valid) {
+      return;
+    }
+
     const formData = new FormData();
     formData.append("ChantName", this.chantForm.get('ChantName').value);
     formData.append("AudioUrl", this.chantForm.get('AudioUrl').value);
@@ -61,10 +67,18 @@ export class ChantsPanelComponent implements OnInit {
     this.chantService.deleteChant(id).pipe(untilDestroyed(this)).subscribe();
   }
 
+  errors(controlName: string | (string | number)[]): any {
+    return Object.values(this.get(controlName).errors);
+  }
+
+  get(controlName: string | (string | number)[]): AbstractControl {
+    return this.chantForm.get(controlName);
+  }
+
   initForm(): void {
-    this.chantForm = new FormGroup({
-      ChantName: new FormControl(''),
-      AudioUrl: new FormControl(''),
+    this.chantForm = new FormGroup<ChantForm>({
+      ChantName: new FormControl(null, AppValidators.required),
+      AudioUrl: new FormControl(null, AppValidators.required),
     });
   }
 }

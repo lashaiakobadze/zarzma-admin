@@ -1,10 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ImageSnippet } from 'src/app/shared/models/image-snippet.model';
+import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { environment } from 'src/environments/environment';
 import { DocType } from '../../enums/docType';
 import { ArticleInterface } from '../../interfaces/article.interface';
+import { ArticleForm } from '../../interfaces/form-Interfaces/articleForm.interface';
 import { ArticleService } from '../article.service';
 
 @UntilDestroy()
@@ -17,7 +19,7 @@ export class PublicationsPanelComponent implements OnInit {
   // BASE_URL = environment.dataUrl;
 
   @Input() publicationItem: ArticleInterface;
-  publicationForm: FormGroup;
+  publicationForm: FormGroup<ArticleForm>;
   selectedFile: ImageSnippet;
 
   constructor(
@@ -29,6 +31,10 @@ export class PublicationsPanelComponent implements OnInit {
   }
 
   onUpdatePublication(): void {
+    if (!this.publicationForm.valid) {
+      return;
+    }
+
     const formData: FormData = this.articleService.getFormData(this.publicationForm);
     this.articleService.updateArticle(formData as unknown as ArticleInterface).pipe(untilDestroyed(this)).subscribe();
   }
@@ -49,17 +55,25 @@ export class PublicationsPanelComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
+  errors(controlName: string | (string | number)[]): any {
+    return Object.values(this.get(controlName).errors);
+  }
+
+  get(controlName: string | (string | number)[]): AbstractControl {
+    return this.publicationForm.get(controlName);
+  }
+
   initForm(publicationItem: ArticleInterface): void {
-    this.publicationForm = new FormGroup({
-      id: new FormControl(publicationItem?.id),
-      docType: new FormControl(publicationItem?.docType),
-      TitleGeo: new FormControl(publicationItem?.title),
-      TextGeo: new FormControl(publicationItem?.text),
+    this.publicationForm = new FormGroup<ArticleForm>({
+      id: new FormControl(publicationItem?.id, AppValidators.required),
+      docType: new FormControl(+publicationItem?.docType, AppValidators.required),
+      TitleGeo: new FormControl(publicationItem?.title, AppValidators.required),
+      TextGeo: new FormControl(publicationItem?.text, AppValidators.required),
       TitleEng: new FormControl(publicationItem?.titleEng),
       TextEng: new FormControl(publicationItem?.textEng),
       TitleRus: new FormControl(publicationItem?.titleRus),
       TextRus: new FormControl(publicationItem?.textRus),
-      files: new FormControl(publicationItem?.photoUrl),
+      files: new FormControl(publicationItem?.photoUrl, AppValidators.required),
     });
   }
 
