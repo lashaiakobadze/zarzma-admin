@@ -1,19 +1,19 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
-
 
 import { ImageSnippet } from 'src/app/shared/models/image-snippet.model';
 import { Article } from '../models/article';
 import { ArticleInterface } from '../interfaces/article.interface';
 import { ArticleService } from './article.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-article-panel',
   templateUrl: './article-panel.component.html',
   styleUrls: ['./article-panel.component.scss']
 })
-export class ArticlePanelComponent implements OnInit, OnDestroy {
+export class ArticlePanelComponent implements OnInit {
   DocTypes = ['ეპარქია', 'გამოცემები', 'ხატები'];
   articleForm: FormGroup;
   formMode = false;
@@ -23,10 +23,6 @@ export class ArticlePanelComponent implements OnInit, OnDestroy {
   publicationsItems: ArticleInterface[] = [];
   iconsItems: ArticleInterface[] = [];
 
-  eparchySub: Subscription;
-  publicationsSub: Subscription;
-  iconsSub: Subscription;
-
   constructor(
     public articleService: ArticleService
   ) { }
@@ -34,20 +30,23 @@ export class ArticlePanelComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initForm();
 
-    this.articleService.getEparchyItems().subscribe();
-    this.eparchySub = this.articleService.getEparchyItemsListener()
+    this.articleService.getEparchyItems().pipe(untilDestroyed(this)).subscribe();
+    this.articleService.getEparchyItemsListener()
+      .pipe(untilDestroyed(this))
       .subscribe(eparchyItems => {
         this.eparchyItems = eparchyItems;
       })
 
-    this.articleService.getIconsItems().subscribe();
-    this.iconsSub = this.articleService.getIconsItemsListener()
+    this.articleService.getIconsItems().pipe(untilDestroyed(this)).subscribe();
+    this.articleService.getIconsItemsListener()
+      .pipe(untilDestroyed(this))
       .subscribe(iconsItems => {
         this.iconsItems = iconsItems;
       })
 
-    this.articleService.getPublicationsItems().subscribe();
-    this.publicationsSub = this.articleService.getPublicationsItemsListener()
+    this.articleService.getPublicationsItems().pipe(untilDestroyed(this)).subscribe();
+    this.articleService.getPublicationsItemsListener()
+      .pipe(untilDestroyed(this))
       .subscribe(publicationsItems => {
         this.publicationsItems = publicationsItems;
       })
@@ -99,11 +98,4 @@ export class ArticlePanelComponent implements OnInit, OnDestroy {
       files: new FormControl('')
     });
   }
-
-  ngOnDestroy(): void {
-    this.eparchySub?.unsubscribe();
-    this.iconsSub?.unsubscribe();
-    this.publicationsSub?.unsubscribe();
-  }
-
 }

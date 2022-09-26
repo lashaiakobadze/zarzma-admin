@@ -1,11 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ImageSnippet } from 'src/app/shared/models/image-snippet.model';
 import { environment } from 'src/environments/environment';
 import { DocType } from '../../enums/docType';
 import { ArticleInterface } from '../../interfaces/article.interface';
 import { ArticleService } from '../article.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-icons-panel',
   templateUrl: './icons-panel.component.html',
@@ -14,7 +16,7 @@ import { ArticleService } from '../article.service';
 export class IconsPanelComponent implements OnInit {
   BASE_URL = environment.dataUrl;
 
-  @Input() iconsItem;
+  @Input() iconsItem: ArticleInterface;
   iconsForm: FormGroup;
   selectedFile: ImageSnippet;
 
@@ -28,11 +30,11 @@ export class IconsPanelComponent implements OnInit {
 
   onUpdateIcons(): void {
     const formData: FormData = this.articleService.getFormData(this.iconsForm);
-    this.articleService.updateArticle(formData as unknown as ArticleInterface).subscribe();
+    this.articleService.updateArticle(formData as unknown as ArticleInterface).pipe(untilDestroyed(this)).subscribe();
   }
 
   onDeleteIcons(id: number): void {
-    this.articleService.deleteArticle(id, DocType.icons).subscribe();
+    this.articleService.deleteArticle(id, DocType.icons).pipe(untilDestroyed(this)).subscribe();
   }
 
   processFile(imageInput: any): void {

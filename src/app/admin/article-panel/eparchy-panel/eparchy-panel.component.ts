@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ImageSnippet } from 'src/app/shared/models/image-snippet.model';
 import { environment } from 'src/environments/environment';
 import { DocType } from '../../enums/docType';
 import { ArticleInterface } from '../../interfaces/article.interface';
 import { ArticleService } from '../article.service';
 
-
+@UntilDestroy()
 @Component({
   selector: 'app-eparchy-panel',
   templateUrl: './eparchy-panel.component.html',
@@ -15,7 +16,7 @@ import { ArticleService } from '../article.service';
 export class EparchyPanelComponent implements OnInit {
   BASE_URL = environment.dataUrl;
 
-  @Input() eparchyItem;
+  @Input() eparchyItem: ArticleInterface;
   eparchyForm: FormGroup;
   selectedFile: ImageSnippet;
 
@@ -29,11 +30,11 @@ export class EparchyPanelComponent implements OnInit {
 
   onUpdateEparchy(): void {
     const formData: FormData = this.articleService.getFormData(this.eparchyForm);
-    this.articleService.updateArticle(formData as unknown as ArticleInterface).subscribe();
+    this.articleService.updateArticle(formData as unknown as ArticleInterface).pipe(untilDestroyed(this)).subscribe();
   }
 
   onDeleteEparchy(id: number): void {
-    this.articleService.deleteArticle(id, DocType.eparchy).subscribe();
+    this.articleService.deleteArticle(id, DocType.eparchy).pipe(untilDestroyed(this)).subscribe();
   }
 
   processFile(imageInput: any): void {

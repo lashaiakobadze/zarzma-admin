@@ -36,7 +36,7 @@ export class AuthService {
       password: password
     };
 
-    this.http.post('http://localhost:3000/user/signup', authData)
+    this.http.post<AuthData>('signup', authData)
       .subscribe(response => {
         console.log(response);
       })

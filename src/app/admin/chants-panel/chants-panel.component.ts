@@ -1,19 +1,19 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChantInterface } from '../interfaces/chant.interface';
 import { Chant } from '../models/chant.model';
 import { ChantService } from './chants.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-chants-panel',
   templateUrl: './chants-panel.component.html',
   styleUrls: ['./chants-panel.component.scss']
 })
-export class ChantsPanelComponent implements OnInit, OnDestroy {
+export class ChantsPanelComponent implements OnInit {
   formMode = false;
   chantsItems: ChantInterface[] = [];
-  chantsSub: Subscription;
   chantForm: FormGroup;
 
   constructor(
@@ -22,8 +22,10 @@ export class ChantsPanelComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initForm();
-    this.chantService.getChants().subscribe();
-    this.chantsSub = this.chantService.getChantsItemsListener()
+
+    this.chantService.getChants().pipe(untilDestroyed(this)).subscribe();
+    this.chantService.getChantsItemsListener()
+      .pipe(untilDestroyed(this))
       .subscribe(chantsData => {
         this.chantsItems = chantsData;
         console.log(chantsData);
@@ -46,6 +48,7 @@ export class ChantsPanelComponent implements OnInit, OnDestroy {
     formData.append("AudioUrl", this.chantForm.get('AudioUrl').value);
 
     this.chantService.storeChant(formData as unknown as Chant)
+    .pipe(untilDestroyed(this))
     .subscribe(
       () => {
         console.log('Article add successful!');
@@ -55,7 +58,7 @@ export class ChantsPanelComponent implements OnInit, OnDestroy {
   }
 
   deleteChant(id: number): void {
-    this.chantService.deleteChant(id).subscribe();
+    this.chantService.deleteChant(id).pipe(untilDestroyed(this)).subscribe();
   }
 
   initForm(): void {
@@ -63,9 +66,5 @@ export class ChantsPanelComponent implements OnInit, OnDestroy {
       ChantName: new FormControl(''),
       AudioUrl: new FormControl(''),
     });
-  }
-
-  ngOnDestroy(): void {
-    this.chantsSub?.unsubscribe();
   }
 }
