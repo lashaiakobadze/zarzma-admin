@@ -12,7 +12,6 @@ import { VideoService } from './video.service';
 })
 export class VideoComponent implements OnInit {
   videoItems: VideoData[] = [];
-  isAdminMode = true;
   formMode = false;
   videoForm: FormGroup<VideoForm>;
 

@@ -18,7 +18,6 @@ export class ArticlePanelComponent implements OnInit, OnDestroy {
   articleForm: FormGroup;
   formMode = false;
   selectedFile: ImageSnippet;
-  isAdminMode = true;
 
   eparchyItems: ArticleInterface[] = [];
   publicationsItems: ArticleInterface[] = [];

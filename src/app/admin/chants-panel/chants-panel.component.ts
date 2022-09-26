@@ -12,7 +12,6 @@ import { ChantService } from './chants.service';
 })
 export class ChantsPanelComponent implements OnInit, OnDestroy {
   formMode = false;
-  isAdminMode = true;
   chantsItems: ChantInterface[] = [];
   chantsSub: Subscription;
   chantForm: FormGroup;

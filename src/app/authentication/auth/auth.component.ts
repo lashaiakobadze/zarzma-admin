@@ -11,7 +11,6 @@ import { AuthData } from '../auth.model';
 })
 export class AuthComponent implements OnInit {
   adminForm: FormGroup;
-  isAdminMode: boolean;
   isLoading: boolean;
 
   constructor(
@@ -21,8 +20,6 @@ export class AuthComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-
-    this.isAdminMode = this.authService.getIsAuth();
   }
 
   onLogin(): void {
@@ -35,7 +32,6 @@ export class AuthComponent implements OnInit {
     console.log(auth);
 
     this.authService.login(auth.username, auth.password);
-    this.isAdminMode = true;
   }
 
   errors(controlName: string | (string | number)[]): any {
