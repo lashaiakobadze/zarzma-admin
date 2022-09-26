@@ -28,7 +28,6 @@ export class VideoComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(videoItems => {
         this.videoItems = videoItems;
-        console.log(this.videoItems);
       })
   }
 

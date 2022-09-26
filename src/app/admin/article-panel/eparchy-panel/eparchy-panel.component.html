@@ -94,7 +94,6 @@
       type="file"
       class="input"
       name="files"
-      formControlName="files"
       (change)="processFile(imageInput)"
     >
     <p class="required" *ngIf="get('files').invalid && get('files').touched">

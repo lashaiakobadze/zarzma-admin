@@ -1,7 +1,7 @@
 <form
+  *ngIf="formMode"
   class="form"
   [formGroup]="articleForm"
-  *ngIf="formMode"
   (ngSubmit)="onAddArticle()"
 >
   <div class="form-control">
@@ -102,8 +102,8 @@
       #imageInput
       type="file"
       class="input"
-      formControlName="files"
       name="files"
+      formControlName="files"
       placeholder="Publication image"
       (change)="processFile(imageInput)"
     >
@@ -144,6 +144,7 @@
       [eparchyItem]="eparchyItem"
     ></app-eparchy-panel>
   </div>
+
   <div class="panel_item">
     <h2>Publications Items</h2>
       <app-publications-panel
@@ -151,6 +152,7 @@
       [publicationItem]="publicationsItem"
     ></app-publications-panel>
   </div>
+
   <div class="panel_item">
     <h2>Icons Items</h2>
     <app-icons-panel

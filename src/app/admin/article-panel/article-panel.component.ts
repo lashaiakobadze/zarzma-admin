@@ -30,8 +30,6 @@ export class ArticlePanelComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.initForm();
-
     this.articleService.getEparchyItems().pipe(untilDestroyed(this)).subscribe();
     this.articleService.getEparchyItemsListener()
       .pipe(untilDestroyed(this))
@@ -58,6 +56,7 @@ export class ArticlePanelComponent implements OnInit {
 
   onGetArticleForm(): void {
     this.formMode = true;
+    this.initForm();
   }
 
   processFile(imageInput: any): void {
