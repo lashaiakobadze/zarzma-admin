@@ -30,7 +30,6 @@ export class ChantsPanelComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(chantsData => {
         this.chantsItems = chantsData;
-        console.log(chantsData);
       })
   }
 

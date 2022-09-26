@@ -50,8 +50,6 @@ export class ArticlePanelComponent implements OnInit {
       .subscribe(publicationsItems => {
         this.publicationsItems = publicationsItems;
       })
-
-      console.log(this.articleForm);
   }
 
   onGetArticleForm(): void {

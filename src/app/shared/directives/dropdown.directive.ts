@@ -18,13 +18,11 @@ export class DropdownDirective {
   onMouseOver(): void {
     this.backgroundColor = '#fff';
     this.isOpen = true;
-    console.log(this.isOpen);
   }
 
   @HostListener('mouseout')
   onMouseOut(): void {
     this.backgroundColor =  '#000';
     this.isOpen = false;
-    console.log(this.isOpen);
   }
 }
