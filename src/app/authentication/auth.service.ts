@@ -50,11 +50,9 @@ export class AuthService {
 
     this.http.post<{token: string, expiresIn: number}>('Login', authData)
       .subscribe(response => {
-        console.log(response);
         const token = response.token;
         this.token = token;
 
-        console.log(response);
         if (token) {
           const expiresInDuration = response.expiresIn;
           this.setAuthTimer(expiresInDuration);
@@ -71,7 +69,6 @@ export class AuthService {
 
   autoAuthUser(): void {
     const authInformation = this.getAuthData();
-    console.log(authInformation);
     if (!authInformation) {
       return;
     }
@@ -103,7 +100,6 @@ export class AuthService {
   }
 
   private saveAuthData(token: string, expirationDate: Date): void {
-    console.log(token);
     localStorage.setItem('token', JSON.stringify(token));
     localStorage.setItem('expiration', expirationDate.toISOString());
   }
