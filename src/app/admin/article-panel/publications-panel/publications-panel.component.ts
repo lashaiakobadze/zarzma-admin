@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ImageSnippet } from 'src/app/shared/models/image-snippet.model';
 import { environment } from 'src/environments/environment';
+import { DocType } from '../../enums/docType';
 import { ArticleInterface } from '../../interfaces/article.interface';
 import { ArticleService } from '../article.service';
 
@@ -27,11 +28,11 @@ export class PublicationsPanelComponent implements OnInit {
 
   onUpdatePublication(): void {
     const formData: FormData = this.articleService.getFormData(this.publicationForm);
-    this.articleService.updateArticle(formData as unknown as ArticleInterface);
+    this.articleService.updateArticle(formData as unknown as ArticleInterface).subscribe();
   }
 
   onDeletePublication(id: number): void {
-    this.articleService.deleteArticle(id);
+    this.articleService.deleteArticle(id, DocType.publication).subscribe();
   }
 
   processFile(imageInput: any): void {

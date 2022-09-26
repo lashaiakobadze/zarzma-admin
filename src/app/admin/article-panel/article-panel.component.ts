@@ -35,19 +35,19 @@ export class ArticlePanelComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initForm();
 
-    this.articleService.getEparchyItems();
+    this.articleService.getEparchyItems().subscribe();
     this.eparchySub = this.articleService.getEparchyItemsListener()
       .subscribe(eparchyItems => {
         this.eparchyItems = eparchyItems;
       })
 
-    this.articleService.getIconsItems();
+    this.articleService.getIconsItems().subscribe();
     this.iconsSub = this.articleService.getIconsItemsListener()
       .subscribe(iconsItems => {
         this.iconsItems = iconsItems;
       })
 
-    this.articleService.getPublicationsItems();
+    this.articleService.getPublicationsItems().subscribe();
     this.publicationsSub = this.articleService.getPublicationsItemsListener()
       .subscribe(publicationsItems => {
         this.publicationsItems = publicationsItems;
@@ -77,10 +77,11 @@ export class ArticlePanelComponent implements OnInit, OnDestroy {
     const formData = new FormData(myForm);
 
     this.articleService.storeArticle(formData as unknown as Article)
-      .subscribe(() => {
-          console.log('Article add successful!');
+      .subscribe((articleData) => {
+        // ToDo: არტიკლის რესფონსში გამოშვება მინდა დასააფდეითებლად;
+        console.log(articleData);
           this.articleForm.reset();
-        }, err => console.log('HTTP Error', err.error)
+        }
       );
   }
 

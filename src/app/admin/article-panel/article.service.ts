@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, tap } from 'rxjs';
 import { LoaderService } from 'src/app/shared/components/loader/loader.service';
 import { DocType } from '../enums/docType';
 import { languages } from '../enums/language';
@@ -13,7 +13,6 @@ import { Article } from '../models/article';
   providedIn: 'root'
 })
 export class ArticleService {
-
   eparchyItems: ArticleInterface[] = [];
   private eparchyItemsUpdated = new Subject<ArticleInterface[]>();
 
@@ -29,48 +28,54 @@ export class ArticleService {
     public route: Router
   ) { }
 
-  getEparchyItems(): void {
-    this.http
+  getEparchyItems(): Observable<ArticleInterface[]> {
+    return this.http
       .get<ArticleInterface[]>(`articls/ArticleData?docType=${this.query.docType.eparchy}`)
-        .pipe(this.loaderService.useLoader)
-        .subscribe(eparchyData => {
-          this.eparchyItems = eparchyData;
-          this.eparchyItemsUpdated.next([...this.eparchyItems]);
-        })
+        .pipe(
+          tap((eparchyData) => {
+            this.loaderService.useLoader;
+            this.eparchyItems = eparchyData;
+            this.eparchyItemsUpdated.next([...this.eparchyItems]);
+          })
+        );
   }
 
-  getEparchyItemsListener() {
+  getEparchyItemsListener(): Observable<ArticleInterface[]> {
     return this.eparchyItemsUpdated.asObservable();
   }
 
 
-  getIconsItems(): void {
-    this.http
+  getIconsItems(): Observable<ArticleInterface[]> {
+    return this.http
       .get<ArticleInterface[]>(`articls/ArticleData?docType=${this.query.docType.icons}`)
-        .pipe(this.loaderService.useLoader)
-        .subscribe(iconsData => {
-          this.iconsItems = iconsData;
-          this.iconsItemsUpdated.next([...this.iconsItems]);
-        })
+        .pipe(
+          tap((iconsData) => {
+            this.loaderService.useLoader;
+            this.iconsItems = iconsData;
+            this.iconsItemsUpdated.next([...this.iconsItems]);
+          })
+        );
   }
 
 
-  getIconsItemsListener() {
+  getIconsItemsListener(): Observable<ArticleInterface[]> {
     return this.iconsItemsUpdated.asObservable();
   }
 
 
-  getPublicationsItems(): void {
-    this.http
+  getPublicationsItems(): Observable<ArticleInterface[]> {
+    return this.http
       .get<ArticleInterface[]>(`articls/ArticleData?docType=${this.query.docType.publication}`)
-        .pipe(this.loaderService.useLoader)
-        .subscribe(publicationData => {
-          this.publicationsItems = publicationData;
-          this.publicationsItemsUpdated.next([...this.publicationsItems]);
-        })
+        .pipe(
+          tap((publicationData) => {
+            this.loaderService.useLoader;
+            this.publicationsItems = publicationData;
+            this.publicationsItemsUpdated.next([...this.publicationsItems]);
+          })
+        );
   }
 
-  getPublicationsItemsListener() {
+  getPublicationsItemsListener(): Observable<ArticleInterface[]> {
     return this.publicationsItemsUpdated.asObservable();
   }
 
@@ -96,30 +101,104 @@ export class ArticleService {
 
   storeArticle(article: Article): Observable<Article> {
     return this.http.post<Article>('Articls/AddArticle', article)
-      .pipe(this.loaderService.useLoader);
-  }
+      .pipe(
+        tap(() => {
+          this.loaderService.useLoader;
+          const articleData: ArticleInterface = article as unknown as ArticleInterface;
 
-  updateArticle(article: ArticleInterface): void {
-    this.http.post<ArticleInterface>('Articls/UpdateArticle', article)
-      .pipe(this.loaderService.useLoader).subscribe(() => {
-          const updatedEparchyItems = [...this.eparchyItems];
-          const oldPostIndex = updatedEparchyItems.findIndex(p => p.id === article.id);
-          updatedEparchyItems[oldPostIndex] = article;
-          this.eparchyItems = updatedEparchyItems;
-          this.eparchyItemsUpdated.next([...this.eparchyItems]);
-        },
-        err => console.log(err)
+          switch (article.DocType) {
+            case DocType.eparchy: {
+              this.eparchyItems = [...this.eparchyItems, articleData];
+              this.eparchyItemsUpdated.next([...this.eparchyItems]);
+              break;
+            }
+            case DocType.publication: {
+              this.publicationsItems = [...this.eparchyItems, articleData];
+              this.publicationsItemsUpdated.next([...this.publicationsItems]);
+              break;
+            }
+            case DocType.icons: {
+              this.iconsItems = [...this.eparchyItems, articleData];
+              this.iconsItemsUpdated.next([...this.iconsItems]);
+              break;
+            }
+            default: {
+              break;
+            }
+          };
+        })
       );
   }
 
-  // ToDo: არ იშელბა icone-ბი
-  deleteArticle(articleID: number) {
-    this.http.get(`Articls/DeleteArticle?ID=${articleID}`)
-      .pipe(this.loaderService.useLoader).subscribe(() => {
-        const eparchyItems = this.eparchyItems.filter(item => item.id !== articleID);
-        this.eparchyItems = eparchyItems;
-        this.eparchyItemsUpdated.next([...this.eparchyItems]);
-      });
+  updateArticle(article: ArticleInterface): Observable<ArticleInterface> {
+    return this.http.post<ArticleInterface>('Articls/UpdateArticle', article)
+      .pipe(
+        tap(() => {
+          this.loaderService.useLoader;
+          switch (+article.docType) {
+            case DocType.eparchy: {
+              const updatedEparchyItems = [...this.eparchyItems];
+              const oldPostIndex = updatedEparchyItems.findIndex(item => item.id === article.id);
+              updatedEparchyItems[oldPostIndex] = article;
+              this.eparchyItems = updatedEparchyItems;
+              this.eparchyItemsUpdated.next([...this.eparchyItems]);
+              break;
+            }
+            case DocType.publication: {
+              const updatedPublicationItems = [...this.eparchyItems];
+              const oldPostIndex = updatedPublicationItems.findIndex(item => item.id === article.id);
+              updatedPublicationItems[oldPostIndex] = article;
+              this.publicationsItems = updatedPublicationItems;
+              this.publicationsItemsUpdated.next([...this.eparchyItems]);
+              break;
+            }
+            case DocType.icons: {
+              const updatedIconsItems = [...this.eparchyItems];
+              const oldPostIndex = updatedIconsItems.findIndex(item => item.id === article.id);
+              updatedIconsItems[oldPostIndex] = article;
+              this.iconsItems = updatedIconsItems;
+              this.iconsItemsUpdated.next([...this.eparchyItems]);
+              break;
+            }
+            default: {
+              break;
+            }
+          };
+        })
+      );
+  }
+
+  // ToDo: არ იშლeბა icone-ბი
+  deleteArticle(articleID: number, docType: DocType): Observable<any> {
+    return this.http.get(`Articls/DeleteArticle?ID=${articleID}`)
+      .pipe(
+        tap(() => {
+          this.loaderService.useLoader;
+          switch (docType) {
+            case DocType.eparchy: {
+              const eparchyItems = this.eparchyItems.filter(item => item.id !== articleID);
+              this.eparchyItems = eparchyItems;
+              this.eparchyItemsUpdated.next([...this.eparchyItems]);
+              break;
+            }
+            case DocType.publication: {
+              const publicationsItems = this.publicationsItems.filter(item => item.id !== articleID);
+              this.publicationsItems = publicationsItems;
+              this.publicationsItemsUpdated.next([...this.publicationsItems]);
+              break;
+            }
+            case DocType.icons: {
+              const iconsItems = this.iconsItems.filter(item => item.id !== articleID);
+              this.iconsItems = iconsItems;
+              this.iconsItemsUpdated.next([...this.iconsItems]);
+              break;
+            }
+            default: {
+              break;
+            }
+          };
+        })
+      )
   }
 
 }

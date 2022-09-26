@@ -107,7 +107,7 @@ $font-sizes: (
   @include flexPosition;
   flex-direction: column;
   border-bottom:  1px solid red;
-
+  padding: 5px;
 
   .ng-pristine.ng-invalid.ng-touched {
     border: 1px solid red;
