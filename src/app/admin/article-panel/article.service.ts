@@ -32,7 +32,7 @@ export class ArticleService {
     return this.http
       .get<ArticleInterface[]>(`articls/ArticleData?docType=${this.query.docType.eparchy}`)
         .pipe(
-          tap((eparchyData) => {
+          tap((eparchyData: ArticleInterface[]) => {
             this.loaderService.useLoader;
             this.eparchyItems = eparchyData;
             this.eparchyItemsUpdated.next([...this.eparchyItems]);
@@ -49,7 +49,7 @@ export class ArticleService {
     return this.http
       .get<ArticleInterface[]>(`articls/ArticleData?docType=${this.query.docType.icons}`)
         .pipe(
-          tap((iconsData) => {
+          tap((iconsData: ArticleInterface[]) => {
             this.loaderService.useLoader;
             this.iconsItems = iconsData;
             this.iconsItemsUpdated.next([...this.iconsItems]);

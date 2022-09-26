@@ -23,7 +23,7 @@ export class ChantsPanelComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initForm();
-    this.chantService.getChants();
+    this.chantService.getChants().subscribe();
     this.chantsSub = this.chantService.getChantsItemsListener()
       .subscribe(chantsData => {
         this.chantsItems = chantsData;
@@ -51,13 +51,12 @@ export class ChantsPanelComponent implements OnInit, OnDestroy {
       () => {
         console.log('Article add successful!');
         this.chantForm.reset();
-      },
-      err => console.log('HTTP Error', err.error),
+      }
     );
   }
 
-  deleteChant(id: number) {
-    this.chantService.deleteChant(id);
+  deleteChant(id: number): void {
+    this.chantService.deleteChant(id).subscribe();
   }
 
   initForm(): void {
