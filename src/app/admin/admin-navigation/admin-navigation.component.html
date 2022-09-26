@@ -1,33 +1,37 @@
-<div class="form">
-  <button
-    (click)="onLogout()"
-    type="button"
-    class="button"
-  >Log Out</button>
+<div class="navigation">
+  <div class="panel">
+    <div
+      class="panel__item"
+      routerLink="articlePanel"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}"
+    >Articles</div>
+
+    <div
+      class="panel__item"
+      routerLink="chantsPanel"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}"
+    >Chants</div>
+
+    <div
+      class="panel__item"
+      routerLink="videoPanel"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}"
+    >Videos</div>
+  </div>
+
+  <div class="form form--logout">
+    <button
+      (click)="onLogout()"
+      type="button"
+      class="button"
+    >Log Out</button>
+  </div>
 </div>
 
-<div class="panel">
-  <div
-    class="panel__item"
-    routerLink="articlePanel"
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{exact: true}"
-  >Articles</div>
-
-  <div
-    class="panel__item"
-    routerLink="chantsPanel"
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{exact: true}"
-  >Chants</div>
-
-  <div
-    class="panel__item"
-    routerLink="videoPanel"
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{exact: true}"
-  >Videos</div>
+<div class="admin-content">
+  <router-outlet></router-outlet>
 </div>
-
-<router-outlet></router-outlet>
 

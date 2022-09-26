@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { VideoData } from './models/video.interface';
-import { Video } from './models/video.model';
-import { VideoForm } from './models/videoForm.interface';
+import { VideoData } from '../interfaces/video.interface';
+import { Video } from '../models/video.model';
+import { VideoForm } from '../interfaces/form-Interfaces/videoForm.interface';
 import { VideoService } from './video.service';
 
 @UntilDestroy()

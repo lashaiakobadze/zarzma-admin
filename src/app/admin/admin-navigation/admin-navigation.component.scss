@@ -1,13 +1,23 @@
 @import '../../../scss/styles.scss';
 
-.panel {
-  @include flexPosition(flex-start);
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   background-color: black;
   padding: 0 20px;
   font-size: 20px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  font-size: 20px;
+}
+
+.panel {
+  @include flexPosition(flex-start);
 
   &__item {
-    margin: 5px;
+    margin: 10px;
     border-bottom: 2px solid color(secondary);
     transition: all .5s;
 
@@ -17,4 +27,10 @@
   }
 }
 
+.form {
+  &--logout {
+    margin: 0;
+    margin-top: 5px;
+  }
+}
 

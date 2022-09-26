@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { VideoData } from '../models/video.interface';
+import { VideoData } from '../../interfaces/video.interface';
 
 @Component({
   selector: 'app-video-item',
