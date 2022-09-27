@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject, tap } from 'rxjs';
+import { LoaderService } from '../shared/components/loader/loader.service';
 import { AuthData } from './auth.model';
 
 @Injectable({
@@ -15,6 +16,7 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
+    private loaderService: LoaderService,
     private router: Router
   ) { }
 
@@ -50,6 +52,7 @@ export class AuthService {
 
     return this.http.post<{token: string, expiresIn: number}>('Login', authData)
       .pipe(
+        this.loaderService.useLoader,
         tap(response => {
           const token = response.token;
           this.token = token;

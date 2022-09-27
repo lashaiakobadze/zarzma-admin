@@ -22,8 +22,8 @@ export class ChantService {
   getChants(): Observable<ChantInterface[]> {
     return this.http.get<ChantInterface[]>(`chants/ChantData`)
       .pipe(
+        this.loaderService.useLoader,
         tap((chantsData: ChantInterface[]) => {
-          this.loaderService.useLoader;
           this.chantsItems = chantsData;
           this.chantsItemsUpdated.next([...this.chantsItems]);
         })
@@ -38,8 +38,8 @@ export class ChantService {
   storeChant(chant: Chant): Observable<Chant> {
     return this.http.post<Chant>('Chants/AddChant', chant)
       .pipe(
+        this.loaderService.useLoader,
         tap(() => {
-          this.loaderService.useLoader;
           const chantData: ChantInterface = chant as unknown as ChantInterface;
 
           this.chantsItems = [...this.chantsItems, chantData];
@@ -51,8 +51,8 @@ export class ChantService {
   deleteChant(id: number): Observable<any>  {
     return this.http.get(`Chants/DeleteChant?ID=${id}`)
       .pipe(
+        this.loaderService.useLoader,
         tap(() => {
-          this.loaderService.useLoader;
           const chantsItems = this.chantsItems.filter(item => item.id !== id);
           this.chantsItems = chantsItems;
           this.chantsItemsUpdated.next([...this.chantsItems]);

@@ -32,8 +32,8 @@ export class ArticleService {
     return this.http
       .get<ArticleInterface[]>(`articls/ArticleData?docType=${this.query.docType.eparchy}`)
         .pipe(
+          this.loaderService.useLoader,
           tap((eparchyData: ArticleInterface[]) => {
-            this.loaderService.useLoader;
             this.eparchyItems = eparchyData;
             this.eparchyItemsUpdated.next([...this.eparchyItems]);
           })
@@ -49,8 +49,8 @@ export class ArticleService {
     return this.http
       .get<ArticleInterface[]>(`articls/ArticleData?docType=${this.query.docType.icons}`)
         .pipe(
+          this.loaderService.useLoader,
           tap((iconsData: ArticleInterface[]) => {
-            this.loaderService.useLoader;
             this.iconsItems = iconsData;
             this.iconsItemsUpdated.next([...this.iconsItems]);
           })
@@ -67,8 +67,8 @@ export class ArticleService {
     return this.http
       .get<ArticleInterface[]>(`articls/ArticleData?docType=${this.query.docType.publication}`)
         .pipe(
+          this.loaderService.useLoader,
           tap((publicationData) => {
-            this.loaderService.useLoader;
             this.publicationsItems = publicationData;
             this.publicationsItemsUpdated.next([...this.publicationsItems]);
           })
@@ -102,8 +102,8 @@ export class ArticleService {
   storeArticle(article: Article): Observable<Article> {
     return this.http.post<Article>('Articls/AddArticle', article)
       .pipe(
+        this.loaderService.useLoader,
         tap(() => {
-          this.loaderService.useLoader;
           const articleData: ArticleInterface = article as unknown as ArticleInterface;
 
           switch (article.DocType) {
@@ -133,8 +133,8 @@ export class ArticleService {
   updateArticle(article: ArticleInterface): Observable<ArticleInterface> {
     return this.http.post<ArticleInterface>('Articls/UpdateArticle', article)
       .pipe(
+        this.loaderService.useLoader,
         tap(() => {
-          this.loaderService.useLoader;
           switch (+article.docType) {
             case DocType.eparchy: {
               const updatedEparchyItems = [...this.eparchyItems];
@@ -172,8 +172,8 @@ export class ArticleService {
   deleteArticle(articleID: number, docType: DocType): Observable<any> {
     return this.http.get(`Articls/DeleteArticle?ID=${articleID}`)
       .pipe(
+        this.loaderService.useLoader,
         tap(() => {
-          this.loaderService.useLoader;
           switch (docType) {
             case DocType.eparchy: {
               const eparchyItems = this.eparchyItems.filter(item => item.id !== articleID);

@@ -21,8 +21,8 @@ export class VideoService {
     return this.http
       .get<VideoData[]>(`Videos/VideoData`)
         .pipe(
+          this.loaderService.useLoader,
           tap((videoData: VideoData[]) => {
-            this.loaderService.useLoader;
             this.videoItems = videoData;
             this.videoItemsUpdated.next([...this.videoItems]);
           })
@@ -37,8 +37,8 @@ export class VideoService {
   addVideo(video: Video): Observable<Video> {
     return this.http.post<Video>('Videos/AddVideo', video)
       .pipe(
+        this.loaderService.useLoader,
         tap(() => {
-          this.loaderService.useLoader;
           const videoData: Video = video as unknown as Video;
 
           this.videoItems = [...this.videoItems, videoData];
@@ -50,9 +50,8 @@ export class VideoService {
   deleteVideo(id: number): Observable<any> {
     return this.http.get(`Videos/DeleteVideo?ID=${id}`)
       .pipe(
+        this.loaderService.useLoader,
         tap(() => {
-          this.loaderService.useLoader;
-
           const videoItems = this.videoItems.filter(item => item.id !== id);
           this.videoItems = videoItems;
           this.videoItemsUpdated.next([...this.videoItems]);
