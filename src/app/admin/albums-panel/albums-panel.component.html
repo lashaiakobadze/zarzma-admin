@@ -1,1 +1,38 @@
-<app-plus></app-plus>
+<form
+  *ngIf="formMode"
+  class="form"
+  [formGroup]="albumForm"
+  (ngSubmit)="onAddAlbum()"
+>
+  <div class="form-control">
+    <label for="TextGeo" class="form-label">Album content</label>
+    <textarea
+      type="text"
+      name="TextGeo"
+      class="input"
+      placeholder="TextGeo content"
+      formControlName="TextGeo"
+    ></textarea>
+  </div>
+
+  <button
+    type="submit"
+    class="button update"
+  >Add Album</button>
+</form>
+
+<div *ngIf="formMode; else plus">
+  <div class="form">
+    <button
+      (click)="formMode = false"
+      class="button delete"
+    >Work end</button>
+  </div>
+</div>
+
+<ng-template #plus>
+  <app-plus
+    class="plus-btn"
+    (click)="onGetAlbumForm()"
+  ></app-plus>
+</ng-template>

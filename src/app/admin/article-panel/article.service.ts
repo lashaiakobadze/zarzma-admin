@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Subject, Observable, tap } from 'rxjs';
 import { LoaderService } from 'src/app/shared/components/loader/loader.service';
 import { DocType } from '../enums/docType';
@@ -24,8 +23,7 @@ export class ArticleService {
 
   constructor(
     private http: HttpClient,
-    private loaderService: LoaderService,
-    public route: Router
+    private loaderService: LoaderService
   ) { }
 
   getEparchyItems(): Observable<ArticleInterface[]> {

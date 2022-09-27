@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable, Subject, tap } from 'rxjs';
 import { LoaderService } from 'src/app/shared/components/loader/loader.service';
 import { ChantInterface } from '../interfaces/chant.interface';
@@ -15,8 +14,7 @@ export class ChantService {
 
   constructor(
     private http: HttpClient,
-    private loaderService: LoaderService,
-    public route: Router
+    private loaderService: LoaderService
   ) { }
 
   getChants(): Observable<ChantInterface[]> {

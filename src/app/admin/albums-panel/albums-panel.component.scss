@@ -1,39 +1,22 @@
 @import '../../../scss/styles.scss';
 
-.navigation {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: black;
-  padding: 0 20px;
-  font-size: 20px;
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  font-size: 20px;
-}
-
 .panel {
-  @include flexPosition(flex-start);
+  @include flexPosition(space-around, flex-start);
+  margin: 20px;
+}
 
-  &__item {
-    margin: 10px;
-    border-bottom: 2px solid color(secondary);
-    transition: all .5s;
-
-    &:hover {
-      border-bottom: 2px solid #fff;
-    }
+.panel_item {
+  h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
-.active {
-  border-bottom: 2px solid #fff;
+.form .button {
+  margin: 10px;
 }
 
-.form {
-  &--logout {
-    margin: 0;
-    margin-top: 5px;
-  }
+.plus-btn {
+  margin-top: 20px;
 }
