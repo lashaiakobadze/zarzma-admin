@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { SharedModule } from 'src/app/shared/shared.module';
-import { AdminNavigationComponent } from './admin-navigation/admin-navigation.component';
+import { AdminComponent } from './admin.component';
 import { ArticlePanelComponent } from './article-panel/article-panel.component';
 import { EparchyPanelComponent } from './article-panel/eparchy-panel/eparchy-panel.component';
 import { IconsPanelComponent } from './article-panel/icons-panel/icons-panel.component';
@@ -15,7 +15,6 @@ import { VideoComponent } from './video-panel/video.component';
 
 @NgModule({
   declarations: [
-    AdminNavigationComponent,
     ArticlePanelComponent,
     EparchyPanelComponent,
     IconsPanelComponent,
@@ -23,14 +22,15 @@ import { VideoComponent } from './video-panel/video.component';
     ChantsPanelComponent,
     ChantPanelComponent,
     VideoComponent,
-    VideoItemComponent
+    VideoItemComponent,
+    AdminComponent
   ],
   imports: [
     SharedModule,
     RouterModule.forChild([
       {
         path: '',
-        component: AdminNavigationComponent,
+        component: AdminComponent,
         canActivate: [AuthGuard],
         children: [
           { path: '', redirectTo: 'articlePanel', pathMatch: 'full' },

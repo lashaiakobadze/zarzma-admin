@@ -14,6 +14,10 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+  },
+  {
+    path: 'admin/albumsPanel',
+    loadComponent: () => import('./admin/albums-panel/albums-panel.component').then(m => m.AlbumsPanelComponent)
   }
 ];
 
