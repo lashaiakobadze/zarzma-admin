@@ -1,0 +1,6 @@
+<h2>{{ album.name }}</h2>
+<ng-container *ngFor="let albumItem of album.albumItems">
+  <app-album-item
+    [albumItem]="albumItem"
+  ></app-album-item>
+</ng-container>
