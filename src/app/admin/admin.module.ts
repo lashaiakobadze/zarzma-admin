@@ -10,7 +10,6 @@ import { PublicationsPanelComponent } from './article-panel/publications-panel/p
 import { ChantsPanelComponent } from './chants-panel/chants-panel.component';
 import { ChantPanelComponent } from './chants-panel/chant-panel/chant-panel.component';
 import { VideoItemComponent } from './video-panel/video-item/video-item.component';
-import { AuthGuard } from '../authentication/auth.guard';
 import { VideoComponent } from './video-panel/video.component';
 
 @NgModule({
@@ -31,7 +30,6 @@ import { VideoComponent } from './video-panel/video.component';
       {
         path: '',
         component: AdminComponent,
-        canActivate: [AuthGuard],
         children: [
           { path: '', redirectTo: 'articlePanel', pathMatch: 'full' },
           { path: 'articlePanel', component: ArticlePanelComponent },
