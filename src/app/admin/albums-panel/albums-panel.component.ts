@@ -1,34 +1,42 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
+import { AlbumComponent } from './album/album.component';
 import { AlbumsService } from './albums.service';
 
+@UntilDestroy()
 @Component({
   standalone: true,
+  imports: [SharedModule, AlbumComponent],
   selector: 'app-albums-panel',
-  imports: [SharedModule],
   templateUrl: './albums-panel.component.html',
-  styleUrls: ['./albums-panel.component.scss']
+  styleUrls: ['./albums-panel.component.scss'],
 })
 export class AlbumsPanelComponent implements OnInit {
   formMode = false;
   albumForm: FormGroup;
+  albums: any[];
 
   constructor(
     public albumsService: AlbumsService
   ) { }
 
   ngOnInit(): void {
-    this.albumsService.getAlbums().subscribe({
-      next: (albumsData) => {
-        console.log('albumsData', albumsData);
-      },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () =>  console.log('done'),
-    })
+    this.albumsService.getAlbums();
+    this.albumsService.getAlbumsListener()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (albumsData) => {
+          this.albums = albumsData;
+          console.log('albumsData', albumsData);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () =>  console.log('done'),
+      })
   }
 
   onGetAlbumForm() {
@@ -37,7 +45,11 @@ export class AlbumsPanelComponent implements OnInit {
   }
 
   onAddAlbum() {
+    if (this.albumForm.invalid) {
+      return;
+    }
 
+    this.albumsService.addAlbum(this.albumForm.value);
   }
 
   errors(controlName: string | (string | number)[]): any {
@@ -51,7 +63,8 @@ export class AlbumsPanelComponent implements OnInit {
 
   initForm(): void {
     this.albumForm = new FormGroup({
-      TextGeo: new FormControl(null, AppValidators.required)
+      Name: new FormControl(null, AppValidators.required),
+      AlbumType: new FormControl(null, AppValidators.required)
     });
   }
 

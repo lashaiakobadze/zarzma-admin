@@ -1,8 +1,8 @@
 <div class="navigation">
-  <div class="panel">
+  <div class="navigation__content">
     <div
       *ngIf="isAuth"
-      class="panel__item"
+      class="navigation__item"
       routerLink="admin/articlePanel"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{exact: true}"
@@ -10,7 +10,7 @@
 
     <div
       *ngIf="isAuth"
-      class="panel__item"
+      class="navigation__item"
       routerLink="admin/chantsPanel"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{exact: true}"
@@ -18,7 +18,7 @@
 
     <div
       *ngIf="isAuth"
-      class="panel__item"
+      class="navigation__item"
       routerLink="admin/videoPanel"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{exact: true}"
@@ -26,7 +26,7 @@
 
     <div
       *ngIf="isAuth"
-      class="panel__item"
+      class="navigation__item"
       routerLink="admin/albumsPanel"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{exact: true}"

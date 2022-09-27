@@ -5,14 +5,25 @@
   (ngSubmit)="onAddAlbum()"
 >
   <div class="form-control">
-    <label for="TextGeo" class="form-label">Album content</label>
-    <textarea
+    <label for="Name" class="form-label">Album</label>
+    <input
       type="text"
-      name="TextGeo"
+      name="Name"
       class="input"
-      placeholder="TextGeo content"
-      formControlName="TextGeo"
-    ></textarea>
+      placeholder="Album Name"
+      formControlName="Name"
+    >
+  </div>
+
+  <div class="form-control">
+    <label for="AlbumType" class="form-label">Album type</label>
+    <input
+      type="number"
+      name="AlbumType"
+      class="input"
+      placeholder="Album Type"
+      formControlName="AlbumType"
+    >
   </div>
 
   <button
@@ -31,8 +42,16 @@
 </div>
 
 <ng-template #plus>
-  <app-plus
-    class="plus-btn"
-    (click)="onGetAlbumForm()"
-  ></app-plus>
+  <div class="plus-btn">
+    <h3>Add Album</h3>
+    <app-plus
+      (click)="onGetAlbumForm()"
+    ></app-plus>
+  </div>
 </ng-template>
+
+<ng-container *ngFor="let album of albums">
+  <app-album
+    [album]="album"
+  ></app-album>
+</ng-container>

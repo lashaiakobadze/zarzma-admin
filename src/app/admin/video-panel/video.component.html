@@ -4,32 +4,32 @@
   *ngIf="formMode"
 >
   <div class="form-control">
-    <label for="name" class="form-label">Name</label>
+    <label for="Name" class="form-label">Name</label>
     <input
       type="text"
-      name="name"
+      name="Name"
       class="input"
-      placeholder="name"
-      formControlName="name"
+      placeholder="Name"
+      formControlName="Name"
     >
-    <p class="required" *ngIf="get('name').invalid && get('name').touched">
-      <ng-container *ngFor="let errorMessage of errors('name')">
+    <p class="required" *ngIf="get('Name').invalid && get('Name').touched">
+      <ng-container *ngFor="let errorMessage of errors('Name')">
         <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
       </ng-container>
     </p>
   </div>
 
   <div class="form-control">
-    <label for="videoURL" class="form-label">Video URL</label>
+    <label for="VideoURL" class="form-label">Video URL</label>
     <input
       type="text"
-      name="videoURL"
+      name="VideoURL"
       class="input"
-      placeholder="videoURL"
-      formControlName="videoURL"
+      placeholder="VideoURL"
+      formControlName="VideoURL"
     >
-    <p class="required" *ngIf="get('videoURL').invalid && get('videoURL').touched">
-      <ng-container *ngFor="let errorMessage of errors('videoURL')">
+    <p class="required" *ngIf="get('VideoURL').invalid && get('VideoURL').touched">
+      <ng-container *ngFor="let errorMessage of errors('VideoURL')">
         <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
       </ng-container>
     </p>
@@ -52,10 +52,12 @@
 </div>
 
 <ng-template #plus>
-  <app-plus
-    class="plus-btn"
-    (click)="onGetVideoForm()"
-  ></app-plus>
+  <div class="plus-btn">
+    <h3>Add Video</h3>
+    <app-plus
+      (click)="onGetVideoForm()"
+    ></app-plus>
+  </div>
 </ng-template>
 
 <ng-container *ngFor="let video of videoItems">

@@ -18,7 +18,7 @@ import { AppRoutingModule } from './app.routing';
   declarations: [
     AppComponent,
     LoaderComponent,
-    NavigationComponent,
+    NavigationComponent
   ],
   imports: [
     BrowserModule,

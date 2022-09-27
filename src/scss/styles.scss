@@ -6,8 +6,11 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
-  margin: 0;
   background-color: #181c21;
   overflow-x: auto;
   font-size: 16px;
@@ -23,20 +26,14 @@ a {
   text-decoration: none;
 }
 
-.navigation-link {
-  cursor: pointer;
-  color: #fff;
-}
-
-
-@mixin  flexPosition($justCont: center, $alignIte: center) {
+@mixin flexPosition($justCont: center, $alignIte: center) {
   display: flex;
   justify-content: $justCont;
   align-items: $alignIte;
 }
 
 
-@mixin  response($breakpoint) {
+@mixin response($breakpoint) {
   @if($breakpoint == xxl){
     @media(max-width: 1600px) {
       @content;
@@ -80,7 +77,6 @@ $colors: (
   @return map-get($colors, $color-name);
 }
 
-
 $font-sizes: (
   xl: 2.5rem,
   lg: 2rem,
@@ -96,7 +92,11 @@ $font-sizes: (
 
 
 .plus-btn {
-  @include flexPosition;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .panel-img {
@@ -135,7 +135,6 @@ $font-sizes: (
   margin: 5px 0;
   padding: 5px;
   font-size: size(xxs);
-  // background-color: #F7F6F2;
 }
 
 input:disabled {
@@ -168,60 +167,3 @@ input:disabled {
 .center {
   @include flexPosition(center, center);
 }
-
-
-// articles CSS
-.articles {
-  @include flexPosition(space-between, flex-start);
-  flex-direction: column;
-  padding: 20px;
-
-  .article {
-    width: 100%;
-    @include flexPosition(space-between, flex-start);
-    margin: 20px 0;
-    color: #ddd;
-
-    &__img {
-      opacity: 1;
-      display: block;
-      width: 350px;
-      height: 400px;
-      transition: .5s ease;
-      backface-visibility: hidden;
-
-      padding: 2px;
-      margin-top: 35px;
-      margin-right: 15px;
-      line-height: 1.42857143;
-      background-color: #ddd;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
-
-    &__text {
-      background-color: transparent;
-      -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 5%);
-      box-shadow: inset 0 1px 1px rgb(0 0 0 / 5%);
-      border: 1px solid #e3e3e3;
-      border-radius: 4px;
-      transition: .5s ease;
-      background-color: black;
-    }
-  }
-
-  .article-container {
-    width: 100%;
-    @include flexPosition(flex-start, center);
-    flex-direction: column;
-
-    p {
-      padding: 10px;
-      font-size: 16px;
-    }
-  }
-}
-
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

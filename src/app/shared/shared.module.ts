@@ -12,15 +12,15 @@ import { ImageUploadComponent } from './components/image-upload/image-upload.com
   declarations: [
     DropdownDirective,
     PlusComponent,
-    ImageUploadComponent
+    ImageUploadComponent,
   ],
   exports: [
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
+    DropdownDirective,
     PlusComponent,
     ImageUploadComponent,
-    DropdownDirective
   ]
 })
 export class SharedModule { }

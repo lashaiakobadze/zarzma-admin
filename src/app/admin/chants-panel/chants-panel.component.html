@@ -54,10 +54,12 @@
 </div>
 
 <ng-template #plus>
-  <app-plus
-    class="plus-btn"
-    (click)="onGetArticleForm()"
-  ></app-plus>
+  <div class="plus-btn">
+    <h3>Add Chant</h3>
+    <app-plus
+      (click)="onGetArticleForm()"
+    ></app-plus>
+  </div>
 </ng-template>
 
 <ng-container *ngFor="let chant of chantsItems">

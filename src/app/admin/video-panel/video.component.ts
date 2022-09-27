@@ -40,7 +40,8 @@ export class VideoComponent implements OnInit {
       return;
     }
 
-    const video = new Video(this.videoForm.value.name, this.videoForm.value.videoURL);
+    const video = new Video(this.videoForm.value.Name, this.videoForm.value.VideoURL);
+
     this.videoService.addVideo(video)
     .pipe(untilDestroyed(this))
     .subscribe(
@@ -67,8 +68,8 @@ export class VideoComponent implements OnInit {
 
   initForm(): void {
     this.videoForm = new FormGroup<VideoForm>({
-      name: new FormControl(null, AppValidators.required),
-      videoURL: new FormControl(null, AppValidators.required),
+      Name: new FormControl(null, AppValidators.required),
+      VideoURL: new FormControl(null, AppValidators.required),
     });
   }
 

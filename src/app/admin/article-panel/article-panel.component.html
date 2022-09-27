@@ -130,10 +130,12 @@
 </div>
 
 <ng-template #plus>
-  <app-plus
-    class="plus-btn"
-    (click)="onGetArticleForm()"
-  ></app-plus>
+  <div class="plus-btn">
+    <h3>Add Article</h3>
+    <app-plus
+      (click)="onGetArticleForm()"
+    ></app-plus>
+  </div>
 </ng-template>
 
 <div class="panel">
