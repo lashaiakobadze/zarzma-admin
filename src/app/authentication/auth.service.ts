@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { AuthData } from './auth.model';
 
 @Injectable({
@@ -42,29 +42,31 @@ export class AuthService {
       })
   }
 
-  login(username: string, password: string): void {
+  login(username: string, password: string): Observable<any> {
     const authData: AuthData = {
       username: username,
       password: password
     };
 
-    this.http.post<{token: string, expiresIn: number}>('Login', authData)
-      .subscribe(response => {
-        const token = response.token;
-        this.token = token;
+    return this.http.post<{token: string, expiresIn: number}>('Login', authData)
+      .pipe(
+        tap(response => {
+          const token = response.token;
+          this.token = token;
 
-        if (token) {
-          const expiresInDuration = response.expiresIn;
-          this.setAuthTimer(expiresInDuration);
-          this.isAuthenticated = true;
-          this.authStatusListener.next(true);
-          const now = new Date();
-          const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
-          console.log(expirationDate);
-          this.saveAuthData(token, expirationDate);
-          this.router.navigate(['/admin']);
+          if (token) {
+            const expiresInDuration = response.expiresIn;
+            this.setAuthTimer(expiresInDuration);
+            this.isAuthenticated = true;
+            this.authStatusListener.next(true);
+            const now = new Date();
+            const expirationDate = new Date(now.getTime() + expiresInDuration * 1000);
+            console.log(expirationDate);
+            this.saveAuthData(token, expirationDate);
+            this.router.navigate(['/admin']);
+          }
         }
-      });
+      ));
   }
 
   autoAuthUser(): void {

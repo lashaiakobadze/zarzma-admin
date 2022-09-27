@@ -52,7 +52,9 @@ export class VideoComponent implements OnInit {
   }
 
   onDeleteVideo(id: number): void {
-    this.videoService.deleteVideo(id).pipe(untilDestroyed(this)).subscribe();
+    if(window.confirm('ნამდვილად გსურთ წაშლა?')){
+      this.videoService.deleteVideo(id).pipe(untilDestroyed(this)).subscribe();
+    }
   }
 
   errors(controlName: string | (string | number)[]): any {

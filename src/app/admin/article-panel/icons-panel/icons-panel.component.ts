@@ -40,7 +40,9 @@ export class IconsPanelComponent implements OnInit {
   }
 
   onDeleteIcons(id: number): void {
-    this.articleService.deleteArticle(id, DocType.icons).pipe(untilDestroyed(this)).subscribe();
+    if(window.confirm('ნამდვილად გსურთ წაშლა?')){
+      this.articleService.deleteArticle(id, DocType.publication).pipe(untilDestroyed(this)).subscribe();
+    }
   }
 
   processFile(imageInput: any): void {

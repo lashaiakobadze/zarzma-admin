@@ -40,7 +40,9 @@ export class PublicationsPanelComponent implements OnInit {
   }
 
   onDeletePublication(id: number): void {
-    this.articleService.deleteArticle(id, DocType.publication).pipe(untilDestroyed(this)).subscribe();
+    if(window.confirm('ნამდვილად გსურთ წაშლა?')){
+      this.articleService.deleteArticle(id, DocType.publication).pipe(untilDestroyed(this)).subscribe();
+    }
   }
 
   processFile(imageInput: any): void {

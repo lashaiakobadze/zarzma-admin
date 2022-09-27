@@ -33,7 +33,7 @@ export class VideoService {
     return this.videoItemsUpdated.asObservable();
   }
 
-  // ToDo: აქაც მინდა რესფონსში ობიექტის გამოგზავნა, ასევე არ მუშაობს;
+  // ToDo: არ მუშაობს, აქაც მინდა რესფონსში ობიექტის გამოგზავნა;
   addVideo(video: Video): Observable<Video> {
     return this.http.post<Video>('Videos/AddVideo', video)
       .pipe(

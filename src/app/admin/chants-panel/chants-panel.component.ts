@@ -63,7 +63,9 @@ export class ChantsPanelComponent implements OnInit {
   }
 
   deleteChant(id: number): void {
-    this.chantService.deleteChant(id).pipe(untilDestroyed(this)).subscribe();
+    if(window.confirm('ნამდვილად გსურთ წაშლა?')){
+      this.chantService.deleteChant(id).pipe(untilDestroyed(this)).subscribe();
+    }
   }
 
   errors(controlName: string | (string | number)[]): any {

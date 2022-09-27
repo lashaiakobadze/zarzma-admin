@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/authentication/auth.service';
   styleUrls: ['./admin-navigation.component.scss']
 })
 export class AdminNavigationComponent implements OnInit {
+  validRegistration: boolean;
 
   constructor(
     public authService: AuthService
@@ -16,7 +17,9 @@ export class AdminNavigationComponent implements OnInit {
   }
 
   onLogout(): void {
-    this.authService.logout();
+    if(window.confirm('ნამდვილად გსურთ გასვალა?')){
+      this.authService.logout();
+    }
   }
 
 }

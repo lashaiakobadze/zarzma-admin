@@ -34,7 +34,7 @@ export class ChantService {
     return this.chantsItemsUpdated.asObservable();
   }
 
-  // ToDo: აქაც მინდა რესფონსში ობიექტის გამოგზავნა;
+  // ToDo: არ მუშაობს, აქაც მინდა რესფონსში ობიექტის გამოგზავნა;
   storeChant(chant: Chant): Observable<Chant> {
     return this.http.post<Chant>('Chants/AddChant', chant)
       .pipe(

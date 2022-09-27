@@ -27,6 +27,10 @@
   }
 }
 
+.active {
+  border-bottom: 2px solid #fff;
+}
+
 .form {
   &--logout {
     margin: 0;
