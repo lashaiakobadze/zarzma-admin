@@ -1,0 +1,33 @@
+@import '../../../../scss/styles.scss';
+
+:host {
+  width: 100%;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.album {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+
+  &:hover {
+    background-color: black;
+  }
+}
+
+.album-items-content {
+  padding: 5px 20px;
+
+  &:hover {
+    background-color: rgb(0 0 0 / 60%);
+  }
+}
+
+.plus {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 20px;
+}

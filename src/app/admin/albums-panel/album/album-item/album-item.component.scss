@@ -1,0 +1,25 @@
+:host {
+  width: 100%;
+}
+
+.album-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+
+
+  &:hover {
+    background-color: rgb(0 0 0 / 50%);
+  }
+}
+
+.album-item-content {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 20px;
+
+  &:hover {
+    background-color: rgb(0 0 0 / 30%);
+  }
+}

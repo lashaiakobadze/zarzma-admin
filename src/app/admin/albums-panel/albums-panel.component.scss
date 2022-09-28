@@ -3,3 +3,13 @@
 .form .button {
   margin: 10px;
 }
+
+.albums-content {
+  @include flexPosition(center, center);
+  flex-direction: column;
+  margin: 0 40px;
+}
+
+.plus-btn {
+  margin-top: 20px;
+}

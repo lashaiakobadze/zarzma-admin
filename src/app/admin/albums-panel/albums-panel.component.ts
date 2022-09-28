@@ -3,6 +3,7 @@ import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
+import { AlbumType } from '../enums/albumType.enum';
 import { AlbumComponent } from './album/album.component';
 import { AlbumsService } from './albums.service';
 
@@ -15,6 +16,7 @@ import { AlbumsService } from './albums.service';
   styleUrls: ['./albums-panel.component.scss'],
 })
 export class AlbumsPanelComponent implements OnInit {
+  AlbumTypes: number[];
   formMode = false;
   albumForm: FormGroup;
   albums: any[];
@@ -24,6 +26,8 @@ export class AlbumsPanelComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.AlbumTypes = [AlbumType.albumType1, AlbumType.albumType2];
+
     this.albumsService.getAlbums();
     this.albumsService.getAlbumsListener()
       .pipe(untilDestroyed(this))

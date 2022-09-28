@@ -1,4 +1,59 @@
-<p>{{ albumItem.name }}</p>
+<div class="album-item" (click)="open()">
+  <h3 class="center">{{ albumItem.name }}</h3>
+  <button (click)="onDeleteAlbumItem(albumItem.id)" class="delete button">delete albumItem</button>
+</div>
 
+<div *ngIf="isOpen" class="album-item-content">
+  <ng-container *ngFor="let albumItemPhoto of albumItem.albumPhotos">
+    <app-album-photo
+      [albumPhoto]="albumItemPhoto"
+    ></app-album-photo>
+  </ng-container>
 
-<p>{{ albumItem.albumPhotos.length }}</p>
+  <div class="plus" *ngIf="!formMode">
+    <div class="plus-btn">
+      <h3>Add Album Photo</h3>
+      <app-plus
+        (click)="onGetForm()"
+      ></app-plus>
+    </div>
+  </div>
+
+  <form
+    *ngIf="formMode"
+    class="form"
+    [formGroup]="form"
+    (ngSubmit)="onAdd()"
+  >
+    <div class="form-control">
+      <label for="Name" class="form-label">Album photo</label>
+      <input
+        type="text"
+        name="Name"
+        class="input"
+        placeholder="Album photo"
+        formControlName="Name"
+      >
+      <p class="required" *ngIf="get('Name').invalid && get('Name').touched">
+        <ng-container *ngFor="let errorMessage of errors('Name')">
+          <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
+        </ng-container>
+      </p>
+    </div>
+
+    <button
+      type="submit"
+      class="button update"
+    >Add Album Photo</button>
+
+    <div *ngIf="formMode">
+      <div class="form">
+        <button
+          (click)="formMode = false"
+          class="button delete"
+        >Work end</button>
+      </div>
+    </div>
+
+  </form>
+</div>
