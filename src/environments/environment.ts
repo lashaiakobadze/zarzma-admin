@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  dataUrl: 'https://zarzmaapi.azurewebsites.net/api/'
+  dataUrl: 'https://zarzmaapi.azurewebsites.net',
 };
 
 /*

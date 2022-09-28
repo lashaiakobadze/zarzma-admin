@@ -13,7 +13,7 @@ export class UrlInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!request.url.includes('assets/i18n')) {
-      request = request.clone({ url: BASE_URL + request.url });
+      request = request.clone({ url: BASE_URL + '/api/' + request.url });
     }
 
     return next.handle(request).pipe(
