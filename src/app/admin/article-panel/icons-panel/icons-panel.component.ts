@@ -4,7 +4,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ImageSnippet } from 'src/app/shared/models/image-snippet.model';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { environment } from 'src/environments/environment';
-import { DocType } from '../../enums/docType';
+import { DocType } from '../../enums/docType.enum';
 import { ArticleInterface } from '../../interfaces/article.interface';
 import { ArticleForm } from '../../interfaces/form-Interfaces/articleForm.interface';
 import { ArticleService } from '../article.service';

@@ -3,10 +3,9 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subject, Observable, tap } from 'rxjs';
 import { LoaderService } from 'src/app/shared/components/loader/loader.service';
-import { DocType } from '../enums/docType';
-import { languages } from '../enums/language';
+import { DocType } from '../enums/docType.enum';
 import { ArticleInterface } from '../interfaces/article.interface';
-import { Article } from '../models/article';
+import { Article } from '../models/article.model';
 
 @Injectable({
   providedIn: 'root'
@@ -93,8 +92,7 @@ export class ArticleService {
   }
 
   query = {
-    docType: DocType,
-    docLang: languages
+    docType: DocType
   };
 
   storeArticle(article: Article): Observable<Article> {

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 
 import { ImageSnippet } from 'src/app/shared/models/image-snippet.model';
-import { Article } from '../models/article';
+import { Article } from '../models/article.model';
 import { ArticleInterface } from '../interfaces/article.interface';
 import { ArticleService } from './article.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';

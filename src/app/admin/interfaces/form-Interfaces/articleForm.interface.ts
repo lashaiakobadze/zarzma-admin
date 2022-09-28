@@ -1,5 +1,5 @@
 import { FormControl } from "@angular/forms";
-import { DocType } from "../../enums/docType";
+import { DocType } from "../../enums/docType.enum";
 
 export interface ArticleForm {
   id?: FormControl<number>,
