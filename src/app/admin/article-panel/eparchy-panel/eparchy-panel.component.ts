@@ -36,18 +36,29 @@ export class EparchyPanelComponent implements OnInit {
     }
 
     const formData: FormData = this.articleService.getFormData(this.eparchyForm);
+
+    // if (!this.eparchyForm.value.files) {
+    //   this.eparchyForm.controls.files.setValue(this.eparchyItem.photoUrl);
+    // }
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
     this.articleService.updateArticle(formData as unknown as ArticleInterface).pipe(untilDestroyed(this)).subscribe();
   }
 
   onDeleteEparchy(id: number): void {
     if(window.confirm('ნამდვილად გსურთ წაშლა?')){
-      this.articleService.deleteArticle(id, DocType.publication).pipe(untilDestroyed(this)).subscribe();
+      this.articleService.deleteArticle(id, DocType.eparchy).pipe(untilDestroyed(this)).subscribe();
     }
   }
 
   processFile(imageInput: any): void {
     const file: File = imageInput.files[0];
+    // this.eparchyForm.controls['files'].setValue([file]) ;
     this.eparchyForm.value.files = [file];
+    // this.eparchyForm.controls.files.setValue([file]);
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
@@ -68,7 +79,7 @@ export class EparchyPanelComponent implements OnInit {
   initForm(eparchyItem: ArticleInterface): void {
     this.eparchyForm = new FormGroup<ArticleForm>({
       id: new FormControl(eparchyItem?.id, AppValidators.required),
-      docType: new FormControl(+eparchyItem?.docType, AppValidators.required),
+      docType: new FormControl(eparchyItem?.docType, AppValidators.required),
       TitleGeo: new FormControl(eparchyItem?.title, AppValidators.required),
       TextGeo: new FormControl(eparchyItem?.text, AppValidators.required),
       TitleEng: new FormControl(eparchyItem?.titleEng),

@@ -77,6 +77,10 @@ export class ArticlePanelComponent implements OnInit {
     const myForm = document.forms[0];
     const formData = new FormData(myForm);
 
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
     this.articleService.storeArticle(formData as unknown as Article)
       .subscribe((articleData) => {
         // ToDo: არტიკლის რესფონსში გამოშვება მინდა დასააფდეითებლად;

@@ -27,7 +27,7 @@ export class ArticleService {
 
   getEparchyItems(): Observable<ArticleInterface[]> {
     return this.http
-      .get<ArticleInterface[]>(`articls/ArticleData?docType=${this.query.docType.eparchy}`)
+      .get<ArticleInterface[]>(`articls/ArticleData?docType=${DocType.eparchy}`)
         .pipe(
           this.loaderService.useLoader,
           tap((eparchyData: ArticleInterface[]) => {
@@ -44,7 +44,7 @@ export class ArticleService {
 
   getIconsItems(): Observable<ArticleInterface[]> {
     return this.http
-      .get<ArticleInterface[]>(`articls/ArticleData?docType=${this.query.docType.icons}`)
+      .get<ArticleInterface[]>(`articls/ArticleData?docType=${DocType.icons}`)
         .pipe(
           this.loaderService.useLoader,
           tap((iconsData: ArticleInterface[]) => {
@@ -62,7 +62,7 @@ export class ArticleService {
 
   getPublicationsItems(): Observable<ArticleInterface[]> {
     return this.http
-      .get<ArticleInterface[]>(`articls/ArticleData?docType=${this.query.docType.publication}`)
+      .get<ArticleInterface[]>(`articls/ArticleData?docType=${DocType.publication}`)
         .pipe(
           this.loaderService.useLoader,
           tap((publicationData) => {
@@ -91,15 +91,12 @@ export class ArticleService {
     return formData;
   }
 
-  query = {
-    docType: DocType
-  };
-
   storeArticle(article: Article): Observable<Article> {
     return this.http.post<Article>('Articls/AddArticle', article)
       .pipe(
         this.loaderService.useLoader,
         tap(() => {
+          // ToDo: with response
           const articleData: ArticleInterface = article as unknown as ArticleInterface;
 
           switch (article.DocType) {

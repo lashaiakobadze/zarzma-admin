@@ -41,7 +41,7 @@ export class PublicationsPanelComponent implements OnInit {
 
   onDeletePublication(id: number): void {
     if(window.confirm('ნამდვილად გსურთ წაშლა?')){
-      this.articleService.deleteArticle(id, DocType.publication).pipe(untilDestroyed(this)).subscribe();
+      this.articleService.deleteArticle(id, DocType.icons).pipe(untilDestroyed(this)).subscribe();
     }
   }
 
@@ -68,14 +68,14 @@ export class PublicationsPanelComponent implements OnInit {
   initForm(publicationItem: ArticleInterface): void {
     this.publicationForm = new FormGroup<ArticleForm>({
       id: new FormControl(publicationItem?.id, AppValidators.required),
-      docType: new FormControl(+publicationItem?.docType, AppValidators.required),
+      docType: new FormControl(publicationItem?.docType, AppValidators.required),
       TitleGeo: new FormControl(publicationItem?.title, AppValidators.required),
       TextGeo: new FormControl(publicationItem?.text, AppValidators.required),
       TitleEng: new FormControl(publicationItem?.titleEng),
       TextEng: new FormControl(publicationItem?.textEng),
       TitleRus: new FormControl(publicationItem?.titleRus),
       TextRus: new FormControl(publicationItem?.textRus),
-      files: new FormControl(publicationItem?.photoUrl, AppValidators.required),
+      files: new FormControl(null, AppValidators.required),
     });
   }
 

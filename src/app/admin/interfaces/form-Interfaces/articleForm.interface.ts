@@ -3,7 +3,7 @@ import { DocType } from "../../enums/docType.enum";
 
 export interface ArticleForm {
   id?: FormControl<number>,
-  docType?: FormControl<DocType>;
+  docType?: FormControl<string>;
   DocType?: FormControl<DocType>;
 
   TitleGeo: FormControl<string>;

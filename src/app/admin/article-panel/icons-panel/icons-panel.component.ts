@@ -68,7 +68,7 @@ export class IconsPanelComponent implements OnInit {
   initForm(iconsItem: ArticleInterface): void {
     this.iconsForm = new FormGroup<ArticleForm>({
       id: new FormControl(iconsItem?.id, AppValidators.required),
-      docType: new FormControl(+iconsItem?.docType, AppValidators.required),
+      docType: new FormControl(iconsItem?.docType, AppValidators.required),
       TitleGeo: new FormControl(iconsItem?.title, AppValidators.required),
       TextGeo: new FormControl(iconsItem?.text, AppValidators.required),
       TitleEng: new FormControl(iconsItem?.titleEng),

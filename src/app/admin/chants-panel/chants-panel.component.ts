@@ -52,6 +52,10 @@ export class ChantsPanelComponent implements OnInit {
     formData.append("ChantName", this.chantForm.get('ChantName').value);
     formData.append("AudioUrl", this.chantForm.get('AudioUrl').value);
 
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
     this.chantService.storeChant(formData as unknown as Chant)
     .pipe(untilDestroyed(this))
     .subscribe(
