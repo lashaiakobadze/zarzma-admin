@@ -15,6 +15,11 @@ export class AlbumPhotoComponent implements OnInit {
 
   constructor() { }
 
+  onDeleteImg() {
+    if(window.confirm('ნამდვილად გსურთ ფოტოს წაშლა წაშლა?')){
+    }
+  }
+
   ngOnInit(): void {
     this.imgUrl = `url('${'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png'}')`;
   }

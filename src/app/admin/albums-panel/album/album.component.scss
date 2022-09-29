@@ -3,13 +3,13 @@
 :host {
   width: 100%;
   transition: background-color 0.3s;
-  cursor: pointer;
 }
 
 .album {
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
+  cursor: pointer;
 
   &:hover {
     background-color: black;
