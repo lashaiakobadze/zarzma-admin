@@ -8,6 +8,7 @@
   <ng-container *ngFor="let albumItem of album.albumItems">
     <app-album-item
       [albumItem]="albumItem"
+      (addAlbumPhotoClicked)="onAddAlbumPhoto($event)"
       (deleteAlbumItemClicked)="onDeleteAlbumItem($event)"
       (deleteAlbumPhotoClicked)="onDeleteAlbumPhoto($event)"
     ></app-album-item>
@@ -28,7 +29,7 @@
     *ngIf="formMode"
     class="form"
     [formGroup]="form"
-    (ngSubmit)="onAdd()"
+    (ngSubmit)="onAddAlbumItem()"
   >
     <div class="form-control">
       <label for="Name" class="form-label">Album Item name</label>

@@ -17,6 +17,8 @@ import { AlbumPhotoComponent } from './album-photo/album-photo.component';
 export class AlbumItemComponent implements OnInit {
   @Input() albumItem: AlbumItemInterface;
 
+  @Output() addAlbumPhotoClicked = new EventEmitter<FormData>();
+
   @Output() deleteAlbumItemClicked = new EventEmitter<number>();
   @Output() deleteAlbumPhotoClicked = new EventEmitter<number>();
 
@@ -50,19 +52,15 @@ export class AlbumItemComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  onAdd() {
+  onAddAlbumPhoto() {
     if (this.form.invalid) {
       return;
     }
 
-    console.log(this.form.value);
-
     const myForm = document.forms[0];
     const formData = new FormData(myForm);
 
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
+    this.addAlbumPhotoClicked.emit(formData);
   }
 
   onDeleteAlbumItem() {

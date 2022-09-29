@@ -4,7 +4,8 @@
 </div>
 
 <div *ngIf="isOpen" class="album-item-content">
-  <ng-container *ngFor="let albumItemPhoto of [
+  <ng-container *ngFor="let albumItemPhoto of  albumItem.albumPhotos"> <!--
+    [
     {
       photoId: 0,
       name: 'test',
@@ -21,7 +22,8 @@
       createDate: 'string',
       updateDate: 'string'
     }
-  ]"> <!-- albumItem.albumPhotos -->
+  ]
+   -->
     <app-album-photo
       [albumPhoto]="albumItemPhoto"
       (deleteAlbumPhotoClicked)="onDeleteAlbumPhoto($event)"
@@ -41,7 +43,7 @@
     *ngIf="formMode"
     class="form"
     [formGroup]="form"
-    (ngSubmit)="onAdd()"
+    (ngSubmit)="onAddAlbumPhoto()"
   >
     <div class="form-control">
       <label for="Name" class="form-label">Photo name</label>
@@ -60,7 +62,7 @@
     </div>
 
     <div class="form-control">
-      <label for="image" class="form-label">image</label>
+      <label for="image" class="form-label">Photo</label>
       <img class="panel-img" [src]="selectedFile?.src" *ngIf="selectedFile?.src !== null && selectedFile?.src">
       <input
         #imageInput
@@ -68,7 +70,7 @@
         class="input"
         name="files"
         formControlName="files"
-        placeholder="Album item image"
+        placeholder="Album item photo"
         (change)="processFile(imageInput)"
       >
       <p class="required" *ngIf="get('files').invalid && get('files').touched">
@@ -85,7 +87,7 @@
         type="text"
         name="AlbumItemId"
         class="input"
-        placeholder="Album photo name"
+        placeholder="Album item id"
         formControlName="AlbumItemId"
       >
       <p class="required" *ngIf="get('AlbumItemId').invalid && get('AlbumItemId').touched">

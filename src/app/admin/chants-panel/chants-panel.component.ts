@@ -48,9 +48,8 @@ export class ChantsPanelComponent implements OnInit {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("ChantName", this.chantForm.get('ChantName').value);
-    formData.append("AudioUrl", this.chantForm.get('AudioUrl').value);
+    const myForm = document.forms[0];
+    const formData = new FormData(myForm);
 
     for (let [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);

@@ -63,6 +63,8 @@
   <ng-container *ngFor="let album of albums">
     <app-album
       [album]="album"
+      (addAlbumPhotoClicked)="onAddAlbumPhoto($event)"
+      (addAlbumItemClicked)="onAddAlbumItem($event)"
       (deleteAlbumClicked)="onDeleteAlbum($event)"
       (deleteAlbumItemClicked)="onDeleteAlbumItem($event)"
       (deleteAlbumPhotoClicked)="onDeleteAlbumPhoto($event)"

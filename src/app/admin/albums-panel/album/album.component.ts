@@ -4,6 +4,7 @@ import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { AlbumInterface } from '../../interfaces/album.interface';
+import { AlbumItem } from '../../models/albumItem.model';
 import { AlbumItemComponent } from './album-item/album-item.component';
 
 @Component({
@@ -15,6 +16,9 @@ import { AlbumItemComponent } from './album-item/album-item.component';
 })
 export class AlbumComponent implements OnInit {
   @Input() album: AlbumInterface;
+
+  @Output() addAlbumItemClicked = new EventEmitter<AlbumItem>();
+  @Output() addAlbumPhotoClicked = new EventEmitter<FormData>();
 
   @Output() deleteAlbumClicked = new EventEmitter<number>();
   @Output() deleteAlbumItemClicked = new EventEmitter<number>();
@@ -36,14 +40,21 @@ export class AlbumComponent implements OnInit {
     this.initForm(this.album);
   }
 
-  onAdd() {
+  // Adds
+  onAddAlbumItem() {
     if (this.form.invalid) {
       return;
     }
 
-    console.log(this.form.value);
+    const albumItem = new AlbumItem(this.form.value.Name, this.form.value.AlbumId);
+    this.addAlbumItemClicked.emit(albumItem);
   }
 
+  onAddAlbumPhoto(albumPhoto: FormData) {
+    this.addAlbumPhotoClicked.emit(albumPhoto);
+  }
+
+  // deletes
   onDeleteAlbum() {
     if(window.confirm('ნამდვილად გსურთ ალბომის წაშლა?')){
       this.deleteAlbumClicked.emit(this.album.id);

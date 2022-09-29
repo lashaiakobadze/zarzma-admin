@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, tap } from 'rxjs';
 import { LoaderService } from 'src/app/shared/components/loader/loader.service';
 import { AlbumInterface } from '../interfaces/album.interface';
+import { Album } from '../models/album.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,11 +32,22 @@ export class AlbumsService {
     return this.albumsUpdated.asObservable();
   }
 
-  addAlbum(album: any): void {
+  addAlbum(album: Album): void {
     this.http.post(`Albums/AddAlbum`, album)
       .pipe(
         this.loaderService.useLoader,
         tap((albumsData: any) => {
+          // this.albums = albumsData.albums;          ;
+          // this.albumsUpdated.next(this.albums);
+        })
+      ).subscribe();
+  }
+
+  addAlbumPhoto(albumPhoto: FormData): void {
+    this.http.post(`Albums/AddAlbumPhoto`, albumPhoto)
+      .pipe(
+        this.loaderService.useLoader,
+        tap((albumsPhotoData: any) => {
           // this.albums = albumsData.albums;          ;
           // this.albumsUpdated.next(this.albums);
         })

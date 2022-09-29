@@ -5,6 +5,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { AlbumType } from '../enums/albumType.enum';
 import { AlbumInterface } from '../interfaces/album.interface';
+import { Album } from '../models/album.model';
+import { AlbumItem } from '../models/albumItem.model';
 import { AlbumComponent } from './album/album.component';
 import { AlbumsService } from './albums.service';
 
@@ -48,16 +50,33 @@ export class AlbumsPanelComponent implements OnInit {
     this.initForm();
   }
 
+  // Adds
   onAddAlbum() {
     if (this.albumForm.invalid) {
       return;
     }
 
-    console.log(this.albumForm.value);
+    const album = new Album(this.albumForm.value.Name, this.albumForm.value.AlbumType);
+    console.log(album);
 
     // this.albumsService.addAlbum(this.albumForm.value);
   }
 
+  onAddAlbumItem(albumItem: AlbumItem) {
+    console.log(albumItem);
+  }
+
+  onAddAlbumPhoto(albumPhoto: FormData) {
+    for (let [key, value] of albumPhoto.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
+    console.log(albumPhoto);
+
+    this.albumsService.addAlbumPhoto(albumPhoto);
+  }
+
+  // Deletes
   onDeleteAlbum(id: number) {
     console.log(id);
   }
@@ -70,6 +89,7 @@ export class AlbumsPanelComponent implements OnInit {
     console.log(photoId);
   }
 
+  // forms
   errors(controlName: string | (string | number)[]): any {
     return Object.values(this.get(controlName).errors);
   }
@@ -77,7 +97,6 @@ export class AlbumsPanelComponent implements OnInit {
   get(controlName: string | (string | number)[]): AbstractControl {
     return this.albumForm.get(controlName);
   }
-
 
   initForm(): void {
     this.albumForm = new FormGroup({
