@@ -41,12 +41,12 @@
     (ngSubmit)="onAdd()"
   >
     <div class="form-control">
-      <label for="Name" class="form-label">Album photo name</label>
+      <label for="Name" class="form-label">Photo name</label>
       <input
         type="text"
         name="Name"
         class="input"
-        placeholder="Album photo name"
+        placeholder="Photo name"
         formControlName="Name"
       >
       <p class="required" *ngIf="get('Name').invalid && get('Name').touched">
@@ -95,7 +95,7 @@
     <button
       type="submit"
       class="button update"
-    >Add Album Photo</button>
+    >Add Photo</button>
 
     <div *ngIf="formMode">
       <div class="form">

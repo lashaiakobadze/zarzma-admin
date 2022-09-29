@@ -27,7 +27,7 @@ export class AlbumsPanelComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.AlbumTypes = [AlbumType.albumType1, AlbumType.albumType2];
+    this.AlbumTypes = [AlbumType.album, AlbumType.incense, AlbumType.enamel, AlbumType.calendar];
 
     this.albumsService.getAlbums();
     this.albumsService.getAlbumsListener()

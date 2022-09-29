@@ -1,5 +1,6 @@
 export enum AlbumType {
-  albumType1 = 1, // Fom albums
-  albumType2 = 2, // for enamels
-  albumType3 = 3 // for calendar
+  album = 1,
+  incense = 2,
+  enamel = 3,
+  calendar = 4
 }
