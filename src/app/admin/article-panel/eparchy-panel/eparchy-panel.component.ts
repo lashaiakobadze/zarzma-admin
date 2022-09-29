@@ -54,6 +54,8 @@ export class EparchyPanelComponent implements OnInit {
   processFile(imageInput: any): void {
     const file: File = imageInput.files[0];
     this.eparchyForm.controls['files'].setValue([file]);
+    // this.eparchyForm.value.files = [file];
+
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {

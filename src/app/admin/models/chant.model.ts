@@ -1,6 +1,6 @@
 export class Chant {
   constructor(
-    public audioUrl: string,
-    public chantName: string,
+    public ChantName: string,
+    public files: File[],
   ) {}
 }

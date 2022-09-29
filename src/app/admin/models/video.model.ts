@@ -1,6 +1,6 @@
 export class Video {
   constructor(
-    public name: string,
-    public videoURL: string,
+    public Name: string,
+    public VideoURL: string,
   ) {}
 }

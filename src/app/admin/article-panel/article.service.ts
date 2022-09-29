@@ -123,6 +123,7 @@ export class ArticleService {
       );
   }
 
+  // ToDo: update file don't work
   updateArticle(article: ArticleInterface): Observable<ArticleInterface> {
     return this.http.post<ArticleInterface>('Articls/UpdateArticle', article)
       .pipe(
@@ -161,7 +162,6 @@ export class ArticleService {
       );
   }
 
-  // ToDo: არ იშლeბა icone-ბი
   deleteArticle(articleID: number, docType: DocType): Observable<any> {
     return this.http.get(`Articls/DeleteArticle?ID=${articleID}`)
       .pipe(

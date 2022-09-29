@@ -39,9 +39,10 @@ export class VideoService {
       .pipe(
         this.loaderService.useLoader,
         tap(() => {
+          // ToDo:
           const videoData: Video = video as unknown as Video;
 
-          this.videoItems = [...this.videoItems, videoData];
+          // this.videoItems = [...this.videoItems, videoData];
           this.videoItemsUpdated.next([...this.videoItems]);
         })
       );
