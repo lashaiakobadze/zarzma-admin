@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlbumPhotoInterface } from 'src/app/admin/interfaces/albumPhoto.interface';
 
 @Component({
@@ -11,12 +11,15 @@ import { AlbumPhotoInterface } from 'src/app/admin/interfaces/albumPhoto.interfa
 })
 export class AlbumPhotoComponent implements OnInit {
   @Input() albumPhoto: AlbumPhotoInterface;
+  @Output() deleteAlbumPhotoClicked = new EventEmitter<number>();
+
   imgUrl: string;
 
   constructor() { }
 
-  onDeleteImg() {
-    if(window.confirm('ნამდვილად გსურთ ფოტოს წაშლა წაშლა?')){
+  onDeleteAlbumPhoto() {
+    if(window.confirm('ნამდვილად გსურთ ფოტოს წაშლა?')){
+      this.deleteAlbumPhotoClicked.emit(this.albumPhoto.photoId);
     }
   }
 

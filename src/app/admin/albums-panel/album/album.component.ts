@@ -15,7 +15,10 @@ import { AlbumItemComponent } from './album-item/album-item.component';
 })
 export class AlbumComponent implements OnInit {
   @Input() album: AlbumInterface;
+
+  @Output() deleteAlbumClicked = new EventEmitter<number>();
   @Output() deleteAlbumItemClicked = new EventEmitter<number>();
+  @Output() deleteAlbumPhotoClicked = new EventEmitter<number>();
 
   form: FormGroup;
   formMode = false;
@@ -26,10 +29,6 @@ export class AlbumComponent implements OnInit {
 
   open() {
     this.isOpen = !this.isOpen;
-  }
-
-  onDelete(id: number) {
-    this.deleteAlbumItemClicked.emit(id);
   }
 
   onGetForm() {
@@ -43,6 +42,20 @@ export class AlbumComponent implements OnInit {
     }
 
     console.log(this.form.value);
+  }
+
+  onDeleteAlbum() {
+    if(window.confirm('ნამდვილად გსურთ ალბომის წაშლა?')){
+      this.deleteAlbumClicked.emit(this.album.id);
+    }
+  }
+
+  onDeleteAlbumItem(id: number) {
+    this.deleteAlbumItemClicked.emit(id);
+  }
+
+  onDeleteAlbumPhoto(photoId: number) {
+    this.deleteAlbumPhotoClicked.emit(photoId);
   }
 
   errors(controlName: string | (string | number)[]): any {

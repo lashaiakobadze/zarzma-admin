@@ -166,3 +166,7 @@ input:disabled {
 .center {
   @include flexPosition(center, center);
 }
+
+.pointer {
+  cursor: pointer;
+}

@@ -1,13 +1,15 @@
 
-<div class="album" (click)="open()">
-  <h2 class="center">{{ album.name }}</h2>
-  <button (click)="onDelete(album.id)" class="delete button">delete album</button>
+<div class="album">
+  <h2 class="center pointer" (click)="open()">{{ album.name }}</h2>
+  <button (click)="onDeleteAlbum()" class="delete button">delete album</button>
 </div>
 
 <div *ngIf="isOpen" class="album-items-content">
   <ng-container *ngFor="let albumItem of album.albumItems">
     <app-album-item
       [albumItem]="albumItem"
+      (deleteAlbumItemClicked)="onDeleteAlbumItem($event)"
+      (deleteAlbumPhotoClicked)="onDeleteAlbumPhoto($event)"
     ></app-album-item>
   </ng-container>
 

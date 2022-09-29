@@ -58,6 +58,18 @@ export class AlbumsPanelComponent implements OnInit {
     // this.albumsService.addAlbum(this.albumForm.value);
   }
 
+  onDeleteAlbum(id: number) {
+    console.log(id);
+  }
+
+  onDeleteAlbumItem(id: number) {
+    console.log(id);
+  }
+
+  onDeleteAlbumPhoto(photoId: number) {
+    console.log(photoId);
+  }
+
   errors(controlName: string | (string | number)[]): any {
     return Object.values(this.get(controlName).errors);
   }

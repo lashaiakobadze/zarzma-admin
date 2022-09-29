@@ -16,7 +16,9 @@ import { AlbumPhotoComponent } from './album-photo/album-photo.component';
 })
 export class AlbumItemComponent implements OnInit {
   @Input() albumItem: AlbumItemInterface;
+
   @Output() deleteAlbumItemClicked = new EventEmitter<number>();
+  @Output() deleteAlbumPhotoClicked = new EventEmitter<number>();
 
   selectedFile: ImageSnippet;
   form: FormGroup;
@@ -28,16 +30,8 @@ export class AlbumItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onDeleteAlbumItem(id: number) {
-    this.deleteAlbumItemClicked.emit(id);
-  }
-
   open() {
     this.isOpen = !this.isOpen;
-  }
-
-  onDelete(id: number) {
-    this.deleteAlbumItemClicked.emit(id);
   }
 
   onGetForm() {
@@ -69,14 +63,16 @@ export class AlbumItemComponent implements OnInit {
     for (let [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
     }
+  }
 
-    // this.articleService.storeArticle(formData as unknown as Article)
-    //   .subscribe((articleData) => {
-    //     // ToDo: არტიკლის რესფონსში გამოშვება მინდა დასააფდეითებლად;
-    //     console.log(articleData);
-    //       this.articleForm.reset();
-    //     }
-    //   );
+  onDeleteAlbumItem() {
+    if(window.confirm('ნამდვილად გსურთ ალბომიდან მოვლენის წაშლა?')){
+      this.deleteAlbumItemClicked.emit(this.albumItem.id);
+    }
+  }
+
+  onDeleteAlbumPhoto(photoId: number) {
+    this.deleteAlbumPhotoClicked.emit(photoId);
   }
 
   errors(controlName: string | (string | number)[]): any {
