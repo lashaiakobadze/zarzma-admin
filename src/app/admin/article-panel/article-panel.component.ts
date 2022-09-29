@@ -64,7 +64,7 @@ export class ArticlePanelComponent implements OnInit {
 
     reader.addEventListener('load', (event: any) => {
       this.selectedFile = new ImageSnippet(event.target.result, file);
-      this.selectedFile.pending = true;
+      this.selectedFile.pending = true; // for loader
     });
     reader.readAsDataURL(file);
   }

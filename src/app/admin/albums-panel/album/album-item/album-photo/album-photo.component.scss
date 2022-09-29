@@ -1,16 +1,9 @@
 
-.album-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 20px;
-
-  &:hover {
-    background-color: rgb(0 0 0 / 30%);
-  }
-}
-
-img {
-  padding: 10px;
+.background-image {
+  margin: 10px;
   width: 100px;
   height: 100px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }

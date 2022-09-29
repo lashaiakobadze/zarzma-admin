@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
+import { AlbumInterface } from '../../interfaces/album.interface';
 import { AlbumItemComponent } from './album-item/album-item.component';
 
 @Component({
@@ -13,7 +14,7 @@ import { AlbumItemComponent } from './album-item/album-item.component';
   styleUrls: ['./album.component.scss']
 })
 export class AlbumComponent implements OnInit {
-  @Input() album: any;
+  @Input() album: AlbumInterface;
   @Output() deleteAlbumItemClicked = new EventEmitter<number>();
 
   form: FormGroup;
@@ -33,7 +34,7 @@ export class AlbumComponent implements OnInit {
 
   onGetForm() {
     this.formMode = true;
-    this.initForm();
+    this.initForm(this.album);
   }
 
   onAdd() {
@@ -41,7 +42,7 @@ export class AlbumComponent implements OnInit {
       return;
     }
 
-    // this.albumsService.addAlbum(this.albumForm.value);
+    console.log(this.form.value);
   }
 
   errors(controlName: string | (string | number)[]): any {
@@ -53,10 +54,10 @@ export class AlbumComponent implements OnInit {
   }
 
 
-  initForm(): void {
+  initForm(album: AlbumInterface): void {
     this.form = new FormGroup({
       Name: new FormControl(null, AppValidators.required),
-      AlbumType: new FormControl(null, AppValidators.required)
+      AlbumId: new FormControl(album.id, AppValidators.required)
     });
   }
 

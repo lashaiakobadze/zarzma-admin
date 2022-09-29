@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { AlbumItemInterface } from 'src/app/admin/interfaces/albumItem.interface';
+import { ImageSnippet } from 'src/app/shared/models/image-snippet.model';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { AlbumPhotoComponent } from './album-photo/album-photo.component';
@@ -13,9 +15,10 @@ import { AlbumPhotoComponent } from './album-photo/album-photo.component';
   styleUrls: ['./album-item.component.scss']
 })
 export class AlbumItemComponent implements OnInit {
-  @Input() albumItem: any;
+  @Input() albumItem: AlbumItemInterface;
   @Output() deleteAlbumItemClicked = new EventEmitter<number>();
 
+  selectedFile: ImageSnippet;
   form: FormGroup;
   formMode = false;
   isOpen: boolean;
@@ -23,7 +26,6 @@ export class AlbumItemComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.albumItem.albumPhotos = [1, 1, 1, 1];
   }
 
   onDeleteAlbumItem(id: number) {
@@ -40,7 +42,18 @@ export class AlbumItemComponent implements OnInit {
 
   onGetForm() {
     this.formMode = true;
-    this.initForm();
+    this.initForm(this.albumItem);
+  }
+
+  processFile(imageInput: any): void {
+    const file: File = imageInput.files[0];
+    this.form.value.files = [file];
+    const reader = new FileReader();
+
+    reader.addEventListener('load', (event: any) => {
+      this.selectedFile = new ImageSnippet(event.target.result, file);
+    });
+    reader.readAsDataURL(file);
   }
 
   onAdd() {
@@ -48,7 +61,22 @@ export class AlbumItemComponent implements OnInit {
       return;
     }
 
-    // this.albumsService.addAlbum(this.albumForm.value);
+    console.log(this.form.value);
+
+    const myForm = document.forms[0];
+    const formData = new FormData(myForm);
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
+    // this.articleService.storeArticle(formData as unknown as Article)
+    //   .subscribe((articleData) => {
+    //     // ToDo: არტიკლის რესფონსში გამოშვება მინდა დასააფდეითებლად;
+    //     console.log(articleData);
+    //       this.articleForm.reset();
+    //     }
+    //   );
   }
 
   errors(controlName: string | (string | number)[]): any {
@@ -60,10 +88,11 @@ export class AlbumItemComponent implements OnInit {
   }
 
 
-  initForm(): void {
+  initForm(albumItem: AlbumItemInterface): void {
     this.form = new FormGroup({
       Name: new FormControl(null, AppValidators.required),
-      AlbumType: new FormControl(null, AppValidators.required)
+      AlbumItemId: new FormControl(albumItem.albumId, AppValidators.required),
+      files: new FormControl(null, AppValidators.required),
     });
   }
 

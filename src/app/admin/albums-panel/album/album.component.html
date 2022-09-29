@@ -44,6 +44,23 @@
       </p>
     </div>
 
+    <!-- disabled input -->
+    <div class="form-control visible">
+      <label for="AlbumId" class="form-label">Album id</label>
+      <input
+        type="text"
+        name="AlbumId"
+        class="input"
+        placeholder="Album photo name"
+        formControlName="AlbumId"
+      >
+      <p class="required" *ngIf="get('AlbumId').invalid && get('AlbumId').touched">
+        <ng-container *ngFor="let errorMessage of errors('AlbumId')">
+          <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
+        </ng-container>
+      </p>
+    </div>
+
     <button
       type="submit"
       class="button update"

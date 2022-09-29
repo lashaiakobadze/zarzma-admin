@@ -1,6 +1,6 @@
 import { AlbumItemInterface } from "./albumItem.interface";
 
-export interface Album {
+export interface AlbumInterface {
   id: number,
   name: string,
   albumType: number,

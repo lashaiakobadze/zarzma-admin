@@ -1,6 +1,6 @@
 export interface AlbumPhotoInterface {
   name: string,
-  photoName: File[],
+  photoName: string,
   albumItemId: string,
   createDate: string,
   updateDate: string

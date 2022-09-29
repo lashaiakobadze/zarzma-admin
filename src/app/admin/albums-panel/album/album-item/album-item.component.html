@@ -4,7 +4,22 @@
 </div>
 
 <div *ngIf="isOpen" class="album-item-content">
-  <ng-container *ngFor="let albumItemPhoto of albumItem.albumPhotos">
+  <ng-container *ngFor="let albumItemPhoto of [
+    {
+      name: 'test',
+      photoName: 'File[]',
+      albumItemId: 'test',
+      createDate: 'string',
+      updateDate: 'string'
+    },
+    {
+      name: 'test',
+      photoName: 'File[]',
+      albumItemId: 'test',
+      createDate: 'string',
+      updateDate: 'string'
+    }
+  ]"> <!-- albumItem.albumPhotos -->
     <app-album-photo
       [albumPhoto]="albumItemPhoto"
     ></app-album-photo>
@@ -26,16 +41,52 @@
     (ngSubmit)="onAdd()"
   >
     <div class="form-control">
-      <label for="Name" class="form-label">Album photo</label>
+      <label for="Name" class="form-label">Album photo name</label>
       <input
         type="text"
         name="Name"
         class="input"
-        placeholder="Album photo"
+        placeholder="Album photo name"
         formControlName="Name"
       >
       <p class="required" *ngIf="get('Name').invalid && get('Name').touched">
         <ng-container *ngFor="let errorMessage of errors('Name')">
+          <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
+        </ng-container>
+      </p>
+    </div>
+
+    <div class="form-control">
+      <label for="image" class="form-label">image</label>
+      <img class="panel-img" [src]="selectedFile?.src" *ngIf="selectedFile?.src !== null && selectedFile?.src">
+      <input
+        #imageInput
+        type="file"
+        class="input"
+        name="files"
+        formControlName="files"
+        placeholder="Album item image"
+        (change)="processFile(imageInput)"
+      >
+      <p class="required" *ngIf="get('files').invalid && get('files').touched">
+        <ng-container *ngFor="let errorMessage of errors('files')">
+          <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
+        </ng-container>
+      </p>
+    </div>
+
+    <!-- disabled input -->
+    <div class="form-control visible">
+      <label for="AlbumItemId" class="form-label">Album item id</label>
+      <input
+        type="text"
+        name="AlbumItemId"
+        class="input"
+        placeholder="Album photo name"
+        formControlName="AlbumItemId"
+      >
+      <p class="required" *ngIf="get('AlbumItemId').invalid && get('AlbumItemId').touched">
+        <ng-container *ngFor="let errorMessage of errors('AlbumItemId')">
           <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
         </ng-container>
       </p>
