@@ -33,13 +33,12 @@ export class VideoService {
     return this.videoItemsUpdated.asObservable();
   }
 
-  // ToDo: არ მუშაობს, აქაც მინდა რესფონსში ობიექტის გამოგზავნა;
   addVideo(video: Video): Observable<Video> {
     return this.http.post<Video>('Videos/AddVideo', video)
       .pipe(
         this.loaderService.useLoader,
         tap(() => {
-          // ToDo:
+          // ToDo: აქაც მინდა რესფონსში ობიექტის გამოგზავნა;
           const videoData: Video = video as unknown as Video;
 
           // this.videoItems = [...this.videoItems, videoData];

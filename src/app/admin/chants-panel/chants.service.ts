@@ -32,12 +32,12 @@ export class ChantService {
     return this.chantsItemsUpdated.asObservable();
   }
 
-  // ToDo: არ მუშაობს, აქაც მინდა რესფონსში ობიექტის გამოგზავნა;
   storeChant(chant: Chant): Observable<Chant> {
     return this.http.post<Chant>('Chants/AddChant', chant)
       .pipe(
         this.loaderService.useLoader,
         tap(() => {
+          // ToDo: აქაც მინდა რესფონსში ობიექტის გამოგზავნა;
           const chantData: ChantInterface = chant as unknown as ChantInterface;
 
           this.chantsItems = [...this.chantsItems, chantData];

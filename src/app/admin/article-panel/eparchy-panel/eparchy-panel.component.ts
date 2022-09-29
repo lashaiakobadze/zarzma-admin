@@ -35,14 +35,18 @@ export class EparchyPanelComponent implements OnInit {
       return;
     }
 
-    const formData: FormData = this.articleService.getFormData(this.eparchyForm);
+    console.log(document.forms[0]);
 
+    // ToDo: fix this formData.
+    // const formData: FormData = this.articleService.getFormData(this.eparchyForm);
+    const myForm = document.forms[0];
+    const formData = new FormData(myForm);
 
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
+    // for (let [key, value] of formData.entries()) {
+    //   console.log(`${key}: ${value}`);
+    // }
 
-    this.articleService.updateArticle(formData as unknown as ArticleInterface).pipe(untilDestroyed(this)).subscribe();
+    this.articleService.updateArticle(formData).pipe(untilDestroyed(this)).subscribe();
   }
 
   onDeleteEparchy(id: number): void {

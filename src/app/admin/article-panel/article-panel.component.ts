@@ -81,13 +81,13 @@ export class ArticlePanelComponent implements OnInit {
       console.log(`${key}: ${value}`);
     }
 
-    // this.articleService.storeArticle(formData as unknown as Article)
-    //   .subscribe((articleData) => {
-    //     // ToDo: არტიკლის რესფონსში გამოშვება მინდა დასააფდეითებლად;
-    //     console.log(articleData);
-    //       this.articleForm.reset();
-    //     }
-    //   );
+    this.articleService.storeArticle(formData as unknown as Article)
+      .subscribe((articleData) => {
+        // ToDo: არტიკლის რესფონსში გამოშვება მინდა დასააფდეითებლად;
+        console.log(articleData);
+          this.articleForm.reset();
+        }
+      );
   }
 
   errors(controlName: string | (string | number)[]): any {

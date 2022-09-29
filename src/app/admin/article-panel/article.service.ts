@@ -123,8 +123,7 @@ export class ArticleService {
       );
   }
 
-  // ToDo: update file don't work
-  updateArticle(article: ArticleInterface): Observable<ArticleInterface> {
+  updateArticle(article: any): Observable<ArticleInterface> {
     return this.http.post<ArticleInterface>('Articls/UpdateArticle', article)
       .pipe(
         this.loaderService.useLoader,
