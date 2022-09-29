@@ -19,7 +19,7 @@ export class IconsPanelComponent implements OnInit {
   BASE_URL = environment.dataUrl;
 
   @Input() iconsItem: ArticleInterface;
-  iconsForm: FormGroup<ArticleForm>;
+  iconsForm: FormGroup;
   selectedFile: ImageSnippet;
 
   constructor(
@@ -41,13 +41,13 @@ export class IconsPanelComponent implements OnInit {
 
   onDeleteIcons(id: number): void {
     if(window.confirm('ნამდვილად გსურთ წაშლა?')){
-      this.articleService.deleteArticle(id, DocType.publication).pipe(untilDestroyed(this)).subscribe();
+      this.articleService.deleteArticle(id, DocType.icons).pipe(untilDestroyed(this)).subscribe();
     }
   }
 
   processFile(imageInput: any): void {
     const file: File = imageInput.files[0];
-    this.iconsForm.value.files = [file];
+    this.iconsForm.controls['files'].setValue([file]);
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
@@ -66,7 +66,7 @@ export class IconsPanelComponent implements OnInit {
   }
 
   initForm(iconsItem: ArticleInterface): void {
-    this.iconsForm = new FormGroup<ArticleForm>({
+    this.iconsForm = new FormGroup({
       id: new FormControl(iconsItem?.id, AppValidators.required),
       docType: new FormControl(iconsItem?.docType, AppValidators.required),
       TitleGeo: new FormControl(iconsItem?.title, AppValidators.required),

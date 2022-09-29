@@ -16,10 +16,10 @@ import { ArticleService } from '../article.service';
   styleUrls: ['./publications-panel.component.scss']
 })
 export class PublicationsPanelComponent implements OnInit {
-  // BASE_URL = environment.dataUrl;
+  BASE_URL = environment.dataUrl;
 
   @Input() publicationItem: ArticleInterface;
-  publicationForm: FormGroup<ArticleForm>;
+  publicationForm: FormGroup;
   selectedFile: ImageSnippet;
 
   constructor(
@@ -41,13 +41,13 @@ export class PublicationsPanelComponent implements OnInit {
 
   onDeletePublication(id: number): void {
     if(window.confirm('ნამდვილად გსურთ წაშლა?')){
-      this.articleService.deleteArticle(id, DocType.icons).pipe(untilDestroyed(this)).subscribe();
+      this.articleService.deleteArticle(id, DocType.publication).pipe(untilDestroyed(this)).subscribe();
     }
   }
 
   processFile(imageInput: any): void {
     const file: File = imageInput.files[0];
-    this.publicationForm.value.files = [file];
+    this.publicationForm.controls['files'].setValue([file]);
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
@@ -66,7 +66,7 @@ export class PublicationsPanelComponent implements OnInit {
   }
 
   initForm(publicationItem: ArticleInterface): void {
-    this.publicationForm = new FormGroup<ArticleForm>({
+    this.publicationForm = new FormGroup({
       id: new FormControl(publicationItem?.id, AppValidators.required),
       docType: new FormControl(publicationItem?.docType, AppValidators.required),
       TitleGeo: new FormControl(publicationItem?.title, AppValidators.required),
@@ -75,7 +75,7 @@ export class PublicationsPanelComponent implements OnInit {
       TextEng: new FormControl(publicationItem?.textEng),
       TitleRus: new FormControl(publicationItem?.titleRus),
       TextRus: new FormControl(publicationItem?.textRus),
-      files: new FormControl(null, AppValidators.required),
+      files: new FormControl(publicationItem?.photoUrl, AppValidators.required),
     });
   }
 

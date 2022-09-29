@@ -19,7 +19,7 @@ export class EparchyPanelComponent implements OnInit {
   BASE_URL = environment.dataUrl;
 
   @Input() eparchyItem: ArticleInterface;
-  eparchyForm: FormGroup<ArticleForm>;
+  eparchyForm: FormGroup;
   selectedFile: ImageSnippet;
 
   constructor(
@@ -37,9 +37,6 @@ export class EparchyPanelComponent implements OnInit {
 
     const formData: FormData = this.articleService.getFormData(this.eparchyForm);
 
-    // if (!this.eparchyForm.value.files) {
-    //   this.eparchyForm.controls.files.setValue(this.eparchyItem.photoUrl);
-    // }
 
     for (let [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
@@ -56,9 +53,7 @@ export class EparchyPanelComponent implements OnInit {
 
   processFile(imageInput: any): void {
     const file: File = imageInput.files[0];
-    // this.eparchyForm.controls['files'].setValue([file]) ;
-    this.eparchyForm.value.files = [file];
-    // this.eparchyForm.controls.files.setValue([file]);
+    this.eparchyForm.controls['files'].setValue([file]);
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
@@ -77,7 +72,7 @@ export class EparchyPanelComponent implements OnInit {
   }
 
   initForm(eparchyItem: ArticleInterface): void {
-    this.eparchyForm = new FormGroup<ArticleForm>({
+    this.eparchyForm = new FormGroup({
       id: new FormControl(eparchyItem?.id, AppValidators.required),
       docType: new FormControl(eparchyItem?.docType, AppValidators.required),
       TitleGeo: new FormControl(eparchyItem?.title, AppValidators.required),
