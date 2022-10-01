@@ -20,7 +20,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  padding: 8px;
+  padding: 20px;
 
   &__header {
     @include flexPosition(center, center);
