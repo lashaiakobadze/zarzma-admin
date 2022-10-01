@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ImageSnippet } from 'src/app/shared/models/image-snippet.model';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { environment } from 'src/environments/environment';
 import { DocType } from '../../enums/docType.enum';
@@ -19,8 +18,8 @@ export class EparchyPanelComponent implements OnInit {
   BASE_URL = environment.dataUrl;
 
   @Input() eparchyItem: ArticleInterface;
-  eparchyForm: FormGroup;
-  selectedFile: ImageSnippet;
+  eparchyForm: FormGroup<ArticleForm>;
+  imagePreview: string;
 
   constructor(
     public articleService: ArticleService
@@ -30,21 +29,23 @@ export class EparchyPanelComponent implements OnInit {
     this.initForm(this.eparchyItem);
   }
 
+  onImagePicked(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.eparchyForm.patchValue({ files: file });
+    this.eparchyForm.get('files').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
   onUpdateEparchy(): void {
     if (!this.eparchyForm.valid) {
       return;
     }
 
-    console.log(document.forms[0]);
-
-    // ToDo: fix this formData.
-    // const formData: FormData = this.articleService.getFormData(this.eparchyForm);
-    const myForm = document.forms[0];
-    const formData = new FormData(myForm);
-
-    // for (let [key, value] of formData.entries()) {
-    //   console.log(`${key}: ${value}`);
-    // }
+    const formData: FormData = this.articleService.getFormData(this.eparchyForm);
 
     this.articleService.updateArticle(formData).pipe(untilDestroyed(this)).subscribe();
   }
@@ -53,20 +54,6 @@ export class EparchyPanelComponent implements OnInit {
     if(window.confirm('ნამდვილად გსურთ წაშლა?')){
       this.articleService.deleteArticle(id, DocType.eparchy).pipe(untilDestroyed(this)).subscribe();
     }
-  }
-
-  processFile(imageInput: any): void {
-    const file: File = imageInput.files[0];
-    this.eparchyForm.controls['files'].setValue([file]);
-    // this.eparchyForm.value.files = [file];
-
-    const reader = new FileReader();
-
-    reader.addEventListener('load', (event: any) => {
-      this.selectedFile = new ImageSnippet(event.target.result, file);
-      this.selectedFile.pending = true;
-    });
-    reader.readAsDataURL(file);
   }
 
   errors(controlName: string | (string | number)[]): any {
@@ -78,7 +65,7 @@ export class EparchyPanelComponent implements OnInit {
   }
 
   initForm(eparchyItem: ArticleInterface): void {
-    this.eparchyForm = new FormGroup({
+    this.eparchyForm = new FormGroup<ArticleForm>({
       id: new FormControl(eparchyItem?.id, AppValidators.required),
       docType: new FormControl(eparchyItem?.docType, AppValidators.required),
       TitleGeo: new FormControl(eparchyItem?.title, AppValidators.required),

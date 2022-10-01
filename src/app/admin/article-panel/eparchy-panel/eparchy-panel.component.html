@@ -83,24 +83,37 @@
     ></textarea>
   </div>
 
-  <div class="form-control">
-    <label for="image" class="form-label">image</label>
-    <img
-      class="panel-img"
-      [src]="selectedFile?.src || BASE_URL+eparchyItem?.photoUrl"
-      [alt]="eparchyItem?.photoUrl" [alt]="eparchyItem?.photoUrl">
+  <!-- Image -->
+  <div class="form-control form-control--file">
+    <button type="button" class="file-btn btn button"  (click)="filePicker.click()">
+      Pick Image
+    </button>
     <input
-      #imageInput
       type="file"
-      class="input"
       name="files"
-      (change)="processFile(imageInput)"
-    >
+      #filePicker
+      (change)="onImagePicked($event)"
+    />
     <p class="required" *ngIf="get('files').invalid && get('files').touched">
       <ng-container *ngFor="let errorMessage of errors('files')">
         <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
       </ng-container>
     </p>
+  </div>
+  <div
+    class="image-preview form-control form-control--file"
+    *ngIf="imagePreview !== '' && imagePreview && eparchyForm.get('files').valid"
+  >
+    <img [src]="imagePreview" [alt]="eparchyForm.value.TitleGeo" />
+  </div>
+  <div
+    class="image-preview form-control form-control--file"
+    *ngIf="
+      !(imagePreview !== '' && imagePreview && eparchyForm.get('files').valid) &&
+      eparchyItem?.photoUrl
+    "
+  >
+    <img class="panel-img" [src]="BASE_URL+eparchyItem?.photoUrl" [alt]="eparchyItem.title" />
   </div>
 
   <div class="form-control">

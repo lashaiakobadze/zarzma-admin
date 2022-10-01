@@ -5,3 +5,33 @@
     background-color: black;
   }
 }
+
+input[type="file"] {
+  visibility: hidden;
+}
+
+.image-preview {
+  width: 100%;
+  height: 5rem;
+  margin: 0 10px;
+}
+
+.image-preview img {
+  height: 100%;
+}
+
+.form-control {
+  &--file {
+    margin: 0 20px;
+    justify-content: flex-start;
+    align-items: center;
+  }
+}
+
+.file-btn {
+  color: #fff;
+  background-color: rgba(79, 79, 79, 1);
+  padding: 5px;
+  cursor: pointer;
+  margin: 0;
+}
