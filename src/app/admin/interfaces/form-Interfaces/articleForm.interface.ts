@@ -1,10 +1,11 @@
 import { FormControl } from "@angular/forms";
 import { DocType } from "../../enums/docType.enum";
+import { DocTypeName } from "../../enums/docTypeName.enum";
 
 export interface ArticleForm {
   id?: FormControl<number>,
   docType?: FormControl<string>;
-  DocType?: FormControl<DocType>;
+  DocType?: FormControl<DocType | DocTypeName>;
 
   TitleGeo: FormControl<string>;
   TitleRus: FormControl<string>;

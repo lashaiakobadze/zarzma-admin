@@ -8,6 +8,7 @@ import { ArticleService } from './article.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ArticleForm } from '../interfaces/form-Interfaces/articleForm.interface';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
+import { DocTypeName } from '../enums/docTypeName.enum';
 
 @UntilDestroy()
 @Component({
@@ -16,7 +17,7 @@ import { AppValidators } from 'src/app/shared/validators/app-validators';
   styleUrls: ['./article-panel.component.scss']
 })
 export class ArticlePanelComponent implements OnInit {
-  DocTypes = ['ეპარქია', 'გამოცემები', 'ხატები'];
+  DocTypes = [];
   articleForm: FormGroup<ArticleForm>;
   formMode = false;
   selectedFile: ImageSnippet;
@@ -30,6 +31,8 @@ export class ArticlePanelComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.DocTypes = [DocTypeName.eparchy, DocTypeName.publication, DocTypeName.icons];
+
     this.articleService.getEparchyItems().pipe(untilDestroyed(this)).subscribe();
     this.articleService.getEparchyItemsListener()
       .pipe(untilDestroyed(this))
@@ -88,6 +91,15 @@ export class ArticlePanelComponent implements OnInit {
           this.articleForm.reset();
         }
       );
+  }
+
+  onUpdateArticleItem(articleItemForm: FormGroup<ArticleForm>) {
+    const formData: FormData = this.articleService.getFormData(articleItemForm);
+    this.articleService.updateArticle(formData as unknown as Article).pipe(untilDestroyed(this)).subscribe();
+  }
+
+  onDeleteArticleItem(event: { id: number, documentType: DocTypeName }) {
+    this.articleService.deleteArticle(event.id, event.documentType).pipe(untilDestroyed(this)).subscribe();
   }
 
   errors(controlName: string | (string | number)[]): any {

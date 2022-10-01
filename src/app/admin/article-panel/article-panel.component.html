@@ -141,26 +141,32 @@
 <div class="panel">
   <div class="panel_item">
     <h2>Eparchy Items</h2>
-    <app-eparchy-panel
+    <app-article-item
       *ngFor="let eparchyItem of eparchyItems"
-      [eparchyItem]="eparchyItem"
-    ></app-eparchy-panel>
+      [articleItem]="eparchyItem"
+      (deleteArticleItemClicked)="onDeleteArticleItem($event)"
+      (updateArticleItemClicked)="onUpdateArticleItem($event)"
+    ></app-article-item>
   </div>
 
   <div class="panel_item">
     <h2>Publications Items</h2>
-      <app-publications-panel
+    <app-article-item
       *ngFor="let publicationsItem of publicationsItems"
-      [publicationItem]="publicationsItem"
-    ></app-publications-panel>
+      [articleItem]="publicationsItem"
+      (deleteArticleItemClicked)="onDeleteArticleItem($event)"
+      (updateArticleItemClicked)="onUpdateArticleItem($event)"
+    ></app-article-item>
   </div>
 
   <div class="panel_item">
     <h2>Icons Items</h2>
-    <app-icons-panel
+    <app-article-item
       *ngFor="let iconsItem of iconsItems"
-      [iconsItem]="iconsItem"
-    ></app-icons-panel>
+      [articleItem]="iconsItem"
+      (deleteArticleItemClicked)="onDeleteArticleItem($event)"
+      (updateArticleItemClicked)="onUpdateArticleItem($event)"
+    ></app-article-item>
   </div>
 </div>
 

@@ -4,6 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { Subject, Observable, tap } from 'rxjs';
 import { LoaderService } from 'src/app/shared/components/loader/loader.service';
 import { DocType } from '../enums/docType.enum';
+import { DocTypeName } from '../enums/docTypeName.enum';
 import { ArticleInterface } from '../interfaces/article.interface';
 import { Article } from '../models/article.model';
 
@@ -123,63 +124,31 @@ export class ArticleService {
       );
   }
 
-  updateArticle(article: any): Observable<ArticleInterface> {
-    return this.http.post<ArticleInterface>('Articls/UpdateArticle', article)
-      .pipe(
-        this.loaderService.useLoader,
-        tap(() => {
-          switch (+article.docType) {
-            case DocType.eparchy: {
-              const updatedEparchyItems = [...this.eparchyItems];
-              const oldPostIndex = updatedEparchyItems.findIndex(item => item.id === article.id);
-              updatedEparchyItems[oldPostIndex] = article;
-              this.eparchyItems = updatedEparchyItems;
-              this.eparchyItemsUpdated.next([...this.eparchyItems]);
-              break;
-            }
-            case DocType.publication: {
-              const updatedPublicationItems = [...this.eparchyItems];
-              const oldPostIndex = updatedPublicationItems.findIndex(item => item.id === article.id);
-              updatedPublicationItems[oldPostIndex] = article;
-              this.publicationsItems = updatedPublicationItems;
-              this.publicationsItemsUpdated.next([...this.eparchyItems]);
-              break;
-            }
-            case DocType.icons: {
-              const updatedIconsItems = [...this.eparchyItems];
-              const oldPostIndex = updatedIconsItems.findIndex(item => item.id === article.id);
-              updatedIconsItems[oldPostIndex] = article;
-              this.iconsItems = updatedIconsItems;
-              this.iconsItemsUpdated.next([...this.eparchyItems]);
-              break;
-            }
-            default: {
-              break;
-            }
-          };
-        })
-      );
+  updateArticle(article: Article): Observable<Article> {
+    return this.http.post<Article>('Articls/UpdateArticle', article).pipe(
+      this.loaderService.useLoader
+    );
   }
 
-  deleteArticle(articleID: number, docType: DocType): Observable<any> {
+  deleteArticle(articleID: number, docTypeName: DocTypeName): Observable<any> {
     return this.http.get(`Articls/DeleteArticle?ID=${articleID}`)
       .pipe(
         this.loaderService.useLoader,
         tap(() => {
-          switch (docType) {
-            case DocType.eparchy: {
+          switch (docTypeName) {
+            case DocTypeName.eparchy: {
               const eparchyItems = this.eparchyItems.filter(item => item.id !== articleID);
               this.eparchyItems = eparchyItems;
               this.eparchyItemsUpdated.next([...this.eparchyItems]);
               break;
             }
-            case DocType.publication: {
+            case DocTypeName.publication: {
               const publicationsItems = this.publicationsItems.filter(item => item.id !== articleID);
               this.publicationsItems = publicationsItems;
               this.publicationsItemsUpdated.next([...this.publicationsItems]);
               break;
             }
-            case DocType.icons: {
+            case DocTypeName.icons: {
               const iconsItems = this.iconsItems.filter(item => item.id !== articleID);
               this.iconsItems = iconsItems;
               this.iconsItemsUpdated.next([...this.iconsItems]);

@@ -1,9 +1,9 @@
-<form [formGroup]="publicationForm" class="form">
+<form [formGroup]="articleItemForm" class="form">
   <div class="form-control visible">
     <label for="ID" class="form-label">ID</label>
     <input class="input" name="ID" formControlName="id" type="number">
-    <label for="DocType" class="form-label">DocType</label>
-    <input class="input" name="DocType" formControlName="docType">
+    <label for="docType" class="form-label">docType</label>
+    <input class="input" name="docType" formControlName="docType">
   </div>
 
   <div class="form-control">
@@ -83,37 +83,52 @@
     ></textarea>
   </div>
 
-  <div class="form-control">
-    <label for="image" class="form-label">image</label>
-    <img class="panel-img" [src]="selectedFile?.src || BASE_URL + publicationItem?.photoUrl" [alt]="publicationItem?.photoUrl" [alt]="publicationItem?.photoUrl">
+  <!-- Image -->
+  <div class="form-control form-control--file">
+    <button type="button" class="file-btn btn button"  (click)="filePicker.click()">
+      Pick Image
+    </button>
     <input
-      #imageInput
       type="file"
-      class="input"
       name="files"
-      placeholder="Publication image"
-      (change)="processFile(imageInput)"
-    >
+      #filePicker
+      (change)="onImagePicked($event)"
+    />
     <p class="required" *ngIf="get('files').invalid && get('files').touched">
       <ng-container *ngFor="let errorMessage of errors('files')">
         <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
       </ng-container>
     </p>
   </div>
+  <div
+    class="image-preview form-control form-control--file"
+    *ngIf="imagePreview !== '' && imagePreview && articleItemForm.get('files').valid"
+  >
+    <img [src]="imagePreview" [alt]="articleItemForm.value.TitleGeo" />
+  </div>
+  <div
+    class="image-preview form-control form-control--file"
+    *ngIf="
+      !(imagePreview !== '' && imagePreview && articleItemForm.get('files').valid) &&
+      articleItem?.photoUrl
+    "
+  >
+    <img class="panel-img" [src]="BASE_URL+articleItem?.photoUrl" [alt]="articleItem.title" />
+  </div>
 
   <div class="form-control">
     <button
       type="submit"
       class="button update"
-      (click)="onUpdatePublication()"
-    >Update Publication Item</button>
+      (click)="onUpdateArticleItem()"
+    >Update</button>
   </div>
 
   <div class="form-control">
     <button
       type="submit"
       class="button delete"
-      (click)="onDeletePublication(+publicationItem.id)"
-    >Delete Publication Item</button>
+      (click)="onDeleteArticleItem(+articleItem.id)"
+    >Delete</button>
   </div>
 </form>
