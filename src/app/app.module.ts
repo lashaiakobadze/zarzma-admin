@@ -11,6 +11,8 @@ import { LoaderComponent } from './shared/components/loader/loader.component';
 
 import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { UrlInterceptor } from './shared/interceptors/url.interceptor';
+import { ErrorInterceptor } from './shared/interceptors/error.intereceptor';
+
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app.routing';
 
@@ -38,6 +40,11 @@ import { AppRoutingModule } from './app.routing';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true,
     }
   ],

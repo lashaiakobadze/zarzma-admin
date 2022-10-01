@@ -3,3 +3,9 @@
   <router-outlet></router-outlet>
 </div>
 <app-loader></app-loader>
+
+<app-error
+ *ngIf="errorService.errorMessage"
+ [error]="errorService.errorMessage"
+ (closed)="errorService.errorMessage = null"
+></app-error>

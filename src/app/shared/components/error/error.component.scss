@@ -1,0 +1,47 @@
+@import '../../../../scss/styles.scss';
+
+.overlay {
+  @include flexPosition(center, center);
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(16, 16, 16, 0.5);
+}
+
+.dialog {
+  position: relative;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  background-color: rgb(0, 0, 0);
+  width: 30%;
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 8px;
+
+  &__header {
+    @include flexPosition(center, center);
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+  &__content {
+    @include flexPosition(center, center);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 400;
+  }
+}
+
+.delete-img {
+  width: 25px;
+  position: absolute;
+  top: -10px;
+  right: -12.5px;
+  margin: 0;
+  cursor: pointer;
+}

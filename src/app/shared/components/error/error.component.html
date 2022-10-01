@@ -1,0 +1,9 @@
+<div class="overlay" (click)="closed.emit()">
+  <div class="dialog" (click)="$event.stopPropagation()">
+    <div class="dialog__header">შეცდომა</div>
+    <div class="dialog__content">{{ error }}</div>
+    <div class="dialog__actions">
+      <img (click)="closed.emit()" class="delete-img" src="assets/cancel.svg" alt="add">
+    </div>
+  </div>
+</div>
