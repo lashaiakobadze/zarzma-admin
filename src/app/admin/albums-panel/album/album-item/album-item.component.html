@@ -4,25 +4,26 @@
 </div>
 
 <div *ngIf="isOpen" class="album-item-content">
-  <ng-container *ngFor="let albumItemPhoto of  albumItem.albumPhotos"> <!--
-    [
-    {
-      photoId: 0,
-      name: 'test',
-      photoName: 'File[]',
-      albumItemId: 12,
-      createDate: 'string',
-      updateDate: 'string'
-    },
-    {
-      photoId: 1,
-      name: 'test',
-      photoName: 'File[]',
-      albumItemId: 12,
-      createDate: 'string',
-      updateDate: 'string'
-    }
-  ]
+  <ng-container *ngFor="let albumItemPhoto of     [
+  {
+    photoId: 0,
+    name: 'test',
+    photoName: 'File[]',
+    albumItemId: 12,
+    createDate: 'string',
+    updateDate: 'string'
+  },
+  {
+    photoId: 1,
+    name: 'test',
+    photoName: 'File[]',
+    albumItemId: 12,
+    createDate: 'string',
+    updateDate: 'string'
+  }
+]  ">
+  <!--
+    albumItem.albumPhotos
    -->
     <app-album-photo
       [albumPhoto]="albumItemPhoto"
