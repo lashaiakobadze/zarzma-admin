@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { tap } from 'rxjs';
+import { ErrorMessages } from 'src/app/shared/models/Errors.enume';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { AlbumType } from '../enums/albumType.enum';
@@ -23,6 +25,7 @@ export class AlbumsPanelComponent implements OnInit {
   formMode = false;
   albumForm: FormGroup;
   albums: AlbumInterface[];
+  albumPanelError: ErrorMessages = null;
 
   constructor(
     public albumsService: AlbumsService
@@ -41,7 +44,7 @@ export class AlbumsPanelComponent implements OnInit {
         error: (err) => {
           console.log(err);
         },
-        complete: () =>  console.log('done'),
+        complete: () => console.log('done'),
       })
   }
 
@@ -53,13 +56,27 @@ export class AlbumsPanelComponent implements OnInit {
   // Adds
   onAddAlbum() {
     if (this.albumForm.invalid) {
+      this.albumPanelError = ErrorMessages.albumPanelError;
       return;
     }
+
+    this.albumPanelError = null;
 
     const album = new Album(this.albumForm.value.Name, this.albumForm.value.AlbumType);
     console.log(album);
 
-    // this.albumsService.addAlbum(this.albumForm.value);
+    this.albumsService.addAlbum(this.albumForm.value)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.albumPanelError = null;
+          this.albumForm.reset();
+        },
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => console.log('done'),
+      })
   }
 
   onAddAlbumItem(albumItem: AlbumItem) {
@@ -72,8 +89,6 @@ export class AlbumsPanelComponent implements OnInit {
     }
 
     console.log(albumPhoto);
-
-    this.albumsService.addAlbumPhoto(albumPhoto);
   }
 
   // Deletes

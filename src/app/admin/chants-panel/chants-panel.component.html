@@ -42,6 +42,9 @@
     type="submit"
     class="button update"
   >Add Chant</button>
+  <p class="required">
+    <span *ngIf="chantPanelError">{{ chantPanelError }}</span>
+  </p>
 </form>
 
 <div *ngIf="formMode; else plus">

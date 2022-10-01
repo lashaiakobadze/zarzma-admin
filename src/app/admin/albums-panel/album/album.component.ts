@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { ErrorMessages } from 'src/app/shared/models/Errors.enume';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { AlbumInterface } from '../../interfaces/album.interface';
@@ -27,6 +28,7 @@ export class AlbumComponent implements OnInit {
   form: FormGroup;
   formMode = false;
   isOpen: boolean;
+  albumPanelError: ErrorMessages = null;
 
   ngOnInit(): void {
   }
@@ -43,8 +45,11 @@ export class AlbumComponent implements OnInit {
   // Adds
   onAddAlbumItem() {
     if (this.form.invalid) {
+      this.albumPanelError = ErrorMessages.albumPanelError;
       return;
     }
+
+    this.albumPanelError = null;
 
     const albumItem = new AlbumItem(this.form.value.Name, this.form.value.AlbumId);
     this.addAlbumItemClicked.emit(albumItem);

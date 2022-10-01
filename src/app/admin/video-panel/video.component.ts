@@ -6,6 +6,7 @@ import { Video } from '../models/video.model';
 import { VideoForm } from '../interfaces/form-Interfaces/videoForm.interface';
 import { VideoService } from './video.service';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
+import { ErrorMessages } from 'src/app/shared/models/Errors.enume';
 
 @UntilDestroy()
 @Component({
@@ -17,6 +18,7 @@ export class VideoComponent implements OnInit {
   videoItems: VideoData[] = [];
   formMode = false;
   videoForm: FormGroup<VideoForm>;
+  videoPanelError: ErrorMessages = null;
 
   constructor(public videoService: VideoService) { }
 
@@ -37,15 +39,18 @@ export class VideoComponent implements OnInit {
 
   onAddVideo(): void {
     if (!this.videoForm.valid) {
+      this.videoPanelError = ErrorMessages.videoPanelError;
       return;
     }
 
+    this.videoPanelError = null;
     const video = new Video(this.videoForm.value.Name, this.videoForm.value.VideoURL);
 
     this.videoService.addVideo(video)
     .pipe(untilDestroyed(this))
     .subscribe(
       () => {
+        this.videoPanelError = null;
         console.log('Article add successful!');
         this.videoForm.reset();
       }

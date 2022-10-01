@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
+import { ErrorMessages } from 'src/app/shared/models/Errors.enume';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { environment } from 'src/environments/environment';
 import { DocTypeName } from '../../enums/docTypeName.enum';
@@ -22,6 +23,7 @@ export class ArticleItemComponent implements OnInit {
   articleItemForm: FormGroup<ArticleForm>;
   imagePreview: string;
   document_type: DocTypeName;
+  @Input() articleError: ErrorMessages = null;
 
   constructor() { }
 
@@ -58,9 +60,11 @@ export class ArticleItemComponent implements OnInit {
 
   onUpdateArticleItem(): void {
     if (!this.articleItemForm.valid) {
+      this.articleError = ErrorMessages.articlePanelError;
       return;
     }
 
+    this.articleError = null;
     this.updateArticleItemClicked.emit(this.articleItemForm);
   }
 

@@ -5,6 +5,11 @@
   margin: 20px;
 }
 
+.form-control {
+  width: 100%;
+  align-items: center;
+}
+
 .panel_item {
   h2 {
     display: flex;
@@ -17,6 +22,12 @@
   margin-top: 20px;
 }
 
-.form .button {
+.form {
+  margin: 10px;
+}
+
+.button {
+  width: max-content;
+  padding: 10px 20px;
   margin: 10px;
 }

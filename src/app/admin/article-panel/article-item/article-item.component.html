@@ -122,13 +122,16 @@
       class="button update"
       (click)="onUpdateArticleItem()"
     >Update</button>
-  </div>
 
-  <div class="form-control">
+    <p class="required error">
+      <span *ngIf="articleError">{{ articleError }}</span>
+    </p>
+
     <button
       type="submit"
       class="button delete"
       (click)="onDeleteArticleItem(+articleItem.id)"
     >Delete</button>
   </div>
+
 </form>

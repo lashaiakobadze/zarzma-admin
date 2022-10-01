@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ErrorMessages } from 'src/app/shared/models/Errors.enume';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { ChantInterface } from '../interfaces/chant.interface';
 import { ChantForm } from '../interfaces/form-Interfaces/chantForm.interface';
@@ -17,6 +18,8 @@ export class ChantsPanelComponent implements OnInit {
   formMode = false;
   chantsItems: ChantInterface[] = [];
   chantForm: FormGroup<ChantForm>;
+  chantPanelError: ErrorMessages = null;
+
 
   constructor(
     public chantService: ChantService,
@@ -45,21 +48,21 @@ export class ChantsPanelComponent implements OnInit {
 
   onAddChant(): void {
     if (!this.chantForm.valid) {
+      this.chantPanelError = ErrorMessages.chantPanelError;
       return;
     }
 
+    this.chantPanelError = null;
+
     const myForm = document.forms[0];
     const formData = new FormData(myForm);
-
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
 
     this.chantService.storeChant(formData as unknown as Chant)
     .pipe(untilDestroyed(this))
     .subscribe(
       () => {
         console.log('Article add successful!');
+        this.chantPanelError = null;
         this.chantForm.reset();
       }
     );

@@ -101,6 +101,9 @@
       type="submit"
       class="button update"
     >Add Photo</button>
+    <p class="required">
+      <span *ngIf="albumPanelError">{{ albumPanelError }}</span>
+    </p>
 
     <div *ngIf="formMode">
       <div class="form">

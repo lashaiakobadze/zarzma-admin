@@ -3,6 +3,7 @@ import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthService } from 'src/app/authentication/auth.service';
+import { ErrorMessages } from 'src/app/shared/models/Errors.enume';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { AuthForm } from '../auth-form.interface';
 import { AuthData } from '../auth.model';
@@ -16,7 +17,7 @@ import { AuthData } from '../auth.model';
 export class AuthComponent implements OnInit {
   adminForm: FormGroup<AuthForm>;
   isLoading: boolean;
-  loginErrorMessage: string;
+  loginErrorMessage: ErrorMessages = null;
 
   constructor(
     public authService: AuthService,
@@ -30,15 +31,16 @@ export class AuthComponent implements OnInit {
   onLogin(): void {
     const auth = new AuthData(this.adminForm.value.username, this.adminForm.value.password);
 
-    if (!auth) {
+    if (!auth || !this.adminForm.valid) {
+      this.loginErrorMessage = ErrorMessages.authError;
       return;
     }
 
     this.authService.login(auth.username, auth.password)
       .pipe(untilDestroyed(this))
       .subscribe({
-        error: () => {
-          this.loginErrorMessage = 'არასწორი პაროლი ან მომხმარებელი';
+        error: (err) => {
+          console.log(err);
         },
         complete: () =>  this.loginErrorMessage = null,
       });

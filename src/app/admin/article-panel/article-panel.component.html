@@ -118,6 +118,9 @@
     type="submit"
     class="button update"
   >Add Article</button>
+  <p class="required">
+    <span *ngIf="articlePanelError">{{ articlePanelError }}</span>
+  </p>
 </form>
 
 <div *ngIf="formMode; else plus">

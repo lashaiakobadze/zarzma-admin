@@ -40,6 +40,9 @@
     class="button update"
     (click)="onAddVideo()"
   >Add Video</button>
+  <p class="required">
+    <span *ngIf="videoPanelError">{{ videoPanelError }}</span>
+  </p>
 </form>
 
 <div *ngIf="formMode; else plus">

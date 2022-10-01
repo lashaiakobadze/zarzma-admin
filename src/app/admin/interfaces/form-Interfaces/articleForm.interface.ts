@@ -15,5 +15,5 @@ export interface ArticleForm {
   TextRus: FormControl<string>;
   TextEng: FormControl<string>;
 
-  files: FormControl<File[]> | FormControl<string> | FormControl<File>
+  files: FormControl<File[] | File | string>
 }

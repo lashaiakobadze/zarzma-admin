@@ -9,6 +9,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ArticleForm } from '../interfaces/form-Interfaces/articleForm.interface';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { DocTypeName } from '../enums/docTypeName.enum';
+import { ErrorMessages } from 'src/app/shared/models/Errors.enume';
 
 @UntilDestroy()
 @Component({
@@ -17,14 +18,15 @@ import { DocTypeName } from '../enums/docTypeName.enum';
   styleUrls: ['./article-panel.component.scss']
 })
 export class ArticlePanelComponent implements OnInit {
-  DocTypes = [];
-  articleForm: FormGroup<ArticleForm>;
-  formMode = false;
-  selectedFile: ImageSnippet;
-
   eparchyItems: ArticleInterface[] = [];
   publicationsItems: ArticleInterface[] = [];
   iconsItems: ArticleInterface[] = [];
+
+  articleForm: FormGroup<ArticleForm>;
+  DocTypes = [];
+  formMode = false;
+  selectedFile: ImageSnippet;
+  articlePanelError: ErrorMessages = null;
 
   constructor(
     public articleService: ArticleService
@@ -74,28 +76,29 @@ export class ArticlePanelComponent implements OnInit {
 
   onAddArticle(): void {
     if (!this.articleForm.valid) {
+      this.articlePanelError = ErrorMessages.articlePanelError;
+      console.log(this.articlePanelError);
       return;
     }
 
     const myForm = document.forms[0];
     const formData = new FormData(myForm);
 
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
-
     this.articleService.storeArticle(formData as unknown as Article)
       .subscribe((articleData) => {
         // ToDo: არტიკლის რესფონსში გამოშვება მინდა დასააფდეითებლად;
         console.log(articleData);
           this.articleForm.reset();
+          this.articlePanelError = null;
         }
       );
   }
 
   onUpdateArticleItem(articleItemForm: FormGroup<ArticleForm>) {
     const formData: FormData = this.articleService.getFormData(articleItemForm);
-    this.articleService.updateArticle(formData as unknown as Article).pipe(untilDestroyed(this)).subscribe();
+    this.articleService.updateArticle(formData as unknown as Article)
+      .pipe(untilDestroyed(this))
+      .subscribe();
   }
 
   onDeleteArticleItem(event: { id: number, documentType: DocTypeName }) {
