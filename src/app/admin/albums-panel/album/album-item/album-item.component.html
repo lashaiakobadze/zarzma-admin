@@ -1,6 +1,6 @@
 <div class="album-item">
   <h3 class="center pointer" (click)="open()">{{ albumItem.name }}</h3>
-  <button (click)="onDeleteAlbumItem()" class="delete button">delete albumItem</button>
+  <button (click)="onDeleteAlbumItem()" class="delete button">delete album Item</button>
 </div>
 
 <div *ngIf="isOpen" class="album-item-content">
@@ -13,7 +13,7 @@
 
   <div class="plus" *ngIf="!formMode">
     <div class="plus-btn">
-      <h3>Add Album Photo</h3>
+      <h3>Add Photo</h3>
       <app-plus
         (click)="onGetForm()"
       ></app-plus>

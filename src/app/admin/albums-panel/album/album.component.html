@@ -17,7 +17,7 @@
   <ng-template #plus>
     <div class="plus">
       <div class="plus-btn">
-        <h3>Add Album Item</h3>
+        <h3>Add Item</h3>
         <app-plus
           (click)="onGetForm()"
         ></app-plus>
@@ -67,7 +67,7 @@
     <button
       type="submit"
       class="button update"
-    >Add Album Item</button>
+    >Add Item</button>
     <p class="required">
       <span *ngIf="albumPanelError">{{ albumPanelError }}</span>
     </p>
