@@ -83,7 +83,6 @@ export class ArticlePanelComponent implements OnInit {
   onAddArticle(): void {
     if (!this.articleForm.valid) {
       this.articlePanelError = ErrorMessages.articlePanelError;
-      console.log(this.articlePanelError);
       return;
     }
 
@@ -94,6 +93,7 @@ export class ArticlePanelComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(() => {
           this.articleForm.reset();
+          this.selectedFile = null;
           this.articlePanelError = null;
         }
       );

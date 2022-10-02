@@ -49,10 +49,11 @@ export class AlbumComponent implements OnInit {
       return;
     }
 
-    this.albumPanelError = null;
-
     const albumItem = new AlbumItem(this.form.value.Name, this.form.value.AlbumId);
     this.addAlbumItemClicked.emit(albumItem);
+
+    this.form.reset();
+    this.albumPanelError = null;
   }
 
   onAddAlbumPhoto(albumPhoto: FormData) {
@@ -81,7 +82,6 @@ export class AlbumComponent implements OnInit {
   get(controlName: string | (string | number)[]): AbstractControl {
     return this.form.get(controlName);
   }
-
 
   initForm(album: AlbumInterface): void {
     this.form = new FormGroup({

@@ -4,27 +4,7 @@
 </div>
 
 <div *ngIf="isOpen" class="album-item-content">
-  <ng-container *ngFor="let albumItemPhoto of     [
-  {
-    photoId: 0,
-    name: 'test',
-    photoName: 'File[]',
-    albumItemId: 12,
-    createDate: 'string',
-    updateDate: 'string'
-  },
-  {
-    photoId: 1,
-    name: 'test',
-    photoName: 'File[]',
-    albumItemId: 12,
-    createDate: 'string',
-    updateDate: 'string'
-  }
-]  ">
-  <!--
-    albumItem.albumPhotos
-   -->
+  <ng-container *ngFor="let albumItemPhoto of albumItem.albumPhotos">
     <app-album-photo
       [albumPhoto]="albumItemPhoto"
       (deleteAlbumPhotoClicked)="onDeleteAlbumPhoto($event)"
@@ -51,6 +31,7 @@
       <input
         type="text"
         name="Name"
+        value="photo"
         class="input"
         placeholder="Photo name"
         formControlName="Name"
@@ -61,24 +42,28 @@
         </ng-container>
       </p>
     </div>
-
-    <div class="form-control">
-      <label for="image" class="form-label">Photo</label>
-      <img class="panel-img" [src]="selectedFile?.src" *ngIf="selectedFile?.src !== null && selectedFile?.src">
+    <!-- Image -->
+    <div class="form-control form-control--file">
+      <button type="button" class="file-btn btn button"  (click)="filePicker.click()">
+        Pick Image
+      </button>
       <input
-        #imageInput
         type="file"
-        class="input"
         name="files"
-        formControlName="files"
-        placeholder="Album item photo"
-        (change)="processFile(imageInput)"
-      >
+        #filePicker
+        (change)="onImagePicked($event)"
+      />
       <p class="required" *ngIf="get('files').invalid && get('files').touched">
         <ng-container *ngFor="let errorMessage of errors('files')">
           <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
         </ng-container>
       </p>
+    </div>
+    <div
+      class="image-preview form-control form-control--file"
+      *ngIf="imagePreview !== '' && imagePreview && form.get('files').valid"
+    >
+      <img [src]="imagePreview" [alt]="form.value.TitleGeo" />
     </div>
 
     <!-- disabled input -->
@@ -107,12 +92,10 @@
     </p>
 
     <div *ngIf="formMode">
-      <div class="form">
         <button
           (click)="formMode = false"
           class="button delete"
         >Work end</button>
-      </div>
     </div>
 
   </form>

@@ -1,8 +1,9 @@
 export interface AlbumPhotoInterface {
-  photoId: number, // check
+  id: number,
   name: string,
   photoName: string,
+  photoURL: string,
   albumItemId: number,
   createDate: string,
-  updateDate: string
+  updateDate: string,
 }

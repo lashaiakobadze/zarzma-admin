@@ -33,7 +33,9 @@ export class AlbumsPanelComponent implements OnInit {
   ngOnInit(): void {
     this.AlbumTypes = [AlbumType.album, AlbumType.incense, AlbumType.enamel, AlbumType.calendar];
 
-    this.albumsService.getAlbums();
+    this.albumsService.getAlbums()
+      .pipe(untilDestroyed(this))
+      .subscribe();
     this.albumsService.getAlbumsListener()
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -47,28 +49,25 @@ export class AlbumsPanelComponent implements OnInit {
       })
   }
 
-  onGetAlbumForm() {
+  onGetAlbumForm(): void {
     this.formMode = true;
     this.initForm();
   }
 
   // Adds
-  onAddAlbum() {
+  onAddAlbum(): void {
     if (this.albumForm.invalid) {
       this.albumPanelError = ErrorMessages.albumPanelError;
       return;
     }
 
     this.albumPanelError = null;
-
     const album = new Album(this.albumForm.value.Name, this.albumForm.value.AlbumType);
-    console.log(album);
 
-    this.albumsService.addAlbum(this.albumForm.value)
+    this.albumsService.addAlbum(album)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: (albumData) => {
-          console.log(albumData);
+        next: () => {
           this.albumPanelError = null;
           this.albumForm.reset();
         },
@@ -79,29 +78,34 @@ export class AlbumsPanelComponent implements OnInit {
       })
   }
 
-  onAddAlbumItem(albumItem: AlbumItem) {
-    console.log(albumItem);
+  onAddAlbumItem(albumItem: AlbumItem): void {
+    this.albumsService.addAlbumItem(albumItem)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        error: (err) => {
+          console.log(err);
+        },
+        complete: () => console.log('done'),
+      });
   }
 
-  onAddAlbumPhoto(albumPhoto: FormData) {
-    for (let [key, value] of albumPhoto.entries()) {
-      console.log(`${key}: ${value}`);
-    }
-
-    console.log(albumPhoto);
+  onAddAlbumPhoto(albumPhoto: FormData): void {
+    this.albumsService.addAlbumPhoto(albumPhoto)
+      .pipe(untilDestroyed(this))
+      .subscribe();
   }
 
   // Deletes
-  onDeleteAlbum(id: number) {
-    console.log(id);
+  onDeleteAlbum(id: number): void {
+    this.albumsService.deleteAlbum(id).pipe(untilDestroyed(this)).subscribe();
   }
 
-  onDeleteAlbumItem(id: number) {
-    console.log(id);
+  onDeleteAlbumItem(id: number): void {
+    this.albumsService.deleteAlbumItem(id).pipe(untilDestroyed(this)).subscribe();
   }
 
-  onDeleteAlbumPhoto(photoId: number) {
-    console.log(photoId);
+  onDeleteAlbumPhoto(id: number): void {
+    this.albumsService.deleteAlbumPhoto(id).pipe(untilDestroyed(this)).subscribe();
   }
 
   // forms

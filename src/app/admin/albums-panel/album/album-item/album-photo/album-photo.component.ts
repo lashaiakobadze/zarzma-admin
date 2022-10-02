@@ -22,12 +22,12 @@ export class AlbumPhotoComponent implements OnInit {
 
   onDeleteAlbumPhoto() {
     if(window.confirm('ნამდვილად გსურთ ფოტოს წაშლა?')){
-      this.deleteAlbumPhotoClicked.emit(this.albumPhoto.photoId);
+      this.deleteAlbumPhotoClicked.emit(this.albumPhoto.id);
     }
   }
 
   ngOnInit(): void {
-    this.imgUrl = `url('${this.BASE_URL + this.albumPhoto.photoName}')`;
+    this.imgUrl = `url('${this.BASE_URL + '/' + this.albumPhoto.photoURL}')`;
   }
 
 }

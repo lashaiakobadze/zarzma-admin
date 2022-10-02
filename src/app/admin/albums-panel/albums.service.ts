@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, tap } from 'rxjs';
+import { map, Observable, Subject, tap } from 'rxjs';
 import { LoaderService } from 'src/app/shared/components/loader/loader.service';
 import { AlbumInterface } from '../interfaces/album.interface';
+import { AlbumItemInterface } from '../interfaces/albumItem.interface';
+import { AlbumPhotoInterface } from '../interfaces/albumPhoto.interface';
 import { Album } from '../models/album.model';
-import { AlbumPhoto } from '../models/albumPhoto.model';
+import { AlbumItem } from '../models/albumItem.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,39 +20,127 @@ export class AlbumsService {
     private loaderService: LoaderService
   ) { }
 
-  getAlbums(): void {
-    this.http.get<{ albums: AlbumInterface[] }>(`Albums/GetAlbums`)
+  // Album
+  getAlbums(): Observable<AlbumInterface[]> {
+    return this.http.get<{ albums: AlbumInterface[] }>(`Albums/GetAlbums`)
       .pipe(
         this.loaderService.useLoader,
-        tap((albumsData: { albums: AlbumInterface[] }) => {
-          this.albums = albumsData.albums;
+        map((albumsData: { albums: AlbumInterface[] }) => albumsData.albums),
+        tap(( albums: AlbumInterface[]) => {
+          this.albums = albums;
           this.albumsUpdated.next(this.albums);
         })
-      ).subscribe()
+      );
   }
 
   getAlbumsListener(): Observable<AlbumInterface[]> {
     return this.albumsUpdated.asObservable();
   }
 
-  addAlbum(album: Album): Observable<Album> {
-    return this.http.post(`Albums/AddAlbum`, album)
+  addAlbum(album: Album): Observable<AlbumInterface> {
+    return this.http.post<{ newAlbum: AlbumInterface }>(`Albums/AddAlbum`, album)
       .pipe(
         this.loaderService.useLoader,
-        tap((albumsData: any) => {
-          // this.albums = albumsData.albums;          ;
-          // this.albumsUpdated.next(this.albums);
+        map((newAlbumData: { newAlbum: AlbumInterface }) => newAlbumData.newAlbum),
+        tap((newAlbum: AlbumInterface) => {
+          this.albums = [...this.albums, newAlbum];
+          this.albumsUpdated.next([...this.albums]);
         })
       );
   }
 
-  addAlbumPhoto(albumPhoto: FormData): Observable<AlbumPhoto> {
-    return this.http.post(`Albums/AddAlbumPhoto`, albumPhoto)
+  deleteAlbum(id: number): Observable<unknown> {
+    return this.http.get(`Albums/DeleteAlbum?ID=${id}`)
       .pipe(
         this.loaderService.useLoader,
-        tap((albumsPhotoData: any) => {
-          // this.albums = albumsData.albums;          ;
-          // this.albumsUpdated.next(this.albums);
+        tap(() => {
+          const albums = this.albums.filter(item => item.id !== id);
+          this.albums = albums;
+          this.albumsUpdated.next([...this.albums]);
+        })
+      );
+  }
+
+  // Album Items
+  addAlbumItem(albumItem: AlbumItem): Observable<AlbumItemInterface> {
+    return this.http.post<{ newAlbumItem: AlbumItemInterface }>(`Albums/AddAlbumItem`, albumItem)
+      .pipe(
+        this.loaderService.useLoader,
+        map((newAlbumData: { newAlbumItem: AlbumItemInterface }) => newAlbumData.newAlbumItem),
+        tap((newAlbumItem: AlbumItemInterface) => {
+          const albums = this.albums.map((album: AlbumInterface) => {
+            if (album.id === newAlbumItem.albumId) {
+              album.albumItems = [...album.albumItems, newAlbumItem];
+            }
+
+            return album;
+          });
+
+          this.albums = albums;
+          this.albumsUpdated.next([...this.albums]);
+        })
+      );
+  }
+
+  deleteAlbumItem(id: number): Observable<unknown> {
+    return this.http.get(`Albums/DeleteAlbumItem?ID=${id}`)
+      .pipe(
+        this.loaderService.useLoader,
+        tap(() => {
+          const albums = this.albums.map((album: AlbumInterface) => {
+            album.albumItems = album.albumItems.filter((item: AlbumItemInterface) => item.id !== id);
+
+            return album;
+          });
+
+          this.albums = albums;
+          this.albumsUpdated.next([...this.albums]);
+        })
+      );
+  }
+
+  // Album Item photos
+  addAlbumPhoto(albumPhoto: FormData): Observable<AlbumPhotoInterface> {
+    return this.http.post<{ newAlbumPhoto: AlbumPhotoInterface }>(`Albums/AddAlbumPhoto`, albumPhoto)
+      .pipe(
+        this.loaderService.useLoader,
+        map((albumsPhotoData: { newAlbumPhoto: AlbumPhotoInterface }) => albumsPhotoData.newAlbumPhoto),
+        tap((newAlbumPhoto: AlbumPhotoInterface) => {
+          const albums = this.albums.map((album: AlbumInterface) => {
+            album.albumItems = album.albumItems.map((albumItem: AlbumItemInterface) => {
+              if (albumItem.id === newAlbumPhoto.albumItemId) {
+                albumItem.albumPhotos.push(newAlbumPhoto);
+              }
+              return albumItem;
+            });
+
+            return album;
+          });
+
+          this.albums = albums;
+          this.albumsUpdated.next([...this.albums]);
+        })
+      );
+  }
+
+  deleteAlbumPhoto(id: number): Observable<unknown> {
+    return this.http.get(`Albums/DeleteAlbumPhoto?ID=${id}`)
+      .pipe(
+        this.loaderService.useLoader,
+        tap(() => {
+          const albums = this.albums.map((album: AlbumInterface) => {
+            album.albumItems = album.albumItems.map((albumItem: AlbumItemInterface) => {
+              // if (albumItem.id === newAlbumPhoto.albumItemId) {
+                albumItem.albumPhotos = albumItem.albumPhotos.filter((albumPhot: AlbumPhotoInterface) => albumPhot.id !== id);
+              // }
+              return albumItem;
+            });
+
+            return album;
+          });
+
+          this.albums = albums;
+          this.albumsUpdated.next([...this.albums]);
         })
       );
   }
