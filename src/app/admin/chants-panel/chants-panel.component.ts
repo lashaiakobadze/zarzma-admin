@@ -28,12 +28,14 @@ export class ChantsPanelComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
 
-    this.chantService.getChants().pipe(untilDestroyed(this)).subscribe();
+    this.chantService.getChants()
+      .pipe(untilDestroyed(this))
+      .subscribe();
     this.chantService.getChantsItemsListener()
       .pipe(untilDestroyed(this))
       .subscribe(chantsData => {
         this.chantsItems = chantsData;
-      })
+      });
   }
 
   onGetArticleForm(): void {
@@ -59,9 +61,7 @@ export class ChantsPanelComponent implements OnInit {
 
     this.chantService.storeChant(formData as unknown as Chant)
     .pipe(untilDestroyed(this))
-    .subscribe(
-      () => {
-        console.log('Article add successful!');
+    .subscribe(() => {
         this.chantPanelError = null;
         this.chantForm.reset();
       }

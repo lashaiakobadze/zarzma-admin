@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Subject, Observable, tap } from 'rxjs';
+import { Subject, Observable, tap, map } from 'rxjs';
 import { LoaderService } from 'src/app/shared/components/loader/loader.service';
 import { DocType } from '../enums/docType.enum';
 import { DocTypeName } from '../enums/docTypeName.enum';
@@ -92,27 +92,25 @@ export class ArticleService {
     return formData;
   }
 
-  storeArticle(article: Article): Observable<Article> {
-    return this.http.post<Article>('Articls/AddArticle', article)
+  storeArticle(article: Article): Observable<ArticleInterface> {
+    return this.http.post<{ newArticle: ArticleInterface }>('Articls/AddArticle', article)
       .pipe(
         this.loaderService.useLoader,
-        tap(() => {
-          // ToDo: with response
-          const articleData: ArticleInterface = article as unknown as ArticleInterface;
-
-          switch (article.DocType) {
+        map((newArticleData: { newArticle: ArticleInterface }) => newArticleData.newArticle),
+        tap((newArticle: ArticleInterface) => {
+          switch (newArticle.docTypeID) {
             case DocType.eparchy: {
-              this.eparchyItems = [...this.eparchyItems, articleData];
+              this.eparchyItems = [...this.eparchyItems, newArticle];
               this.eparchyItemsUpdated.next([...this.eparchyItems]);
               break;
             }
             case DocType.publication: {
-              this.publicationsItems = [...this.eparchyItems, articleData];
+              this.publicationsItems = [...this.publicationsItems, newArticle];
               this.publicationsItemsUpdated.next([...this.publicationsItems]);
               break;
             }
             case DocType.icons: {
-              this.iconsItems = [...this.eparchyItems, articleData];
+              this.iconsItems = [...this.iconsItems, newArticle];
               this.iconsItemsUpdated.next([...this.iconsItems]);
               break;
             }
@@ -124,13 +122,13 @@ export class ArticleService {
       );
   }
 
-  updateArticle(article: Article): Observable<Article> {
-    return this.http.post<Article>('Articls/UpdateArticle', article).pipe(
+  updateArticle(article: Article): Observable<ArticleInterface> {
+    return this.http.post<ArticleInterface>('Articls/UpdateArticle', article).pipe(
       this.loaderService.useLoader
     );
   }
 
-  deleteArticle(articleID: number, docTypeName: DocTypeName): Observable<any> {
+  deleteArticle(articleID: number, docTypeName: DocTypeName): Observable<unknown> {
     return this.http.get(`Articls/DeleteArticle?ID=${articleID}`)
       .pipe(
         this.loaderService.useLoader,

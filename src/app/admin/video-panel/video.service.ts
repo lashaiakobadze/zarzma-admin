@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, tap } from 'rxjs';
+import { map, Observable, Subject, tap } from 'rxjs';
 import { LoaderService } from 'src/app/shared/components/loader/loader.service';
 import { VideoData } from '../interfaces/video.interface';
 import { Video } from '../models/video.model';
@@ -33,21 +33,19 @@ export class VideoService {
     return this.videoItemsUpdated.asObservable();
   }
 
-  addVideo(video: Video): Observable<Video> {
-    return this.http.post<Video>('Videos/AddVideo', video)
+  addVideo(video: Video): Observable<VideoData> {
+    return this.http.post<{ newVideo: VideoData }>('Videos/AddVideo', video)
       .pipe(
         this.loaderService.useLoader,
-        tap(() => {
-          // ToDo: აქაც მინდა რესფონსში ობიექტის გამოგზავნა;
-          const videoData: Video = video as unknown as Video;
-
-          // this.videoItems = [...this.videoItems, videoData];
+        map((newVideoData: { newVideo: VideoData }) => newVideoData.newVideo),
+        tap((newVideo: VideoData) => {
+          this.videoItems = [...this.videoItems, newVideo];
           this.videoItemsUpdated.next([...this.videoItems]);
         })
       );
   }
 
-  deleteVideo(id: number): Observable<any> {
+  deleteVideo(id: number): Observable<unknown> {
     return this.http.get(`Videos/DeleteVideo?ID=${id}`)
       .pipe(
         this.loaderService.useLoader,

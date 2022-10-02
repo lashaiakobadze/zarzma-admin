@@ -23,7 +23,7 @@ export class ArticlePanelComponent implements OnInit {
   iconsItems: ArticleInterface[] = [];
 
   articleForm: FormGroup<ArticleForm>;
-  DocTypes = [];
+  DocTypes: string[] = [];
   formMode = false;
   selectedFile: ImageSnippet;
   articlePanelError: ErrorMessages = null;
@@ -35,26 +35,32 @@ export class ArticlePanelComponent implements OnInit {
   ngOnInit(): void {
     this.DocTypes = [DocTypeName.eparchy, DocTypeName.publication, DocTypeName.icons];
 
-    this.articleService.getEparchyItems().pipe(untilDestroyed(this)).subscribe();
+    this.articleService.getEparchyItems()
+      .pipe(untilDestroyed(this))
+      .subscribe();
     this.articleService.getEparchyItemsListener()
       .pipe(untilDestroyed(this))
       .subscribe(eparchyItems => {
         this.eparchyItems = eparchyItems;
-      })
+      });
 
-    this.articleService.getIconsItems().pipe(untilDestroyed(this)).subscribe();
+    this.articleService.getIconsItems()
+      .pipe(untilDestroyed(this))
+      .subscribe();
     this.articleService.getIconsItemsListener()
       .pipe(untilDestroyed(this))
       .subscribe(iconsItems => {
         this.iconsItems = iconsItems;
-      })
+      });
 
-    this.articleService.getPublicationsItems().pipe(untilDestroyed(this)).subscribe();
+    this.articleService.getPublicationsItems()
+      .pipe(untilDestroyed(this))
+      .subscribe();
     this.articleService.getPublicationsItemsListener()
       .pipe(untilDestroyed(this))
       .subscribe(publicationsItems => {
         this.publicationsItems = publicationsItems;
-      })
+      });
   }
 
   onGetArticleForm(): void {
@@ -85,9 +91,8 @@ export class ArticlePanelComponent implements OnInit {
     const formData = new FormData(myForm);
 
     this.articleService.storeArticle(formData as unknown as Article)
-      .subscribe((articleData) => {
-        // ToDo: არტიკლის რესფონსში გამოშვება მინდა დასააფდეითებლად;
-        console.log(articleData);
+      .pipe(untilDestroyed(this))
+      .subscribe(() => {
           this.articleForm.reset();
           this.articlePanelError = null;
         }
@@ -96,13 +101,16 @@ export class ArticlePanelComponent implements OnInit {
 
   onUpdateArticleItem(articleItemForm: FormGroup<ArticleForm>) {
     const formData: FormData = this.articleService.getFormData(articleItemForm);
+
     this.articleService.updateArticle(formData as unknown as Article)
       .pipe(untilDestroyed(this))
       .subscribe();
   }
 
   onDeleteArticleItem(event: { id: number, documentType: DocTypeName }) {
-    this.articleService.deleteArticle(event.id, event.documentType).pipe(untilDestroyed(this)).subscribe();
+    this.articleService.deleteArticle(event.id, event.documentType)
+      .pipe(untilDestroyed(this))
+      .subscribe();
   }
 
   errors(controlName: string | (string | number)[]): any {

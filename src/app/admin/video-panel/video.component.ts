@@ -24,13 +24,15 @@ export class VideoComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-    this.videoService.getVideosItems().pipe(untilDestroyed(this)).subscribe();
+    this.videoService.getVideosItems()
+      .pipe(untilDestroyed(this))
+      .subscribe();
 
     this.videoService.getVideoItemsListener()
       .pipe(untilDestroyed(this))
       .subscribe(videoItems => {
         this.videoItems = videoItems;
-      })
+      });
   }
 
   onGetVideoForm(): void {
@@ -48,10 +50,8 @@ export class VideoComponent implements OnInit {
 
     this.videoService.addVideo(video)
     .pipe(untilDestroyed(this))
-    .subscribe(
-      () => {
+    .subscribe(() => {
         this.videoPanelError = null;
-        console.log('Article add successful!');
         this.videoForm.reset();
       }
     );

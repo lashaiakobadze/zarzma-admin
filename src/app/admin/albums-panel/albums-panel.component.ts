@@ -67,7 +67,8 @@ export class AlbumsPanelComponent implements OnInit {
     this.albumsService.addAlbum(this.albumForm.value)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () => {
+        next: (albumData) => {
+          console.log(albumData);
           this.albumPanelError = null;
           this.albumForm.reset();
         },
