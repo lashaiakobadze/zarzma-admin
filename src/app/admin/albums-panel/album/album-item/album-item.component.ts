@@ -59,8 +59,11 @@ export class AlbumItemComponent implements OnInit {
       return;
     }
 
-    const myForm = document.forms[0];
-    const formData = new FormData(myForm);
+    const formData = new FormData();
+    formData.append("Name", this.form.get('Name').value);
+    formData.append("AlbumItemId", this.form.get('AlbumItemId').value);
+    formData.append("files", this.form.get('files').value);
+
     this.addAlbumPhotoClicked.emit(formData);
 
     this.imagePreview = null;
