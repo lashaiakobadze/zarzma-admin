@@ -6,10 +6,7 @@ import { map } from 'rxjs/operators';
 export class AuthInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler) {
-    let authToken: string =  localStorage.getItem('token');
-    if (authToken) {
-      authToken = authToken.replace(/"+/g, "");
-    }
+    let authToken: string = JSON.parse(localStorage.getItem('token'));
 
     if (authToken) {
       request = request.clone({ headers: request.headers.set('Zarzma_Session', authToken) });
