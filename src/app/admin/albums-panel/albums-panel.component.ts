@@ -6,6 +6,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { AlbumType } from '../enums/albumType.enum';
 import { AlbumInterface } from '../interfaces/album.interface';
+import { AlbumForm } from '../interfaces/form-Interfaces/albumForm.inerface';
 import { Album } from '../models/album.model';
 import { AlbumItem } from '../models/albumItem.model';
 import { AlbumComponent } from './album/album.component';
@@ -22,7 +23,7 @@ import { AlbumsService } from './albums.service';
 export class AlbumsPanelComponent implements OnInit {
   AlbumTypes: number[];
   formMode = false;
-  albumForm: FormGroup;
+  albumForm: FormGroup<AlbumForm>;
   albums: AlbumInterface[];
   albumPanelError: ErrorMessages = null;
 
@@ -118,7 +119,7 @@ export class AlbumsPanelComponent implements OnInit {
   }
 
   initForm(): void {
-    this.albumForm = new FormGroup({
+    this.albumForm = new FormGroup<AlbumForm>({
       Name: new FormControl(null, AppValidators.required),
       AlbumType: new FormControl(null, AppValidators.required)
     });

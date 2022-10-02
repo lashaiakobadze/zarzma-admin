@@ -5,6 +5,7 @@ import { ErrorMessages } from 'src/app/shared/models/Errors.enume';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { AlbumInterface } from '../../interfaces/album.interface';
+import { AlbumItemForm } from '../../interfaces/form-Interfaces/albumItemForm.interface';
 import { AlbumItem } from '../../models/albumItem.model';
 import { AlbumItemComponent } from './album-item/album-item.component';
 
@@ -25,7 +26,7 @@ export class AlbumComponent implements OnInit {
   @Output() deleteAlbumItemClicked = new EventEmitter<number>();
   @Output() deleteAlbumPhotoClicked = new EventEmitter<number>();
 
-  form: FormGroup;
+  form: FormGroup<AlbumItemForm>;
   formMode = false;
   isOpen: boolean;
   albumPanelError: ErrorMessages = null;
@@ -84,7 +85,7 @@ export class AlbumComponent implements OnInit {
   }
 
   initForm(album: AlbumInterface): void {
-    this.form = new FormGroup({
+    this.form = new FormGroup<AlbumItemForm>({
       Name: new FormControl(null, AppValidators.required),
       AlbumId: new FormControl(album.id, AppValidators.required)
     });

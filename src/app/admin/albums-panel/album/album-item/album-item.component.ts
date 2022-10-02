@@ -46,6 +46,7 @@ export class AlbumItemComponent implements OnInit {
     const file = (event.target as HTMLInputElement).files[0];
     this.form.patchValue({ files: file });
     this.form.get('files').updateValueAndValidity();
+
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result as string;

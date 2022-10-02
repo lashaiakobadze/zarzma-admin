@@ -63,7 +63,7 @@
       class="image-preview form-control form-control--file"
       *ngIf="imagePreview !== '' && imagePreview && form.get('files').valid"
     >
-      <img [src]="imagePreview" [alt]="form.value.TitleGeo" />
+      <img [src]="imagePreview" [alt]="albumItem.name" />
     </div>
 
     <!-- disabled input -->

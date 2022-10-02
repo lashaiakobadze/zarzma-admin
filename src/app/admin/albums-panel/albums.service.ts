@@ -130,9 +130,7 @@ export class AlbumsService {
         tap(() => {
           const albums = this.albums.map((album: AlbumInterface) => {
             album.albumItems = album.albumItems.map((albumItem: AlbumItemInterface) => {
-              // if (albumItem.id === newAlbumPhoto.albumItemId) {
-                albumItem.albumPhotos = albumItem.albumPhotos.filter((albumPhot: AlbumPhotoInterface) => albumPhot.id !== id);
-              // }
+              albumItem.albumPhotos = albumItem.albumPhotos.filter((albumPhot: AlbumPhotoInterface) => albumPhot.id !== id);
               return albumItem;
             });
 
