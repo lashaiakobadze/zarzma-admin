@@ -23,6 +23,7 @@ export class AlbumItemComponent implements OnInit {
   @Output() deleteAlbumPhotoClicked = new EventEmitter<number>();
 
   form: FormGroup;
+  files: FileHandle[] = [];
   dropMode = false;
   isOpen: boolean;
   albumPanelError: ErrorMessages = null;
@@ -32,23 +33,59 @@ export class AlbumItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  open() {
+  open(): void {
     this.isOpen = !this.isOpen;
   }
 
-  onGetForm() {
+  onGetForm(): void {
     this.dropMode = true;
     this.initForm(this.albumItem);
   }
 
-  onDeleteAlbumItem() {
+  onDeleteAlbumItem(): void {
     if(window.confirm('ნამდვილად გსურთ ალბომიდან მოვლენის წაშლა?')){
       this.deleteAlbumItemClicked.emit(this.albumItem.id);
     }
   }
 
-  onDeleteAlbumPhoto(photoId: number) {
+  onDeleteAlbumPhoto(photoId: number): void {
     this.deleteAlbumPhotoClicked.emit(photoId);
+  }
+
+  filesDropped(files: FileHandle[]): void {
+    this.files = files;
+  }
+
+  filesProcess(files: FileHandle[]): void {
+    this.files = files;
+  }
+
+  storeFiles(): void {
+    if (this.form.invalid) {
+      this.albumPanelError = ErrorMessages.albumPanelError;
+      return;
+    }
+
+    this.files.forEach((file: FileHandle) => {
+      this.form.patchValue({ files: file.file });
+      this.form.get('files').updateValueAndValidity();
+
+      const formData = new FormData();
+      formData.append("Name", this.form.get('Name').value);
+      formData.append("AlbumItemId", this.form.get('AlbumItemId').value);
+      formData.append("files", this.form.get('files').value);
+
+      this.addAlbumPhotoClicked.emit(formData);
+    });
+
+    this.workEnd();
+  }
+
+  workEnd(): void {
+    this.form.reset();
+    this.dropMode = false;
+    this.files = [];
+    this.albumPanelError = null;
   }
 
   errors(controlName: string | (string | number)[]): any {
@@ -65,34 +102,5 @@ export class AlbumItemComponent implements OnInit {
       AlbumItemId: new FormControl(albumItem.id, AppValidators.required),
       files: new FormControl(null),
     });
-  }
-
-  files: FileHandle[] = [];
-
-  filesDropped(files: FileHandle[]): void {
-    this.files = files;
-
-    if (this.form.invalid) {
-      this.albumPanelError = ErrorMessages.albumPanelError;
-      return;
-    }
-
-
-    this.files.forEach((file: FileHandle) => {
-      this.form.patchValue({ files: file.file });
-      this.form.get('files').updateValueAndValidity();
-
-      const formData = new FormData();
-      formData.append("Name", this.form.get('Name').value);
-      formData.append("AlbumItemId", this.form.get('AlbumItemId').value);
-      formData.append("files", this.form.get('files').value);
-
-      this.addAlbumPhotoClicked.emit(formData);
-    });
-
-    this.form.reset();
-    this.dropMode = false;
-    this.files = [];
-    this.albumPanelError = null;
   }
 }

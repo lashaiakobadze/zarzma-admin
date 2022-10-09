@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { FileHandle } from '../../models/file-handle.interface';
 
 @Component({
   selector: 'image-uploader',
@@ -7,6 +9,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 
 export class ImageUploaderComponent {
+  @Input() isSaml: boolean;
   @Input() singleFile: boolean;
   @Input() selectedFile: File;
   @Input() activeColor: string = 'green';
@@ -20,6 +23,8 @@ export class ImageUploaderComponent {
 
   @Output() fileEmitted = new EventEmitter();
   @Output() filesEmitted = new EventEmitter();
+
+  constructor(private sanitizer: DomSanitizer) {}
 
   handleDragEnter() {
     this.dragging = true;
@@ -39,6 +44,10 @@ export class ImageUploaderComponent {
     this.imageLoaded = true;
   }
 
+  files: FileHandle[];
+  urls: any[] = [];
+  multiples: any[] = [];
+
   handleInputChange(event) {
     if (this.singleFile) {
       let file = event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
@@ -56,14 +65,29 @@ export class ImageUploaderComponent {
 
       reader.onload = this._handleReaderLoaded.bind(this);
       reader.readAsDataURL(file);
-    } else {
-
     }
   }
+
 
   _handleReaderLoaded(event) {
     let reader = event.target;
     this.imageSrc = reader.result;
     this.loaded = true;
   }
+
+  onSelectFiles(event) {
+    let files: FileHandle[] = [];
+    const filesData = event.target.files;
+
+    for (let index = 0; index < event.target.files.length; index++) {
+      const file = filesData[`${index}`];
+      const url = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
+      files.push({ file, url });
+    }
+
+    if (files.length) {
+      this.filesEmitted.emit(files);
+    }
+  }
+
 }

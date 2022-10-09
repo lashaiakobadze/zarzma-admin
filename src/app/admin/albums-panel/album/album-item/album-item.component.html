@@ -20,30 +20,44 @@
     </div>
   </div>
 
-  <!--dropped images -->
-  <div
-    *ngIf="
-      !files.length &&
-      dropMode
-    "
-    class="drop-zone"
-    appDrag
-    (files)="filesDropped($event)"
-  >
-    <div class="text-wrapper">
-      <div class="centered">Drop your images here!</div>
+  <div *ngIf="dropMode" class="add-photos">
+    <!--dropped images -->
+    <div
+      *ngIf="!files.length"
+      class="drop-zone"
+      appDrag
+      (files)="filesDropped($event)"
+    >
+      <div class="text-wrapper">
+        <div class="centered">Drop your images here!</div>
+      </div>
     </div>
-  </div>
-  <!--dropped image preview-->
-  <div *ngIf="dropMode" class="dropped-zone">
-    <ng-container *ngFor="let file of files">
-      <img *ngIf="file" [src]="file.url" width="100px" height="100px">
-    </ng-container>
-  </div>
+    <!--dropped image preview-->
+    <div class="dropped-zone">
+      <ng-container *ngFor="let file of files">
+        <img *ngIf="file" [src]="file.url">
+      </ng-container>
+    </div>
 
-  <div *ngIf="dropMode">
+    <image-uploader
+      [isSaml]="true"
+      [singleFile]="false"
+      [activeColor]="'orangered'"
+      [baseColor]="'lightgray'"
+      (filesEmitted)="filesProcess($event)"
+    ></image-uploader>
+
     <button
-      (click)="dropMode = false"
+      type="submit"
+      class="button update"
+      (click)="storeFiles()"
+    >Add Photos</button>
+    <p class="required">
+      <span *ngIf="albumPanelError">{{ albumPanelError }}</span>
+    </p>
+
+    <button
+      (click)="workEnd()"
       class="button delete"
     >Work end</button>
   </div>
