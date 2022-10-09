@@ -96,22 +96,12 @@
   </div>
 
   <div class="form-control">
-    <label for="image" class="form-label">image</label>
-    <img class="panel-img" [src]="selectedFile?.src" *ngIf="selectedFile?.src !== null && selectedFile?.src">
-    <input
-      #imageInput
-      type="file"
-      class="input"
-      name="files"
-      formControlName="files"
-      placeholder="Publication image"
-      (change)="processFile(imageInput)"
-    >
-    <p class="required" *ngIf="get('files').invalid && get('files').touched">
-      <ng-container *ngFor="let errorMessage of errors('files')">
-        <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
-      </ng-container>
-    </p>
+    <image-uploader
+      [activeColor]="'orangered'"
+      [baseColor]="'lightgray'"
+      [selectedFile]="selectedFile"
+      (fileEmitted)="fileProcess($event)"
+    ></image-uploader>
   </div>
 
   <button

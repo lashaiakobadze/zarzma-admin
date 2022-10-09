@@ -1,29 +1,34 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 
 
 import { DropdownDirective } from './directives/dropdown.directive';
 import { PlusComponent } from './components/plus/plus.component';
-import { ImageUploadComponent } from './components/image-upload/image-upload.component';
 import { ErrorComponent } from './components/error/error.component';
+import { DragDirective } from './directives/dragDrop.directive';
+import { ImageUploaderComponent } from './components/image-uploader/image-uploader.component';
 
 @NgModule({
   declarations: [
     DropdownDirective,
+    DragDirective,
     PlusComponent,
-    ImageUploadComponent,
     ErrorComponent,
+    ImageUploaderComponent,
+  ],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule
   ],
   exports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterModule,
     DropdownDirective,
+    DragDirective,
     PlusComponent,
-    ImageUploadComponent,
     ErrorComponent,
+    ImageUploaderComponent
   ]
 })
 export class SharedModule { }

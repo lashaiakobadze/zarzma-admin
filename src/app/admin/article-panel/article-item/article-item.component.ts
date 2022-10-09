@@ -81,6 +81,7 @@ export class ArticleItemComponent implements OnInit {
     return this.articleItemForm.get(controlName);
   }
 
+  // check:
   initForm(articleItem: ArticleInterface): void {
     this.articleItemForm = new FormGroup<ArticleForm>({
       id: new FormControl(articleItem?.id, AppValidators.required),

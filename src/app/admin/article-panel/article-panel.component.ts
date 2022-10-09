@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 
-import { ImageSnippet } from 'src/app/shared/models/image-snippet.model';
 import { Article } from '../models/article.model';
 import { ArticleInterface } from '../interfaces/article.interface';
 import { ArticleService } from './article.service';
@@ -25,7 +24,7 @@ export class ArticlePanelComponent implements OnInit {
   articleForm: FormGroup<ArticleForm>;
   DocTypes: string[] = [];
   formMode = false;
-  selectedFile: ImageSnippet;
+  selectedFile: File;
   articlePanelError: ErrorMessages = null;
 
   constructor(
@@ -68,16 +67,11 @@ export class ArticlePanelComponent implements OnInit {
     this.initForm();
   }
 
-  processFile(imageInput: any): void {
-    const file: File = imageInput.files[0];
+  fileProcess(file: any) {
     this.articleForm.value.files = [file];
-    const reader = new FileReader();
-
-    reader.addEventListener('load', (event: any) => {
-      this.selectedFile = new ImageSnippet(event.target.result, file);
-      this.selectedFile.pending = true; // for loader
-    });
-    reader.readAsDataURL(file);
+    this.articleForm.patchValue({ files: file });
+    this.articleForm.get('files').updateValueAndValidity();
+    this.selectedFile = file;
   }
 
   onAddArticle(): void {
@@ -133,7 +127,7 @@ export class ArticlePanelComponent implements OnInit {
       TextRus: new FormControl(null),
       TextEng: new FormControl(null),
 
-      files: new FormControl(null, AppValidators.required)
+      files: new FormControl(null)
     });
   }
 }

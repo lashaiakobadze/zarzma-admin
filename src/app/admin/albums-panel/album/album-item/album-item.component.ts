@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { AlbumItemInterface } from 'src/app/admin/interfaces/albumItem.interface';
@@ -9,7 +8,7 @@ import { AlbumPhotoComponent } from './album-photo/album-photo.component';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, SharedModule, AlbumPhotoComponent],
+  imports: [SharedModule, AlbumPhotoComponent],
   selector: 'app-album-item',
   templateUrl: './album-item.component.html',
   styleUrls: ['./album-item.component.scss']

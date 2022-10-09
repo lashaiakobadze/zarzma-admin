@@ -98,6 +98,7 @@ export class ArticleService {
         this.loaderService.useLoader,
         map((newArticleData: { newArticle: ArticleInterface }) => newArticleData.newArticle),
         tap((newArticle: ArticleInterface) => {
+          console.log(newArticle);
           switch (newArticle.docTypeID) {
             case DocType.eparchy: {
               this.eparchyItems = [...this.eparchyItems, newArticle];
