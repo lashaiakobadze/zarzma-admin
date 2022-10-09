@@ -11,92 +11,40 @@
     ></app-album-photo>
   </ng-container>
 
-  <div class="plus" *ngIf="!formMode">
+  <div class="plus" *ngIf="!dropMode">
     <div class="plus-btn">
-      <h3>Add Photo</h3>
+      <h3>Add Photos</h3>
       <app-plus
         (click)="onGetForm()"
       ></app-plus>
     </div>
   </div>
 
-  <form
-    *ngIf="formMode"
-    class="form"
-    [formGroup]="form"
-    (ngSubmit)="onAddAlbumPhoto()"
+  <!--dropped images -->
+  <div
+    *ngIf="
+      !files.length &&
+      dropMode
+    "
+    class="drop-zone"
+    appDrag
+    (files)="filesDropped($event)"
   >
-    <div class="form-control visible">
-      <label for="Name" class="form-label">Photo name</label>
-      <input
-        type="text"
-        name="Name"
-        value="photo"
-        class="input"
-        placeholder="Photo name"
-        formControlName="Name"
-      >
-      <p class="required" *ngIf="get('Name').invalid && get('Name').touched">
-        <ng-container *ngFor="let errorMessage of errors('Name')">
-          <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
-        </ng-container>
-      </p>
+    <div class="text-wrapper">
+      <div class="centered">Drop your images here!</div>
     </div>
-    <!-- Image -->
-    <div class="form-control form-control--file">
-      <button type="button" class="file-btn btn button"  (click)="filePicker.click()">
-        Pick Image
-      </button>
-      <input
-        type="file"
-        name="files"
-        #filePicker
-        (change)="onImagePicked($event)"
-      />
-      <p class="required" *ngIf="get('files').invalid && get('files').touched">
-        <ng-container *ngFor="let errorMessage of errors('files')">
-          <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
-        </ng-container>
-      </p>
-    </div>
-    <div
-      class="image-preview form-control form-control--file"
-      *ngIf="imagePreview !== '' && imagePreview && form.get('files').valid"
-    >
-      <img [src]="imagePreview" [alt]="albumItem.name" />
-    </div>
+  </div>
+  <!--dropped image preview-->
+  <div *ngIf="dropMode" class="dropped-zone">
+    <ng-container *ngFor="let file of files">
+      <img *ngIf="file" [src]="file.url" width="100px" height="100px">
+    </ng-container>
+  </div>
 
-    <!-- disabled input -->
-    <div class="form-control visible">
-      <label for="AlbumItemId" class="form-label">Album item id</label>
-      <input
-        type="text"
-        name="AlbumItemId"
-        class="input"
-        placeholder="Album item id"
-        formControlName="AlbumItemId"
-      >
-      <p class="required" *ngIf="get('AlbumItemId').invalid && get('AlbumItemId').touched">
-        <ng-container *ngFor="let errorMessage of errors('AlbumItemId')">
-          <span *ngIf="errorMessage !== true">{{ errorMessage }}</span>
-        </ng-container>
-      </p>
-    </div>
-
+  <div *ngIf="dropMode">
     <button
-      type="submit"
-      class="button update"
-    >Add Photo</button>
-    <p class="required">
-      <span *ngIf="albumPanelError">{{ albumPanelError }}</span>
-    </p>
-
-    <div *ngIf="formMode">
-        <button
-          (click)="formMode = false"
-          class="button delete"
-        >Work end</button>
-    </div>
-
-  </form>
+      (click)="dropMode = false"
+      class="button delete"
+    >Work end</button>
+  </div>
 </div>

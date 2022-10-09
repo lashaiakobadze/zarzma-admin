@@ -29,7 +29,18 @@
   </ng-container>
 
   <input
-    type="file" name="files" accept="image/*"
+    *ngIf="singleFile"
+    type="file"
+    name="files"
+    accept="image/*"
+    (change)="handleInputChange($event)"
+  >
+  <input
+    *ngIf="!singleFile"
+    type="file"
+    name="files"
+    accept="image/*"
+    multiple="multiple"
     (change)="handleInputChange($event)"
   >
 </label>

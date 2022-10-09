@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 
 export class ImageUploaderComponent {
+  @Input() singleFile: boolean;
   @Input() selectedFile: File;
   @Input() activeColor: string = 'green';
   @Input() baseColor: string = '#ccc';
@@ -18,6 +19,7 @@ export class ImageUploaderComponent {
   imageSrc: string = '';
 
   @Output() fileEmitted = new EventEmitter();
+  @Output() filesEmitted = new EventEmitter();
 
   handleDragEnter() {
     this.dragging = true;
@@ -38,23 +40,25 @@ export class ImageUploaderComponent {
   }
 
   handleInputChange(event) {
-    let file = event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
+    if (this.singleFile) {
+      let file = event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
 
-    let pattern = /image-*/;
-    let reader = new FileReader();
+      let pattern = /image-*/;
+      let reader = new FileReader();
 
-    if (!file.type.match(pattern)) {
-      alert('invalid format');
-      return;
+      if (!file.type.match(pattern)) {
+        alert('invalid format');
+        return;
+      }
+
+      this.fileEmitted.emit(file);
+      this.loaded = false;
+
+      reader.onload = this._handleReaderLoaded.bind(this);
+      reader.readAsDataURL(file);
+    } else {
+
     }
-
-    this.fileEmitted.emit(file);
-
-
-    this.loaded = false;
-
-    reader.onload = this._handleReaderLoaded.bind(this);
-    reader.readAsDataURL(file);
   }
 
   _handleReaderLoaded(event) {

@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { AlbumItemInterface } from 'src/app/admin/interfaces/albumItem.interface';
+import { ErrorService } from 'src/app/shared/error.service';
 import { ErrorMessages } from 'src/app/shared/models/Errors.enume';
+import { FileHandle } from 'src/app/shared/models/file-handle.interface';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
 import { AlbumPhotoComponent } from './album-photo/album-photo.component';
@@ -17,17 +19,15 @@ export class AlbumItemComponent implements OnInit {
   @Input() albumItem: AlbumItemInterface;
 
   @Output() addAlbumPhotoClicked = new EventEmitter<FormData>();
-
   @Output() deleteAlbumItemClicked = new EventEmitter<number>();
   @Output() deleteAlbumPhotoClicked = new EventEmitter<number>();
 
   form: FormGroup;
-  formMode = false;
+  dropMode = false;
   isOpen: boolean;
   albumPanelError: ErrorMessages = null;
-  imagePreview: string;
 
-  constructor() { }
+  constructor(public errorService: ErrorService) { }
 
   ngOnInit(): void {
   }
@@ -37,38 +37,8 @@ export class AlbumItemComponent implements OnInit {
   }
 
   onGetForm() {
-    this.formMode = true;
+    this.dropMode = true;
     this.initForm(this.albumItem);
-  }
-
-  onImagePicked(event: Event) {
-    const file = (event.target as HTMLInputElement).files[0];
-    this.form.patchValue({ files: file });
-    this.form.get('files').updateValueAndValidity();
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result as string;
-    };
-    reader.readAsDataURL(file);
-  }
-
-  onAddAlbumPhoto() {
-    if (this.form.invalid) {
-      this.albumPanelError = ErrorMessages.albumPanelError;
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("Name", this.form.get('Name').value);
-    formData.append("AlbumItemId", this.form.get('AlbumItemId').value);
-    formData.append("files", this.form.get('files').value);
-
-    this.addAlbumPhotoClicked.emit(formData);
-
-    this.imagePreview = null;
-    this.form.reset();
-    this.albumPanelError = null;
   }
 
   onDeleteAlbumItem() {
@@ -93,8 +63,36 @@ export class AlbumItemComponent implements OnInit {
     this.form = new FormGroup({
       Name: new FormControl('photo'),
       AlbumItemId: new FormControl(albumItem.id, AppValidators.required),
-      files: new FormControl(null, AppValidators.required),
+      files: new FormControl(null),
     });
   }
 
+  files: FileHandle[] = [];
+
+  filesDropped(files: FileHandle[]): void {
+    this.files = files;
+
+    if (this.form.invalid) {
+      this.albumPanelError = ErrorMessages.albumPanelError;
+      return;
+    }
+
+
+    this.files.forEach((file: FileHandle) => {
+      this.form.patchValue({ files: file.file });
+      this.form.get('files').updateValueAndValidity();
+
+      const formData = new FormData();
+      formData.append("Name", this.form.get('Name').value);
+      formData.append("AlbumItemId", this.form.get('AlbumItemId').value);
+      formData.append("files", this.form.get('files').value);
+
+      this.addAlbumPhotoClicked.emit(formData);
+    });
+
+    this.form.reset();
+    this.dropMode = false;
+    this.files = [];
+    this.albumPanelError = null;
+  }
 }
