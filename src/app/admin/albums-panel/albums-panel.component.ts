@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ErrorMessages } from 'src/app/shared/models/Errors.enume';
@@ -19,6 +19,7 @@ import { AlbumsService } from './albums.service';
   selector: 'app-albums-panel',
   templateUrl: './albums-panel.component.html',
   styleUrls: ['./albums-panel.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlbumsPanelComponent implements OnInit {
   AlbumTypes: number[];
@@ -28,7 +29,8 @@ export class AlbumsPanelComponent implements OnInit {
   albumPanelError: ErrorMessages = null;
 
   constructor(
-    public albumsService: AlbumsService
+    public albumsService: AlbumsService,
+    private ref: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -39,14 +41,10 @@ export class AlbumsPanelComponent implements OnInit {
       .subscribe();
     this.albumsService.getAlbumsListener()
       .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (albumsData: AlbumInterface[]) => {
-          this.albums = albumsData;
-        },
-        error: (err) => {
-          console.log(err);
-        },
-        complete: () => console.log('done'),
+      .subscribe((albumsData: AlbumInterface[]) => {
+        this.albums = albumsData;
+
+        this.ref.markForCheck();
       })
   }
 
@@ -67,27 +65,19 @@ export class AlbumsPanelComponent implements OnInit {
 
     this.albumsService.addAlbum(album)
       .pipe(untilDestroyed(this))
-      .subscribe({
-        next: () => {
-          this.albumPanelError = null;
-          this.albumForm.reset();
-        },
-        error: (err) => {
-          console.log(err);
-        },
-        complete: () => console.log('done'),
+      .subscribe(() => {
+        this.albumPanelError = null;
+        this.formMode = false;
+        this.albumForm.reset();
+
+        this.ref.markForCheck();
       })
   }
 
   onAddAlbumItem(albumItem: AlbumItem): void {
     this.albumsService.addAlbumItem(albumItem)
       .pipe(untilDestroyed(this))
-      .subscribe({
-        error: (err) => {
-          console.log(err);
-        },
-        complete: () => console.log('done'),
-      });
+      .subscribe();
   }
 
   onAddAlbumPhoto(albumPhoto: FormData): void {

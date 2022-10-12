@@ -108,7 +108,7 @@ export class ArticlePanelComponent implements OnInit {
 
     this.articleService.updateArticle(formData as unknown as Article)
       .pipe(untilDestroyed(this))
-      .subscribe();
+      .subscribe(() => this.ref.markForCheck());
   }
 
   onDeleteArticleItem(event: { id: number, documentType: DocTypeName }) {

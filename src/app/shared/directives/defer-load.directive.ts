@@ -46,7 +46,7 @@ export class DeferLoadDirective implements AfterViewInit {
     }
 
     const config = {
-      rootMargin: '100px 0px 100px 0px',
+      rootMargin: '1000px 0px 100px 0px',
       threshold: 0,
     };
 

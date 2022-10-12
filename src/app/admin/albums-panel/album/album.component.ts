@@ -58,6 +58,8 @@ export class AlbumComponent implements OnInit {
 
   onAddAlbumPhoto(albumPhoto: FormData) {
     this.addAlbumPhotoClicked.emit(albumPhoto);
+
+    this.formMode = false;
   }
 
   // deletes

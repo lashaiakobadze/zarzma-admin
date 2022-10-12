@@ -62,10 +62,10 @@ export class ArticleItemComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result as string;
+
+      this.ref.markForCheck();
     };
     reader.readAsDataURL(file);
-
-    this.ref.markForCheck();
   }
 
   onUpdateArticleItem(): void {

@@ -76,6 +76,7 @@ export class AlbumItemComponent implements OnInit {
       formData.append("files", this.form.get('files').value);
 
       this.addAlbumPhotoClicked.emit(formData);
+      this.dropMode = false;
     });
 
     this.workEnd();
