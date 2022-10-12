@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthService } from '../authentication/auth.service';
 
@@ -6,13 +6,15 @@ import { AuthService } from '../authentication/auth.service';
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.scss']
+  styleUrls: ['./navigation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NavigationComponent implements OnInit {
   isAuth: boolean;
 
   constructor(
-    public authService: AuthService
+    public authService: AuthService,
+    private ref: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -20,7 +22,11 @@ export class NavigationComponent implements OnInit {
 
     this.authService.getAuthStatusListener()
       .pipe(untilDestroyed(this))
-      .subscribe((authStatus: boolean) => this.isAuth = authStatus);
+      .subscribe((authStatus: boolean) => {
+        this.isAuth = authStatus;
+
+        this.ref.markForCheck();
+      });
   }
 
   onLogout(): void {

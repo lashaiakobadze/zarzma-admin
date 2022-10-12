@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FileHandle } from '../../models/file-handle.interface';
 
 @Component({
   selector: 'image-uploader',
   templateUrl: './image-uploader.component.html',
-  styleUrls: ['./image-uploader.component.scss']
+  styleUrls: ['./image-uploader.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class ImageUploaderComponent {
@@ -24,7 +25,10 @@ export class ImageUploaderComponent {
   @Output() fileEmitted = new EventEmitter();
   @Output() filesEmitted = new EventEmitter();
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(
+    private sanitizer: DomSanitizer,
+    private ref: ChangeDetectorRef
+  ) {}
 
   handleDragEnter() {
     this.dragging = true;
@@ -73,6 +77,8 @@ export class ImageUploaderComponent {
     let reader = event.target;
     this.imageSrc = reader.result;
     this.loaded = true;
+
+    this.ref.markForCheck();
   }
 
   onSelectFiles(event) {
@@ -88,6 +94,8 @@ export class ImageUploaderComponent {
     if (files.length) {
       this.filesEmitted.emit(files);
     }
+
+    this.ref.markForCheck();
   }
 
 }

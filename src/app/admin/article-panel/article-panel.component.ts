@@ -80,8 +80,6 @@ export class ArticlePanelComponent implements OnInit {
     this.articleForm.patchValue({ files: file });
     this.articleForm.get('files').updateValueAndValidity();
     this.selectedFile = file;
-
-    this.ref.markForCheck();
   }
 
   onAddArticle(): void {
