@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { VideoData } from '../interfaces/video.interface';
@@ -12,7 +12,8 @@ import { ErrorMessages } from 'src/app/shared/models/Errors.enume';
 @Component({
   selector: 'app-video',
   templateUrl: './video.component.html',
-  styleUrls: ['./video.component.scss']
+  styleUrls: ['./video.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VideoComponent implements OnInit {
   videoItems: VideoData[] = [];
@@ -20,7 +21,10 @@ export class VideoComponent implements OnInit {
   videoForm: FormGroup<VideoForm>;
   videoPanelError: ErrorMessages = null;
 
-  constructor(public videoService: VideoService) { }
+  constructor(
+    public videoService: VideoService,
+    private ref: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -32,6 +36,8 @@ export class VideoComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(videoItems => {
         this.videoItems = videoItems;
+
+        this.ref.markForCheck();
       });
   }
 
@@ -53,6 +59,8 @@ export class VideoComponent implements OnInit {
     .subscribe(() => {
         this.videoPanelError = null;
         this.videoForm.reset();
+
+        this.ref.markForCheck();
       }
     );
   }

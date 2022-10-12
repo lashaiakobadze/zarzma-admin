@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -12,7 +12,8 @@ import { AuthData } from '../auth.model';
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.scss']
+  styleUrls: ['./auth.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthComponent implements OnInit {
   adminForm: FormGroup<AuthForm>;
@@ -21,7 +22,8 @@ export class AuthComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
-    public route: Router
+    public route: Router,
+    private ref: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -41,8 +43,14 @@ export class AuthComponent implements OnInit {
       .subscribe({
         error: (err) => {
           console.log(err);
+
+          this.ref.markForCheck();
         },
-        complete: () =>  this.loginErrorMessage = null,
+        complete: () =>  {
+          this.loginErrorMessage = null;
+
+          this.ref.markForCheck();
+        }
       });
   }
 

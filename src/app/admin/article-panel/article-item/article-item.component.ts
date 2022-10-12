@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnInit, Output, PLATFORM_ID } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { ErrorMessages } from 'src/app/shared/models/Errors.enume';
 import { AppValidators } from 'src/app/shared/validators/app-validators';
@@ -10,10 +11,15 @@ import { ArticleForm } from '../../interfaces/form-Interfaces/articleForm.interf
 @Component({
   selector: 'app-article-item',
   templateUrl: './article-item.component.html',
-  styleUrls: ['./article-item.component.scss']
+  styleUrls: ['./article-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArticleItemComponent implements OnInit {
   BASE_URL = environment.dataUrl;
+  /**
+   * Directive uiDefer IntersectionObserver
+   */
+  renderImage = isPlatformServer(this.platformId);
 
   @Input() articleItem: ArticleInterface;
   @Output() updateArticleItemClicked = new EventEmitter<FormGroup<ArticleForm>>();
@@ -24,7 +30,10 @@ export class ArticleItemComponent implements OnInit {
   document_type: DocTypeName;
   @Input() articleError: ErrorMessages = null;
 
-  constructor() { }
+  constructor(
+    private ref: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: any
+  ) { }
 
   ngOnInit(): void {
     this.initForm(this.articleItem);
@@ -55,6 +64,8 @@ export class ArticleItemComponent implements OnInit {
       this.imagePreview = reader.result as string;
     };
     reader.readAsDataURL(file);
+
+    this.ref.markForCheck();
   }
 
   onUpdateArticleItem(): void {

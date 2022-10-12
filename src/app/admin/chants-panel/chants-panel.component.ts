@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ErrorMessages } from 'src/app/shared/models/Errors.enume';
@@ -12,7 +12,8 @@ import { ChantService } from './chants.service';
 @Component({
   selector: 'app-chants-panel',
   templateUrl: './chants-panel.component.html',
-  styleUrls: ['./chants-panel.component.scss']
+  styleUrls: ['./chants-panel.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChantsPanelComponent implements OnInit {
   formMode = false;
@@ -23,6 +24,7 @@ export class ChantsPanelComponent implements OnInit {
 
   constructor(
     public chantService: ChantService,
+    private ref: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -35,6 +37,8 @@ export class ChantsPanelComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(chantsData => {
         this.chantsItems = chantsData;
+
+        this.ref.markForCheck();
       });
   }
 
@@ -64,6 +68,8 @@ export class ChantsPanelComponent implements OnInit {
     .subscribe(() => {
         this.chantPanelError = null;
         this.chantForm.reset();
+
+        this.ref.markForCheck();
       }
     );
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 
 import { Article } from '../models/article.model';
@@ -14,7 +14,8 @@ import { ErrorMessages } from 'src/app/shared/models/Errors.enume';
 @Component({
   selector: 'app-article-panel',
   templateUrl: './article-panel.component.html',
-  styleUrls: ['./article-panel.component.scss']
+  styleUrls: ['./article-panel.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ArticlePanelComponent implements OnInit {
   eparchyItems: ArticleInterface[] = [];
@@ -28,7 +29,8 @@ export class ArticlePanelComponent implements OnInit {
   articlePanelError: ErrorMessages = null;
 
   constructor(
-    public articleService: ArticleService
+    public articleService: ArticleService,
+    private ref: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -41,6 +43,8 @@ export class ArticlePanelComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(eparchyItems => {
         this.eparchyItems = eparchyItems;
+
+        this.ref.markForCheck();
       });
 
     this.articleService.getIconsItems()
@@ -50,6 +54,8 @@ export class ArticlePanelComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(iconsItems => {
         this.iconsItems = iconsItems;
+
+        this.ref.markForCheck();
       });
 
     this.articleService.getPublicationsItems()
@@ -59,6 +65,8 @@ export class ArticlePanelComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(publicationsItems => {
         this.publicationsItems = publicationsItems;
+
+        this.ref.markForCheck();
       });
   }
 
@@ -72,6 +80,8 @@ export class ArticlePanelComponent implements OnInit {
     this.articleForm.patchValue({ files: file });
     this.articleForm.get('files').updateValueAndValidity();
     this.selectedFile = file;
+
+    this.ref.markForCheck();
   }
 
   onAddArticle(): void {
@@ -89,6 +99,8 @@ export class ArticlePanelComponent implements OnInit {
           this.articleForm.reset();
           this.selectedFile = null;
           this.articlePanelError = null;
+
+          this.ref.markForCheck();
         }
       );
   }

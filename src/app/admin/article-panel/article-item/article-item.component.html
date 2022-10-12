@@ -112,8 +112,29 @@
       !(imagePreview !== '' && imagePreview && articleItemForm.get('files').valid) &&
       articleItem?.photoUrl
     "
+    uiDefer
+    (uiDeferShow)="renderImage = true"
+    (uiDeferHide)="renderImage = false"
   >
-    <img class="panel-img" [src]="BASE_URL + articleItem?.photoUrl" [alt]="articleItem.title" />
+    <img
+      *ngIf="!renderImage"
+      class="panel-img"
+      src="assets/add_box_white_24dp.svg"
+      [alt]="articleItem.title"
+    />
+    <img
+      *ngIf="renderImage"
+      class="panel-img"
+      [ngClass]="{'is-loaded': renderImage}"
+      [src]="BASE_URL + articleItem?.photoUrl"
+      [alt]="articleItem.title"
+    />
+    <!-- <img
+      appLazyLoad
+      class="panel-img"
+      [src]="BASE_URL + articleItem?.photoUrl"
+      [alt]="articleItem.title"
+    /> -->
   </div>
 
   <div class="form-control">
@@ -133,5 +154,4 @@
       (click)="onDeleteArticleItem(+articleItem.id)"
     >Delete</button>
   </div>
-
 </form>

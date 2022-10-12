@@ -4,15 +4,20 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 
 import { DropdownDirective } from './directives/dropdown.directive';
+import { DeferLoadDirective } from './directives/defer-load.directive';
+import { LazyLoadDirective } from './directives/lazy-src.directive';
+import { DragDirective } from './directives/dragDrop.directive';
+
 import { PlusComponent } from './components/plus/plus.component';
 import { ErrorComponent } from './components/error/error.component';
-import { DragDirective } from './directives/dragDrop.directive';
 import { ImageUploaderComponent } from './components/image-uploader/image-uploader.component';
 
 @NgModule({
   declarations: [
     DropdownDirective,
     DragDirective,
+    DeferLoadDirective,
+    LazyLoadDirective,
     PlusComponent,
     ErrorComponent,
     ImageUploaderComponent,
@@ -26,6 +31,8 @@ import { ImageUploaderComponent } from './components/image-uploader/image-upload
     ReactiveFormsModule,
     DropdownDirective,
     DragDirective,
+    LazyLoadDirective,
+    DeferLoadDirective,
     PlusComponent,
     ErrorComponent,
     ImageUploaderComponent

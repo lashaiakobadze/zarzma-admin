@@ -20,6 +20,20 @@ input[type="file"] {
   width: 300px;
 }
 
+.panel-img {
+  // box-shadow: 3px 2px 2px 0px rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 250px;
+  height: 250px;
+  background-size: cover;
+  filter: blur(3px); /* blur the lowers image */
+}
+
+.panel-img.is-loaded {
+  filter: none; /* remove the blur on fullers image */
+  transition: filter 1s;
+}
+
 .form-control {
   width: 100%;
   align-items: center;
