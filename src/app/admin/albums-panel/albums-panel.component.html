@@ -63,7 +63,7 @@
 
 
 <div class="albums-content">
-  <ng-container *ngFor="let album of albums">
+  <ng-container *ngFor="let album of albumsService.albumsUpdated | async">
     <app-album
       [album]="album"
       (addAlbumPhotoClicked)="onAddAlbumPhoto($event)"
@@ -73,5 +73,15 @@
       (deleteAlbumPhotoClicked)="onDeleteAlbumPhoto($event)"
     ></app-album>
   </ng-container>
+  <!-- <ng-container *ngFor="let album of albums; let index = index; trackBy: trackElementBy">
+    <app-album
+      [album]="album"
+      (addAlbumPhotoClicked)="onAddAlbumPhoto($event)"
+      (addAlbumItemClicked)="onAddAlbumItem($event)"
+      (deleteAlbumClicked)="onDeleteAlbum($event)"
+      (deleteAlbumItemClicked)="onDeleteAlbumItem($event)"
+      (deleteAlbumPhotoClicked)="onDeleteAlbumPhoto($event)"
+    ></app-album>
+  </ng-container> -->
 </div>
 

@@ -13,7 +13,7 @@ import { AlbumItem } from '../models/albumItem.model';
 })
 export class AlbumsService {
   albums: AlbumInterface[] = null;
-  private albumsUpdated = new Subject<AlbumInterface[]>();
+  public albumsUpdated = new Subject<AlbumInterface[]>();
 
   constructor(
     private http: HttpClient,

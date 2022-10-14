@@ -115,4 +115,8 @@ export class AlbumsPanelComponent implements OnInit {
     });
   }
 
+  trackElementBy(index, item) {
+    return index; // or item.id
+  }
+
 }
