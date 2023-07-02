@@ -1,0 +1,38 @@
+{
+  "header": {
+    "title": "Fathers Monastery Of Zarzma",
+    "home": "Home",
+    "gallery": "Gallery",
+    "photos": "Photos",
+    "videos": "Videos",
+    "chants": "Chants",
+    "Murals&Icons": "Murals&Icons",
+    "murals": "Murals",
+    "icons": "Icons",
+    "handicraft": "Handicraft",
+    "incense": "Incense",
+    "enamel": "Enamel",
+    "eparchy": "Eparchy",
+    "monastery": "Monastery",
+    "publications": "Publications",
+    "fund": "Found",
+    "contact": "Contact",
+    "academy": "Academy"
+  },
+  "footer": {
+    "first": "© 2022 Fathers Monastery Of Zarzma",
+    "second": "Charitable Foundation Savane"
+  },
+  "contact": {
+    "title": "Contact",
+    "name": "name",
+    "email": "email",
+    "content": "content",
+    "text": "text",
+    "send": "send"
+  },
+  "found": {
+    "title": "Found",
+    "content": "Monastery Support Charitable Foundation"
+  }
+}
