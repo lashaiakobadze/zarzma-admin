@@ -1,6 +1,6 @@
 export enum AlbumType {
   album = 1,
-  incense = 2,
-  enamel = 3,
-  calendar = 4
+  frescoes = 2,
+  handicraft = 3,
+  other = 4,
 }
